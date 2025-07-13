@@ -3,58 +3,40 @@
 cmake_minimum_required(VERSION 3.8)
 project(leapfrog_groundstation)
 
-# Default to C++14
+# Default to C++20
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 20)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# Find dependencies
-find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(flightcontrol REQUIRED)
+# Find Protobuf
+find_package(Protobuf REQUIRED)
+include_directories(${Protobuf_INCLUDE_DIRS})
 
 # Include directories
 include_directories(
   src/ground_station/include
-  ${rclcpp_INCLUDE_DIRS}
-  ${std_msgs_INCLUDE_DIRS}
-  ${flightcontrol_INCLUDE_DIRS}
 )
 
 # Add ground station executable
 add_executable(ground_station
-  # Main source files
   src/ground_station/src/GroundStation.cpp
   src/ground_station/src/GroundStation_Terminal.cpp
-  
-  # Properties source files
-  src/ground_station/src/properties/BaseProperties.cpp
-  
-  # Communication source files
+  src/Echo.cpp
   src/ground_station/src/communications/Serial.cpp
   src/ground_station/src/communications/Communication.cpp
-  
-  # Test/Utility files
-  src/Echo.cpp
-  src/Echo2.cpp
+  src/ground_station/src/heartbeat.pb.cc
 )
 
-# Link against dependencies
-ament_target_dependencies(ground_station
-  rclcpp
-  std_msgs
-  flightcontrol
-)
+target_link_libraries(ground_station ${Protobuf_LIBRARIES})
 
 # Install targets
 install(TARGETS
   ground_station
-  DESTINATION lib/${PROJECT_NAME}
+  DESTINATION bin
 )
 
 # Install launch files
@@ -74,5 +56,3 @@ install(DIRECTORY
   scripts
   DESTINATION share/${PROJECT_NAME}
 )
-
-ament_package()

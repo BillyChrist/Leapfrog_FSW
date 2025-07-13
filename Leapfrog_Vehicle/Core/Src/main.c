@@ -52,6 +52,7 @@
 
 
 
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,6 +64,10 @@
 /* USER CODE BEGIN PD */
 #define RX_BUFFER_SIZE 512
 #define UART_TIMEOUT 100
+
+#define SAFE_PI_TIMEOUT_MS 1000                    // Timeout in ms for Pi comms
+volatile bool safeland_active         = false;
+volatile uint32_t last_pi_comm_tick   = 0;
 
 /* USER CODE END PD */
 
@@ -1544,7 +1549,8 @@ void StartKillSwitchPin(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(1); // skeleton code for safe land logic and engine kill switch overrides...
+    check_for_safeland();
   }
   /* USER CODE END StartKillSwitchPin */
 }

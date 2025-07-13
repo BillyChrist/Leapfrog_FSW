@@ -22,7 +22,33 @@
  * Parser maps inputs to virtual functions which are expected to be
  * overridden by the owning node (e.g., FlightManager).
  *===================================================================*/
-// TODO Update actuall commands (i.e.: "ACS systemEnabled")
+// Only keep the new command structure TODO block at the top.
+//
+// Planned Command Structure:
+// ********** ACS Subsystem Commands ************
+//   ACS System Enable
+//   ACS System Disable
+//
+// ********** TVC Subsystem Commands *********
+//   TVC Manual
+//   TVC Automatic
+//   TVC HomePosition
+//
+// ************ Propulsion Subsystem Commands ***********
+//   Engine Spool
+//   Engine Ignite
+//   Engine Throttle "%"
+//   Engine Cooldown
+//   Engine Kill
+//
+// ******* Navigation Commands ****************
+//   Go Forward
+//   Go Backward
+//   Strafe Left
+//   Strafe Right
+//   Rotate "Degrees" (e.g. Rotate 30, or Rotate -30)
+//
+// Only ACS System Enable/Disable is currently implemented.
 
 #include "CommandParser.hpp"
 

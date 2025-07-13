@@ -1,7 +1,7 @@
 /*===================================================================
  * Project    : LEAPFROG
  * File       : flightmanager.cpp
- * Author     : Antariksh Narain (2020) | Maintained by BillyChrist (2025)
+ * Author     : Antariksh Narain (2020) | Updated by BillyChrist (2025)
  * Description: Core runtime logic for LEAPFROG FlightManager ROS 2 node.
  *
  * Responsibilities:
@@ -25,10 +25,12 @@
 
 
 #include "flightmanager.hpp"
+#include "Communication.hpp"
+#include "heartbeat.pb.h"
 
 typedef std::chrono::steady_clock stClock;
 
-FlightManager::FlightManager(string port, int baudrate, std::future<void> fut) : Node("FlightManager"), Serial(port, baudrate, '\n', 1000, -1) {
+FlightManager::FlightManager(string port, int baudrate, std::future<void> fut) : Node("FlightManager"), comm_(std::make_unique<Utilities::Communication>(port, baudrate)) {
     // Load Script files
     string filename = this->path_to_files + this->custom_script_file;
     ifstream file;
@@ -51,7 +53,7 @@ FlightManager::FlightManager(string port, int baudrate, std::future<void> fut) :
     // Send ready message
     string script_msg = (script_names == "") ? "No Loaded Scripts" : "Loaded Scripts (" + to_string(this->script_map.size()) + "):\n" + script_names;
     string temp_msg = "Welcome to LEAPFROG: Vehicle is Ready!\n" + script_msg;
-    this->Send(temp_msg);
+    comm_->SendSerial(temp_msg);
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: %s", getTimeSinceEpoch(), temp_msg.c_str());
 }
 
@@ -61,18 +63,6 @@ float FlightManager::getTimeSinceEpoch() {
     return time_span.count();
 }
 
-int FlightManager::CopyLogs() {
-    int i;
-    printf("Checking if processor is available...");
-    // if (system(NULL)) puts ("Ok");
-    // else exit (EXIT_FAILURE);
-    printf("Executing command DIR...\n");
-    // TODO: Remove hardcoded command.
-    i = system("~/vehicle/copylogs.sh");
-    printf("The value returned was: %d.\n", i);
-    return i;
-}
-
 void FlightManager::SerialMonitor(std::future<void> fut) {
 	// ROS2 logging system: RCLCPP_INFO(logger, "format_string", args...);
 	RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Started Serial Monitor.", getTimeSinceEpoch());
@@ -80,31 +70,21 @@ void FlightManager::SerialMonitor(std::future<void> fut) {
     uint8_t loop_sleep_time = 50; 		// time in milliseconds; must be less than heartbeat_interval
 	int heartbeat_counter = HEARTBEAT_DURATION * ((double)heartbeat_interval/loop_sleep_time);
     if (heartbeat_counter < 10) {heartbeat_counter = 10;} // Just in case (heartbeat_interval/loop_sleep_time) gets too small
-    string data;
+    std::vector<uint8_t> data_bytes;
+    std::string data;
 	while (fut.wait_for(chrono::milliseconds(loop_sleep_time)) == std::future_status::timeout && heartbeat_counter > 0) {
 		if (this->IsAvailable()) {
-			auto recv = this->Recv();
-			data = this->convert_to_string(recv);
-            if (data.rfind("heartbeat") == 0) {
-                this->feed_watchdog();
-                this->Send(recv);
-			}
-            else {
-                RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Command Received: %s", getTimeSinceEpoch(), data.c_str());
-                if (data == "exit")
-                {
-                    break;
-                }
-                if (this->enable_echo)
-                {
-                    this->Send(recv);
-                    this->enable_echo = false;
-                }
-                else
-                {
-                    this->Send(this->Parser(data));
-                    RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Command Parsed: %s", getTimeSinceEpoch(), data.c_str());
-                }
+            // Receive raw bytes from groundstation
+            data_bytes = comm_->RecvSerialRaw(); // <-- you may need to add this method to Communication/Serial
+            leapfrog::Command cmd_msg;
+            if (cmd_msg.ParseFromArray(data_bytes.data(), data_bytes.size())) {
+                std::string cmd = cmd_msg.command_text();
+                RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Protobuf Command Received: %s", getTimeSinceEpoch(), cmd.c_str());
+                if (cmd == "exit") { break; }
+                std::string response = this->Parser(cmd);
+                // Optionally send a response as a protobuf message (not required for heartbeat flow)
+            } else {
+                RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "t=%.4fs: Failed to parse protobuf Command message from groundstation.", getTimeSinceEpoch());
             }
 			heartbeat_counter = HEARTBEAT_DURATION;
 		}
@@ -114,13 +94,11 @@ void FlightManager::SerialMonitor(std::future<void> fut) {
 				RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Waiting %d", getTimeSinceEpoch(), heartbeat_counter);
 			}
 			if (heartbeat_counter == 500) {
-				this->Send("Vehicle will shutdown in 2 minutes.");
+                // Optionally send a protobuf status message here
 			}
 		}
 		//this_thread::sleep_for(chrono::milliseconds(200));
 	}
-	int datacopied = this->CopyLogs();
-	this->Send("Vehicle Shutting down !!! (CopyLogs() output: " + to_string(datacopied) + ")");
 	this->ShutdownSequence();
 	RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Stopped Serial Monitor. %d", getTimeSinceEpoch(), heartbeat_counter);
 }
@@ -181,6 +159,7 @@ void FlightManager::InitializeSequence() {
 
         // Publish heartbeat
 		heartbeat_publisher_->publish(heartbeat);
+		this->SendProtobufHeartbeat();
 	});
 
 	this->heartbeat_publisher_ = this->create_publisher<flightcontrol::msg::Heartbeat>("heartbeat", 1);
@@ -230,19 +209,19 @@ void FlightManager::ScriptRunner(string filename, future<void> script_future) {
         return;
     }
     string notify = "Script Started: " + filename;
-    this->Send(notify);
+    comm_->SendSerial(notify);
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Started custom script %s.", getTimeSinceEpoch(), filename.c_str());
     int i = 0;
     do {
         string resp = this->Parser(commands[i]);
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Executed %s with response: %s.", getTimeSinceEpoch(), commands[i].c_str(), resp.c_str());
-        this->Send(resp);
+        comm_->SendSerial(resp);
         //std::this_thread.sleep_for(std::chrono::milliseconds(cmd_delays[i]));
         i++;
     } while (i < (int)commands.size() && script_future.wait_for(chrono::milliseconds(cmd_delays[i])) == std::future_status::timeout);
     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Completed custom script %s. %zu / %zu.", getTimeSinceEpoch(), filename.c_str(), static_cast<size_t>(i), commands.size());
 	notify = "Script completed: " + filename;
-    this->Send(notify);
+    comm_->SendSerial(notify);
     this->enable_script = 0;
 }
 
@@ -414,6 +393,55 @@ string FlightManager::guidance_enable(int value) {
 	guidance_internal = value > 0;
 	RCLCPP_INFO(rclcpp::get_logger("rcltelemcpp"), "t=%.4fs: Guidance state updated %d", getTimeSinceEpoch(), value);
 	return guidance_internal ? "Guidance is going internal!" : "Switched to manual control";
+}
+
+void FlightManager::SendProtobufHeartbeat() {
+    leapfrog::Heartbeat hb_msg;
+    // IMU Data (TODO: assign real values when available)
+    // If you have these as member variables, use them. Otherwise, leave a single TODO.
+    // Example: hb_msg.set_roll_deg(roll_deg);
+    // For now, leave a single TODO for IMU fields:
+    // TODO: Populate IMU fields from STM32 telemetry when available
+    hb_msg.set_roll_deg(0.0f);
+    hb_msg.set_pitch_deg(0.0f);
+    hb_msg.set_yaw_deg(0.0f);
+    hb_msg.set_acc_x_g(0.0f);
+    hb_msg.set_acc_y_g(0.0f);
+    hb_msg.set_acc_z_g(0.0f);
+    hb_msg.set_angvel_x_degs(0.0f);
+    hb_msg.set_angvel_y_degs(0.0f);
+    hb_msg.set_angvel_z_degs(0.0f);
+
+    // TVC Data
+    hb_msg.set_tvc_a_pos(tvc_angle1);
+    hb_msg.set_tvc_b_pos(tvc_angle2);
+
+    // Engine Telemetry (TODO: assign real values when available)
+    hb_msg.set_engine_turbine_rpm(0);
+    hb_msg.set_engine_rpm_setpoint(0);
+    hb_msg.set_engine_egt_c(0);
+    hb_msg.set_engine_pump_voltage(0.0f);
+    hb_msg.set_engine_turbine_state(0);
+    hb_msg.set_engine_off_condition(0);
+    hb_msg.set_engine_throttle_percent(0);
+    hb_msg.set_engine_current_a(0.0f);
+
+    // Altitude
+    hb_msg.set_altitude(0);
+
+    // System Status
+    static uint32_t heartbeat_counter = 0;
+    hb_msg.set_heartbeat_counter(heartbeat_counter++);
+    hb_msg.set_guidance_internal(guidance_internal);
+    hb_msg.set_enable_acs(enable_acs);
+    hb_msg.set_enable_tvc(enable_tvc);
+    hb_msg.set_enable_engine(enable_engine);
+    hb_msg.set_imu_calibration_status(imu_calibration_flag);
+
+    std::string out;
+    hb_msg.SerializeToString(&out);
+    std::vector<uint8_t> out_bytes(out.begin(), out.end());
+    comm_->SendSerialRaw(out_bytes);
 }
 
 int main(int argc, char *argv[]) {

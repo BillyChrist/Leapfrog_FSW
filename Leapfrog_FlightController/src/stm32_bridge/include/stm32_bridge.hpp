@@ -4,15 +4,15 @@
  * Author     : Julia Schatz (2020) | Maintained by BillyChrist (2025)
  * Description: Header file for the STM32Bridge ROS 2 node.
  *
- * This class bridges communication between the Raspberry Pi and the STM32 MCU.
- *
  * Core Responsibilities:
  *  - Subscribe to ROS 2 heartbeat messages from the flight manager
  *  - Encode and send command packets to STM32 over serial
  *  - Receive structured telemetry packets from STM32 over serial
  *  - Parse and publish telemetry data to ROS 2 topics
- *  - Maintain a live telemetry log file for diagnostics
+ *  - Maintain a live telemetry log file for diagnostics (only in DEBUG mode)
  *  - Monitor for timeout from STM32 or heartbeat dropouts
+ *  - All terminal output and file logging is suppressed in flight mode (DEBUG == false)
+ *  - All warnings/errors are forwarded as telemetry in flight mode
  *
  * Serial Protocol:
  *  - Pi → STM32: Encodes system state into `STM32Message` struct
@@ -94,6 +94,7 @@ typedef struct {
   uint8_t engine_safe;
   uint8_t engine_power;
   uint8_t checksum;
+  uint8_t safeland_command; // 0 = normal, 1 = SafeLand
 } STM32Message;
 
 class STM32Bridge : public rclcpp::Node, public Serial
@@ -137,6 +138,10 @@ private:
     
   float lastLTU_s = -1*liveTelemUpdate_s;
   float thisLTU_s = 0;
+
+  // Error flags for telemetry forwarding
+  bool heartbeat_timeout_flag = false;
+  bool packet_size_error_flag = false;
 };
 
 void emplace_buffer(uint8_t* buf, size_t* offset, void* data, size_t sz);

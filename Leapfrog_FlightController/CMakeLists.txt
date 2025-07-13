@@ -24,6 +24,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
+find_package(Protobuf REQUIRED)
 
 # ========================================
 # Library path configuration
@@ -48,6 +49,18 @@ include_directories(
   ${rclcpp_INCLUDE_DIRS}
   ${std_msgs_INCLUDE_DIRS}
 )
+
+# ========================================
+# Protobuf integration
+# ========================================
+
+set(PROTO_FILE ${CMAKE_CURRENT_SOURCE_DIR}/heartbeat.proto)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILE})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+# Make generated files available to subprojects
+add_library(leapfrog_proto STATIC ${PROTO_SRCS} ${PROTO_HDRS})
+target_link_libraries(leapfrog_proto PUBLIC protobuf::libprotobuf)
 
 # ========================================
 # Installation

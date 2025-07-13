@@ -21,6 +21,8 @@
 #include <chrono>
 // User Defined Libs
 #include <Serial.hpp>
+// Add protobuf includes
+#include "heartbeat.pb.h"
 
 using namespace std;
 
@@ -40,31 +42,27 @@ Clock::time_point t0;
 Clock::time_point t1;
 bool echo_flag = true;
 
+// Add a DEBUG flag
+#define DEBUG true
+
 void Receiver(std::future<void> fut)
 {
     printf("\rStarted Receiver...\n");
-    bool echo_mode = false;
     while (fut.wait_for(chrono::milliseconds(100)) == std::future_status::timeout)
     {
-        //string recv;
         if(serial->IsAvailable())
         {
             auto recv = serial->Recv();
-            printf("Got a response!\n");
-            //printf("\r>>%s\n", recv.c_str());
-            _mutex.lock();
-            t1 = Clock::now();
-            milliseconds ms = std::chrono::duration_cast<milliseconds>(t1 - t0);
-            std::cout << ms.count() << "ms\n";
-            if(echo_flag)
-            {
-                serial->Send(recv);
+            leapfrog::Heartbeat heartbeat;
+            if (heartbeat.ParseFromArray(recv.data(), recv.size())) {
+                if (DEBUG) {
+                    printf("[HEARTBEAT] roll: %.2f, pitch: %.2f, yaw: %.2f, altitude: %d\n",
+                        heartbeat.roll_deg(), heartbeat.pitch_deg(), heartbeat.yaw_deg(), heartbeat.altitude());
+                    // Print more fields as needed
+                }
+            } else {
+                if (DEBUG) printf("[WARN] Failed to parse Heartbeat protobuf message.\n");
             }
-            else{
-                echo_flag = true;
-            }
-            _mutex.unlock();
-
         }
     }
     printf("Exiting Receiver!\n");
@@ -91,40 +89,28 @@ string random_string(std::size_t length)
 void Sender(std::promise<void> prom)
 {
     printf("Started Sender...\n");
-    char data[100];
+    char data[256];
     while (1)
     {
         cin.getline(data, sizeof(data));
-        int num = atoi(data);
         if (string(data) == "exit")
         {
             printf("Exiting ...\n");
-            _mutex.lock();
-            printf("Sending exit command to other node.\n");
-            serial->Send("exit");
-            _mutex.unlock();
-            sleep(1);
+            leapfrog::Command cmd;
+            cmd.set_command_text("exit");
+            std::string out;
+            cmd.SerializeToString(&out);
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
             prom.set_value();
             break;
         }
-        else if(num > 0)
-        {
-            int pkt_size = num * 1024;
-            string packet = random_string(pkt_size);
-            _mutex.lock();
-            serial->Send(packet);
-            t0 = Clock::now();
-            echo_flag = false;
-            //printf("Sent Time: %s", t0);
-            _mutex.unlock();
-        }
         else
         {
-            _mutex.lock();
-            serial->Send(data);
-            t0 = Clock::now();
-            //printf("Sent Time: %s", t0);
-            _mutex.unlock();
+            leapfrog::Command cmd;
+            cmd.set_command_text(data);
+            std::string out;
+            cmd.SerializeToString(&out);
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
         }
     }
     printf("Exiting Sender!\n");

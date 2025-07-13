@@ -6,7 +6,7 @@
  * Provides a terminal like interface to send and recv data.
 ----------------------------------------------------------------- */
 
-// STL Libs
+// Include Libraries
 #include <iostream>
 #include <functional>
 #include <stdio.h>
@@ -22,6 +22,11 @@
 #include <thread>
 // User Defined Libs
 #include <Serial.hpp>
+// Add protobuf includes
+#include "heartbeat.pb.h"
+
+// Add a DEBUG flag
+#define DEBUG true
 
 using namespace std;
 
@@ -38,14 +43,22 @@ int main(int argc, char *argv[])
     {
         if(serial.IsAvailable())
         {
-            printf("Serial buffer has data.\n");
             auto recv = serial.Recv();
-            string data = serial.convert_to_string(recv);
-            if(data == "exit")
-            {
-                break;
+            leapfrog::Heartbeat heartbeat;
+            if (heartbeat.ParseFromArray(recv.data(), recv.size())) {
+                if (DEBUG) {
+                    printf("[HEARTBEAT] roll: %.2f, pitch: %.2f, yaw: %.2f, altitude: %d\n",
+                        heartbeat.roll_deg(), heartbeat.pitch_deg(), heartbeat.yaw_deg(), heartbeat.altitude());
+                }
+            } else {
+                if (DEBUG) printf("[WARN] Failed to parse Heartbeat protobuf message.\n");
             }
-            serial.Send(recv);
+            // Optionally echo back a command
+            // leapfrog::Command cmd;
+            // cmd.set_command_text("echo");
+            // std::string out;
+            // cmd.SerializeToString(&out);
+            // serial.Send(vector<uint8_t>(out.begin(), out.end()), false);
         }
         else
         {

@@ -103,8 +103,6 @@ public:
 
     void ScriptRunner(string filename, std::future<void>);
 
-    int CopyLogs();
-
     virtual string label_run(string& name);
 
     virtual string engine_ctrl(int value);
@@ -132,4 +130,6 @@ public:
     virtual string guidance_enable(int value) override;
 
     virtual void feed_watchdog() override;
+
+    void SendProtobufHeartbeat();
 };

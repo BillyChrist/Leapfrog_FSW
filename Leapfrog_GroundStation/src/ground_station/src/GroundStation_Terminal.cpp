@@ -19,6 +19,7 @@
 #include <random>
 // User Defined Libs
 #include "Serial.hpp"
+#include "heartbeat.pb.h"
 // #include <bits/stdc++.h>
 
 using namespace std;
@@ -73,34 +74,25 @@ string random_string(std::size_t length)
     return random_string;
 }
 
+// Add a DEBUG flag
+#define DEBUG true
+
 void Receiver(std::future<void> fut)
 {
-    //printf("\rStarted Receiver...\n");
     string recv;
     while (fut.wait_for(chrono::milliseconds(1)) == std::future_status::timeout)
     {
         if (serial->IsAvailable())
         {
-            recv = serial->convert_to_string(serial->Recv());
-            if (enable_echo)
-            {
-                enable_echo--;
-                if (enable_echo == 0)
-                {
-                    printf(">>Echo Disabled! - ");
-                    t1 = Clock::now();
-                    milliseconds ms = std::chrono::duration_cast<milliseconds>(t1 - t0);
-                    std::cout << ms.count() << "ms\n";
+            auto data = serial->Recv();
+            leapfrog::Heartbeat heartbeat;
+            if (heartbeat.ParseFromArray(data.data(), data.size())) {
+                if (DEBUG) {
+                    printf("[HEARTBEAT] roll: %.2f, pitch: %.2f, yaw: %.2f, altitude: %d\n",
+                        heartbeat.roll_deg(), heartbeat.pitch_deg(), heartbeat.yaw_deg(), heartbeat.altitude());
                 }
-            }
-            else if (recv.rfind("heartbeat") == 0) {
-                // Print something only if troubleshooting
-                if (tshb || (tshb_counter > 0)) {printf("t=%.4fs: Received %s\n", getTimeSinceEpoch(), recv.c_str());}
-            }
-            else
-            {
-                printf("t=%.4fs ", getTimeSinceEpoch());
-                printf(">>%s\n", recv.c_str());
+            } else {
+                if (DEBUG) printf("[WARN] Failed to parse Heartbeat protobuf message.\n");
             }
         }
     }
@@ -109,19 +101,20 @@ void Receiver(std::future<void> fut)
 
 void Sender(promise<void> exit_promise, promise<void> exit_heartbeat_promise)
 {
-    //printf("Started Sender...\n");
     char data[100];
     while (1)
     {
         cin.getline(data, sizeof(data));
-        //int num = atoi(data);
+        leapfrog::Command cmd;
         if (string(data) == "exit")
         {
             printf("t=%.4fs: ", getTimeSinceEpoch());
             printf("Exiting ...\n");
+            cmd.set_command_text("exit");
+            std::string out;
+            cmd.SerializeToString(&out);
             _mutex.lock();
-            printf("Sending exit command to other node.\n");
-            serial->Send("exit");
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
             _mutex.unlock();
             printf("t=%.4fs: ", getTimeSinceEpoch());
             printf("Waiting for 5 seconds for the vehicle to shutdown!\n");
@@ -135,61 +128,30 @@ void Sender(promise<void> exit_promise, promise<void> exit_heartbeat_promise)
             enable_echo = 2;
             printf("t=%.4fs: ", getTimeSinceEpoch());
             printf("Echo Enabled!\n");
+            cmd.set_command_text(data);
+            std::string out;
+            cmd.SerializeToString(&out);
             _mutex.lock();
-            serial->Send(data);
-            _mutex.unlock();
-        }
-        else if (enable_echo)
-        {
-            int pkt_size = atoi(data) * 1024;
-            string packet = random_string(pkt_size);
-            _mutex.lock();
-            serial->Send(packet);
-            t0 = Clock::now();
-            //printf("Sent Time: %s", t0);
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
             _mutex.unlock();
         }
         else if (string(data).rfind("tshb ") == 0)
         {
-            if (string(data) == "tshb toggle")
-            {
-                tshb = !tshb;
-                if (!tshb) {tshb_counter = 0;} // Make sure the conditions for the tshb loop are both false
-            }
-            else if (!tshb)
-            {
-                tshb_counter = getIntFromData(data, 5); // The number after "tshb " starts at index 5 of data
-            }
-            else
-            {
-                printf("Invalid or Redundant Command");
-            }
+            // Keep legacy tshb logic if needed, or send as command
+            cmd.set_command_text(data);
+            std::string out;
+            cmd.SerializeToString(&out);
+            _mutex.lock();
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
+            _mutex.unlock();
         }
         else
         {
-            string data_str = string(data);
-            if ((int)(data_str.find("engine enable ")) == 0)
-            {
-                if (data_str != "engine enable 0") // No time for calculations if the engine must be disabled
-                {
-                    if (getIntFromData(data, 14) > 0) // The number after "engine enable " starts at index 14 of data
-                    {
-                        printf("This may enable the engine. Have the lines been purged and primed? ('y'/'n')\n");
-                        getline(cin, data_str); // We can reuse data_str since the string version of data is no longer needed
-                        if (data_str == "y" || data_str == "Y")
-                        {
-                            printf("Sending engine enable command...\n");
-                        }
-                        else
-                        {
-                            printf("Canceling engine enable command...\n");
-                            continue; // Send nothing through; go to top of while loop
-                        }
-                    }
-                }
-            }
+            cmd.set_command_text(data);
+            std::string out;
+            cmd.SerializeToString(&out);
             _mutex.lock();
-            serial->Send(data);
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
             _mutex.unlock();
             printf("t=%.4fs: ", getTimeSinceEpoch());
             printf("Sent %s\n", data);
@@ -200,26 +162,15 @@ void Sender(promise<void> exit_promise, promise<void> exit_heartbeat_promise)
 
 void HeartBeats(std::future<void> fut, string cmd, int sleep_time)
 {
-    string cmd0 = cmd + " #";
+    leapfrog::Command command;
+    command.set_command_text(cmd);
+    std::string out;
     unsigned long long int counter = 0;
     while (fut.wait_for(chrono::milliseconds(sleep_time)) == std::future_status::timeout)
     {
-        if (tshb || (tshb_counter > 0))
-        {
-            string cmd_1 = cmd0 + to_string(counter);
-            _mutex.lock();
-            serial->Send(cmd_1);
-            _mutex.unlock();
-            printf("t=%.4fs: Sent %s\n", getTimeSinceEpoch(), cmd_1.c_str());
-            counter++; // The counter could hit its max value and go back to 0
-            if (!tshb && (tshb_counter > 0)) {tshb_counter--;}
-        }
-        else
-        {
-            _mutex.lock();
-            serial->Send(cmd);
-            _mutex.unlock();
-        }
+        _mutex.lock();
+        serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
+        _mutex.unlock();
     }
 }
 

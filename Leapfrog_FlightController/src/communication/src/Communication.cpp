@@ -1,11 +1,12 @@
 /*---------------------------------------------------------------
  * Copyright (c) 2025 Space Engineering Research Center (SERC)
  * Project    : LEAPFROG
- * Author     : Antariksh Narain
+ * Author     : Antariksh Narain | Maintained by BillyChrist (2025)
  * Description: Class definition for communication module for encoding and decoding data
 ----------------------------------------------------------------- */
 
 #include "Communication.hpp"
+#include <vector>
 
 using namespace std;
 
@@ -23,26 +24,22 @@ Communication::Communication(string channel, int baud_rate)
     this->baud_rate = baud_rate;
     printf("Init Comm on %s at %d\n", this->channel.c_str(), this->baud_rate);
 }
-    string Communication::encoder(string data)
-    {
-        // TODO: Add data encoding algorithm
-        return data;
-    }
-    string Communication::decoder(string data)
-    {
-        // TODO: Add data decoding algorithm
-        return data;
-    }
     void Communication::SendSerial(string data)
     {
-        if(this->Send(this->encoder(data)))
+        if(this->Send(this->convert_to_bytes(data)))
         {
             printf("%s Send: %s\n", this->channel.c_str(), data.c_str());
         }
     }
     string Communication::RecvSerial()
     {
-       return this->decoder(string(this->Recv().begin(), this->Recv().end()));
+       return string(this->Recv().begin(), this->Recv().end());
+    }
+    void Communication::SendSerialRaw(const std::vector<uint8_t>& data) {
+        this->Send(data, true); // true: send delimiter if needed
+    }
+    std::vector<uint8_t> Communication::RecvSerialRaw() {
+        return this->Recv();
     }
 }
 

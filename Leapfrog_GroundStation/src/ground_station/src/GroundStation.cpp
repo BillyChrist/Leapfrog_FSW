@@ -6,7 +6,7 @@
  * Provides a terminal like interface to send and recv data.
 ----------------------------------------------------------------- */
 
-// STL Libs
+// Include Libraries
 #include <iostream>
 #include <functional>
 #include <stdio.h>
@@ -21,6 +21,12 @@
 #include <Serial.hpp>
 
 #include <bits/stdc++.h>
+
+// Add protobuf includes
+#include "heartbeat.pb.h"
+
+// Toggle debug / flight mode with "true" / "false"
+#define DEBUG true
 
 using namespace std;
 
@@ -55,25 +61,17 @@ void Receiver(std::future<void> fut)
     printf("\rStarted Receiver...\n");
     while (fut.wait_for(chrono::milliseconds(1)) == std::future_status::timeout)
     {
-        string recv;
         if(serial->IsAvailable())
         {
-            recv = serial->convert_to_string(serial->Recv());
-            printf("\r>>%s\n", recv.c_str());
-            if(enable_echo)
-            {
-                enable_echo--;
-                if(enable_echo == 0)
-                {
-                    printf(">>Echo Disabled! - ");
-                    t1 = Clock::now();
-                    milliseconds ms = std::chrono::duration_cast<milliseconds>(t1 - t0);
-                    std::cout << ms.count() << "ms\n";
+            auto recv = serial->Recv();
+            leapfrog::Heartbeat heartbeat;
+            if (heartbeat.ParseFromArray(recv.data(), recv.size())) {
+                if (DEBUG) {
+                    printf("[HEARTBEAT] roll: %.2f, pitch: %.2f, yaw: %.2f, altitude: %d\n",
+                        heartbeat.roll_deg(), heartbeat.pitch_deg(), heartbeat.yaw_deg(), heartbeat.altitude());
                 }
-            }
-            else
-            {
-                printf("\r>>%s\n", recv.c_str());
+            } else {
+                if (DEBUG) printf("[WARN] Failed to parse Heartbeat protobuf message.\n");
             }
         }
     }
@@ -112,45 +110,31 @@ void Sender(vector<promise<void>> exit_promises, string filename)
         printf("Prev: %s\nCurr: %s\nFut: %s\n", commands[i-1].c_str(),commands[i].c_str(), commands[i+1].c_str());
         printf("Continue[y/CMD]:\n");
         cin.getline(data, sizeof(data));
+        leapfrog::Command cmd;
         if (string(data) == "exit")
         {
-            _mutex.lock();
-            serial->Send(data);
-            _mutex.unlock();
+            cmd.set_command_text("exit");
+            std::string out;
+            cmd.SerializeToString(&out);
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
             printf("Waiting for 5 seconds for the vehicle to shutdown!\n");
             this_thread::sleep_for(std::chrono::seconds(5));
             printf("Exiting ...\n");
             break;
         }
-        else if(string(data) == "cmd echo 1")
-        {
-            enable_echo = 2;
-            printf("Echo Enabled!");
-             _mutex.lock();
-            serial->Send(data);
-            _mutex.unlock();
-        }
-        else if(enable_echo)
-        {
-            int pkt_size = atoi(data) * 1024;
-            string packet = random_string(pkt_size);
-            _mutex.lock();
-            serial->Send(packet);
-            t0 = Clock::now();
-            //printf("Sent Time: %s", t0);
-            _mutex.unlock();
-        }
         else if(string(data) != "")
         {
-            _mutex.lock();
-            serial->Send(data);
-            _mutex.unlock();
+            cmd.set_command_text(data);
+            std::string out;
+            cmd.SerializeToString(&out);
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
         }
         else
         {
-            _mutex.lock();
-            serial->Send(commands[i]);
-            _mutex.unlock();
+            cmd.set_command_text(commands[i]);
+            std::string out;
+            cmd.SerializeToString(&out);
+            serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
             if(commands[i] == "exit")
             {
                 printf("Waiting for 5 seconds for the vehicle to shutdown!\n");
@@ -171,8 +155,12 @@ void HeartBeats(std::future<void> fut, string cmd, int sleep_time)
 {
     while (fut.wait_for(chrono::milliseconds(sleep_time)) == std::future_status::timeout)
     {
+        leapfrog::Command command;
+        command.set_command_text(cmd);
+        std::string out;
+        command.SerializeToString(&out);
         _mutex.lock();
-        serial->Send(cmd);
+        serial->Send(vector<uint8_t>(out.begin(), out.end()), false);
         _mutex.unlock();
     }
 }

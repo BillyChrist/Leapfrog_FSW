@@ -64,6 +64,7 @@ ament_target_dependencies(flightmanager
 # Problem Spot... colcon consistently fails to find communication.so
 target_link_libraries(flightmanager
   /home/leapfrog/Leapfrog_FlightController/install/communication/lib/libcommunication.so
+  leapfrog_proto
 )
 
 rosidl_target_interfaces(flightmanager

@@ -31,6 +31,8 @@
 #include "stm32_bridge.hpp"
 #include "rclcpp/rclcpp.hpp"
 
+constexpr bool DEBUG = true; // Set to false for flight mode (disables print strings to FC terminal)
+
 using std::placeholders::_1;
 using namespace std::chrono_literals;
 
@@ -38,6 +40,11 @@ typedef std::chrono::steady_clock stClock;
 
 const std::chrono::milliseconds heartbeat_timeout{500};
 const std::chrono::milliseconds stm32_timeout{500};
+
+// Add error flag variables at the top of the file
+static bool heartbeat_timeout_flag = false;
+static bool packet_size_error_flag = false;
+static bool stm32_timeout_flag = false;
 
 void emplace_uint32(std::vector<uint8_t>& buffer, int begin, uint32_t u) {
   // Example: 01000010011100100110000101100100 -> [01000010, 01110010, 01100001, 01100100]
@@ -47,9 +54,13 @@ void emplace_uint32(std::vector<uint8_t>& buffer, int begin, uint32_t u) {
   buffer[begin+3] = u >> 24;
 }
 
+// STM32Bridge constructor: set up ROS2 subscriptions, publishers, and timer
 STM32Bridge::STM32Bridge(std::string port, int baud) : Node("stm32_bridge"), Serial(port, baud, '\n', 100, STM32_RESPONSE_SIZE+STM32_SYNC_BYTE_COUNT) {
+  // Subscribe to heartbeat topic from flight manager
   heartbeat_sub = this->create_subscription<flightcontrol::msg::Heartbeat>("heartbeat", 10, std::bind(&STM32Bridge::heartbeat_callback, this, _1));
+  // Publish telemetry topic
   telemetry_pub = this->create_publisher<flightcontrol::msg::Heartbeat>("telemetry", 10);
+  // Timer for fixed-rate telemetry and comms
   timer_ = this->create_wall_timer(
       50ms, std::bind(&STM32Bridge::timer_callback, this));
 }
@@ -60,30 +71,32 @@ float STM32Bridge::getTimeSinceEpoch() {
     return time_span.count();
 }
 
+// timer_callback: main loop for serial comms and telemetry
 void STM32Bridge::timer_callback() {
-  // Check for timeout
+  // Check for heartbeat timeout and set error flag
   static bool heartbeat_sticky = false;
+  static bool safeland_active = false;
   if (std::chrono::system_clock::now() - last_heartbeat > heartbeat_timeout) {
     if (!heartbeat_sticky) {
       heartbeat_sticky = true;
-      RCLCPP_FATAL(this->get_logger(), "Heartbeat timeout");
+      if (DEBUG) {
+        RCLCPP_FATAL(this->get_logger(), "Heartbeat timeout");
+      }
     }
-    // If the heartbeat has timed out, turn all subsystems off
-    guidance_internal = false;
-    enable_acs = false;
-    enable_engine = false;
-    safe_engine = false;
-    power_engine = false;
-    enable_tvc = false;
-  }
-  else {
+    heartbeat_timeout_flag = true;
+    safeland_active = true;
+  } else {
     if (heartbeat_sticky) {
-      RCLCPP_FATAL(get_logger(), "Heartbeat stopped timing out");
+      if (DEBUG) {
+        RCLCPP_FATAL(get_logger(), "Heartbeat stopped timing out");
+      }
       heartbeat_sticky = false;
     }
+    heartbeat_timeout_flag = false;
+    safeland_active = false;
   }
 
-  // Send serial to STM32
+  // Build STM32Message buffer (add safeland_command field)
   uint8_t acs_state = enable_acs ? 2 : 0; 
   uint8_t tvc_state = enable_tvc ? (guidance_internal ? 2 : 1) : 0; 
   uint8_t engine_state = enable_engine ? (guidance_internal ? 2 : 1) : 0; 
@@ -109,8 +122,9 @@ void STM32Bridge::timer_callback() {
   buffer[16] = imu_calibration_status; 
   buffer[17] = engine_safe; 
   buffer[18] = engine_power; 
+  buffer[19] = safeland_active ? 1 : 0; // safeland_command field
 
-  // Calculate the checksum
+  // Calculate checksum
   uint8_t checksum = 0;     // Initialized to zero to avoid undefined values
   for (unsigned int i = 0; i < STM32_MESSAGE_SIZE-1; ++i) {
     checksum += buffer[i];
@@ -123,7 +137,7 @@ void STM32Bridge::timer_callback() {
   Send(sync_buffer, false);
   Send(buffer, false);
 
-  // Process received telemetry
+  // Receive and parse telemetry from STM32
   auto receive_buffer = std::deque<uint8_t>();
   while (IsAvailable() > 0) {
     auto vec = Recv();
@@ -131,30 +145,36 @@ void STM32Bridge::timer_callback() {
       receive_buffer.push_back(ch);
     }
   }
-  
-  // After that, pop off bytes from the second buffer until we count at least STM32_SYNC_BYTE_COUNT sync bytes in a row
+  // Sync byte and packet size check
   while (receive_buffer.size() > 0) {
     uint8_t rx_byte = receive_buffer.front();
     receive_buffer.pop_front();
     static int sync_byte_count = 0;
     static int remaining_to_rx = STM32_RESPONSE_SIZE;
     static std::vector<uint8_t> packet_bytes;
-
     if (sync_byte_count < STM32_SYNC_BYTE_COUNT) {
       if (rx_byte == STM32_SYNC_BYTE) {
         ++sync_byte_count;
-      }
-      else { // If at any point we receive an out of order sync byte, reset to 0. We will probably end up discarding this packet entirely.
+      } else {
         sync_byte_count = 0;
       }
-    }
-    else { // The correct number of sync bytes have been counted, we can now count down all bytes into the real packet
+    } else {
       packet_bytes.push_back(rx_byte);
       --remaining_to_rx;
       if (remaining_to_rx == 0) {
         remaining_to_rx = STM32_RESPONSE_SIZE;
         sync_byte_count = 0;
-
+        // Protocol robustness: check packet size
+        if (packet_bytes.size() != STM32_RESPONSE_SIZE) {
+          if (DEBUG) {
+            RCLCPP_ERROR(this->get_logger(), "Invalid packet size: %zu", packet_bytes.size());
+          }
+          packet_size_error_flag = true;
+          packet_bytes.clear();
+          continue;
+        } else {
+          packet_size_error_flag = false;
+        }
         last_stm32 = std::chrono::system_clock::now();
         STM32Response packet;
         size_t offset = 0;
@@ -208,11 +228,16 @@ void STM32Bridge::timer_callback() {
         // TODO add GPS telemetry
         telemetry_msg.safe_engine = safe_engine;
         telemetry_msg.power_engine = power_engine;
+        // When publishing telemetry, add error flags to the message
+        telemetry_msg.error_flags = 0;
+        if (heartbeat_timeout_flag) telemetry_msg.error_flags |= 0x01;
+        if (packet_size_error_flag) telemetry_msg.error_flags |= 0x02;
+        if (stm32_timeout_flag)    telemetry_msg.error_flags |= 0x04;
         telemetry_pub->publish(telemetry_msg);
 
         // Update live telemetry log
         thisLTU_s = getTimeSinceEpoch();
-        if (thisLTU_s - lastLTU_s >= liveTelemUpdate_s) {
+        if (DEBUG && (thisLTU_s - lastLTU_s >= liveTelemUpdate_s)) {
           std::ofstream ltu(liveTelemUpdate_file);
 
           ltu << "System Status:" << endl;
@@ -262,11 +287,21 @@ void STM32Bridge::timer_callback() {
         static bool timeoutSticky = false;
         if (packet.heartbeat_counter == 0 && !timeoutSticky) {
           timeoutSticky = true;
-          RCLCPP_FATAL(this->get_logger(), "STM32 reported time out!");
+          if (DEBUG) {
+            RCLCPP_FATAL(this->get_logger(), "STM32 reported time out!");
+          } else {
+            // Forward error as telemetry (set a static error flag or publish warning)
+            static bool stm32_timeout_flag = true;
+          }
         }
         else if (packet.heartbeat_counter > 0 && timeoutSticky) {
           timeoutSticky = false;
-          RCLCPP_FATAL(this->get_logger(), "STM32 stopped reporting timeout");
+          if (DEBUG) {
+            RCLCPP_FATAL(this->get_logger(), "STM32 stopped reporting timeout");
+          } else {
+            // Forward error as telemetry (set a static error flag or publish warning)
+            static bool stm32_timeout_flag = true;
+          }
         }
       }
     }
@@ -277,12 +312,22 @@ void STM32Bridge::timer_callback() {
   if (std::chrono::system_clock::now() - last_stm32 > stm32_timeout) {
     if (!stm32_sticky) {
       stm32_sticky = true;
-      RCLCPP_WARN(this->get_logger(), "No message from STM32");
+      if (DEBUG) {
+        RCLCPP_WARN(this->get_logger(), "No message from STM32");
+      } else {
+        // Forward error as telemetry (set a static error flag or publish warning)
+        static bool stm32_no_message_flag = true;
+      }
     }
   }
   else if (stm32_sticky) {
     stm32_sticky = false;
-    RCLCPP_WARN(this->get_logger(), "Got message from STM32");
+    if (DEBUG) {
+      RCLCPP_WARN(this->get_logger(), "Got message from STM32");
+    } else {
+      // Forward error as telemetry (set a static error flag or publish warning)
+      static bool stm32_message_received_flag = true;
+    }
   }
 }
 

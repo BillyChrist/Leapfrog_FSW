@@ -8,6 +8,7 @@
 #include "Serial.hpp"
 #include <string>
 #include <sstream>
+#include <vector>
 using namespace std;
 
 namespace Utilities
@@ -21,14 +22,7 @@ namespace Utilities
         string channel;
 
     protected:
-        // \brief Encode the data
-        // \param string - data string
-        // \return encoded string
-        string encoder(string);
-        // \brief Decode the data
-        // \param string - data string
-        // \return encoded string
-        string decoder(string);
+        // (encoder/decoder removed)
 
     public:
         Communication() : Serial("/dev/ttyAMA0", 9600, '\n', 1000, -1) {}
@@ -42,5 +36,11 @@ namespace Utilities
         // \brief Receive data from Serial port
         // \return data string
         string RecvSerial();
+        // \brief Send raw bytes on the Serial port (protobuf, for groundstation comms)
+        // \param data: vector of bytes (protobuf-serialized message)
+        void SendSerialRaw(const std::vector<uint8_t>& data);
+        // \brief Receive raw bytes from Serial port (protobuf, for groundstation comms)
+        // \return vector of bytes (protobuf-serialized message)
+        std::vector<uint8_t> RecvSerialRaw();
     };
 } // namespace Utilities

@@ -179,6 +179,34 @@ public:
     }
     virtual void feed_watchdog() {};
     virtual string guidance_enable(int value) { return value == 1 ? "guidance enabled" : "guidance disabled"; };
+
+    // Only keep the new command structure TODO block at the bottom.
+    //
+    // Planned Command Structure:
+    // ********** ACS Subsystem Commands ************
+    //   ACS System Enable
+    //   ACS System Disable
+    //
+    // ********** TVC Subsystem Commands *********
+    //   TVC Manual
+    //   TVC Automatic
+    //   TVC HomePosition
+    //
+    // ************ Propulsion Subsystem Commands ***********
+    //   Engine Spool
+    //   Engine Ignite
+    //   Engine Throttle "%"
+    //   Engine Cooldown
+    //   Engine Kill
+    //
+    // ******* Navigation Commands ****************
+    //   Go Forward
+    //   Go Backward
+    //   Strafe Left
+    //   Strafe Right
+    //   Rotate "Degrees" (e.g. Rotate 30, or Rotate -30)
+    //
+    // Only ACS System Enable/Disable is currently implemented.
 };
 
 #endif

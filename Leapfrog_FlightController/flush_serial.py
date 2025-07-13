@@ -1,4 +1,4 @@
-# This function will reset the serial ports I think...
+# This function will reset the serial ports
 
 #!/usr/bin/python3
 import serial
@@ -21,14 +21,3 @@ for port,baud in ports:
         ser.close()
     except Exception as e:
         print(f"Skipping {port}: {e}")
-
-
-# Actuators? TODO Remove! 
-relay_pins = [25, 11, 18, 23, 24, 17, 27, 22, 16, 19]
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(25, GPIO.OUT)
-GPIO.setup(11, GPIO.OUT)
-GPIO.output(25, GPIO.LOW)
-GPIO.output(11, GPIO.HIGH)
-
-# Do not do cleanup to maintain the gpio state

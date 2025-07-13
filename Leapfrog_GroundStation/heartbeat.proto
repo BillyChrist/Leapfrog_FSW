@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package leapfrog;
+
+// Heartbeat telemetry from flightcontroller/STM32
+message Heartbeat {
+  // IMU Data
+  float roll_deg = 1;
+  float pitch_deg = 2;
+  float yaw_deg = 3;
+  float acc_x_g = 4;
+  float acc_y_g = 5;
+  float acc_z_g = 6;
+  float angvel_x_degs = 7;
+  float angvel_y_degs = 8;
+  float angvel_z_degs = 9;
+
+  // TVC Data
+  float tvc_a_pos = 10;
+  float tvc_b_pos = 11;
+
+  // Engine Telemetry
+  int32 engine_turbine_rpm = 12;
+  int32 engine_rpm_setpoint = 13;
+  int32 engine_egt_c = 14;
+  float engine_pump_voltage = 15;
+  uint32 engine_turbine_state = 16;
+  uint32 engine_off_condition = 17;
+  uint32 engine_throttle_percent = 18;
+  float engine_current_a = 19;
+
+  // Altitude
+  int32 altitude = 20;
+
+  // System Status
+  uint32 heartbeat_counter = 21;
+  bool guidance_internal = 22;
+  bool enable_acs = 23;
+  bool enable_tvc = 24;
+  bool enable_engine = 25;
+  bool imu_calibration_status = 26;
+}
+
+// Command message from groundstation to flightcontroller
+message Command {
+  string command_text = 1; // e.g. "ACSsystem Enable"
+  // Optionally, add more structured fields for advanced commands
+} 
