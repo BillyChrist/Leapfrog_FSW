@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <!-- Metadata for this package -->
+  <name>stm32_bridge</name>
+  <version>0.0.0</version>
+  <description>ROS 2 node for bridging serial telemetry between STM32 and ROS 2</description>
+  <!-- Original Developer: schatzj@usc.edu, Julia Schatz -->
+  <maintainer email="williamp.christian@gmail.com">BillyChrist</maintainer>
+  <license>TODO: License declaration</license>
+
+  <!-- ROS 2 build system -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Core runtime dependencies -->
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>communication</depend> <!-- used for Serial.hpp-->
+  <depend>flightcontrol</depend> <!-- Used for Heartbeat.msg -->
+
+  <!-- Linting and code quality tools -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <!-- Required for ament to process this package -->
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+

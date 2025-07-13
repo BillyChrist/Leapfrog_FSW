@@ -1,0 +1,17 @@
+# Ignore build outputs
+Debug/
+Release/
+*.o
+*.d
+*.elf
+*.map
+*.list
+*.su
+*.pyc
+*.exe
+*.log
+
+
+# Ignore backup files
+*~
+*.swp

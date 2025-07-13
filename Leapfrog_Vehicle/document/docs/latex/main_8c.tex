@@ -1,0 +1,552 @@
+\hypertarget{main_8c}{}\section{C\+:/\+Users/\+Viserion/\+S\+T\+M32\+Cube\+I\+D\+E/workspace\+\_\+1.16.0/\+Leapfrog\+\_\+\+V1/\+Core/\+Src/main.c File Reference}
+\label{main_8c}\index{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Core/Src/main.c@{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Core/Src/main.c}}
+
+
+\+: Main program body  
+
+
+{\ttfamily \#include \char`\"{}main.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cmsis\+\_\+os.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$stdarg.\+h$>$}\newline
+{\ttfamily \#include $<$sys/unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}task.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}queue.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}tvc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}A\+C\+S\+\_\+\+P\+I\+D.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Test\+\_\+\+Operations.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}init\+\_\+peripherals.\+h\char`\"{}}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_last_i_m_u_data}{Last\+I\+M\+U\+Data}}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8c_a739a2a1a0047c98ac1b18ecd25dac092}\label{main_8c_a739a2a1a0047c98ac1b18ecd25dac092}} 
+\#define {\bfseries R\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}~256
+\item 
+\mbox{\Hypertarget{main_8c_adfa4c5934f87ff1d1fd9ca34502a20ca}\label{main_8c_adfa4c5934f87ff1d1fd9ca34502a20ca}} 
+\#define {\bfseries U\+A\+R\+T\+\_\+\+T\+I\+M\+E\+O\+UT}~100
+\item 
+\mbox{\Hypertarget{main_8c_a02e2fe23f5fa4c85337b6981c4a25670}\label{main_8c_a02e2fe23f5fa4c85337b6981c4a25670}} 
+\#define {\bfseries I\+M\+U\+\_\+\+P\+A\+C\+K\+E\+T\+\_\+\+L\+EN}~11
+\item 
+\mbox{\Hypertarget{main_8c_a4cbb1153ca8b589adea0c8ab3f471a51}\label{main_8c_a4cbb1153ca8b589adea0c8ab3f471a51}} 
+\#define {\bfseries A\+L\+T\+I\+M\+E\+T\+E\+R\+\_\+\+P\+A\+C\+K\+E\+T\+\_\+\+L\+EN}~9
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8c_a99d0fdb0434092bcb24d9c9af917e4e9}{Start\+Default\+Task}} (void $\ast$argument)
+\begin{DoxyCompactList}\small\item\em System Clock Configuration. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a7d5779d7313e2a7b2bd96c63ffc009f6}{Start\+A\+C\+S\+Task}} (void $\ast$argument)
+\begin{DoxyCompactList}\small\item\em Function implementing the A\+C\+S\+Task thread. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a8606969c001d27f058d6802fe2d95dbd}{Start\+Debug\+Task}} (void $\ast$argument)
+\begin{DoxyCompactList}\small\item\em Function implementing the Debug\+Task thread. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_ac3af939e7b77c56a4355ba532d48a3d5}{Start\+T\+V\+C\+Task}} (void $\ast$argument)
+\begin{DoxyCompactList}\small\item\em Function implementing the tvc\+Task thread. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a674af71b944d9e7cdf6ee74701f7141b}{Start\+T\+V\+C\+Manual}} (void $\ast$argument)
+\begin{DoxyCompactList}\small\item\em Function implementing the tvc\+Manual\+Task thread. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a31b604a74098eebc2d6fca712292667d}{Start\+Kill\+Switch\+Pin}} (void $\ast$argument)
+\begin{DoxyCompactList}\small\item\em Function implementing the Kill\+Switch\+Pin thread. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{main_8c_ae494a9643f29b87d6d81e5264e60e57b}\label{main_8c_ae494a9643f29b87d6d81e5264e60e57b}} 
+void {\bfseries H\+A\+L\+\_\+\+U\+A\+R\+T\+\_\+\+Rx\+Cplt\+Callback} (U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$huart)
+\item 
+\mbox{\Hypertarget{main_8c_ac2149601c26b9f1a3dae56057e6156fc}\label{main_8c_ac2149601c26b9f1a3dae56057e6156fc}} 
+void {\bfseries process\+I\+M\+U\+Data} (uint8\+\_\+t $\ast$buffer)
+\item 
+\mbox{\Hypertarget{main_8c_a8f036e43aafa98b240a29c2e0a740287}\label{main_8c_a8f036e43aafa98b240a29c2e0a740287}} 
+void {\bfseries debug\+Output} (U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$huart)
+\item 
+\mbox{\Hypertarget{main_8c_a5809aed55efcb13e591198205fad045e}\label{main_8c_a5809aed55efcb13e591198205fad045e}} 
+void {\bfseries debug\+Output2} (U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$huart)
+\item 
+\mbox{\Hypertarget{main_8c_a6bb4061df1b21e702295a73bc8497bd7}\label{main_8c_a6bb4061df1b21e702295a73bc8497bd7}} 
+void {\bfseries altimeter\+Init} (U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$huart)
+\item 
+\mbox{\Hypertarget{main_8c_ab9aa648242406b2034437df3914c070a}\label{main_8c_ab9aa648242406b2034437df3914c070a}} 
+void {\bfseries altimeter\+U\+A\+R\+T\+R\+X\+Callback} (uint8\+\_\+t $\ast$buffer\+Altimeter)
+\item 
+\mbox{\Hypertarget{main_8c_a92830f7410339c4be8b469045686e10b}\label{main_8c_a92830f7410339c4be8b469045686e10b}} 
+int {\bfseries \+\_\+write} (int file, char $\ast$data, int len)
+\item 
+\mbox{\Hypertarget{main_8c_a29c26a0aa65585aaf8eea6ea0e601750}\label{main_8c_a29c26a0aa65585aaf8eea6ea0e601750}} 
+void {\bfseries Blackbox\+Debug} (U\+A\+R\+T\+\_\+\+Handle\+Type\+Def $\ast$huart)
+\item 
+\mbox{\Hypertarget{main_8c_a9211067dacb1463b3c802a3c83eb49f1}\label{main_8c_a9211067dacb1463b3c802a3c83eb49f1}} 
+void {\bfseries emplace\+\_\+buffer} (uint8\+\_\+t $\ast$buf, size\+\_\+t $\ast$offset, void $\ast$data, size\+\_\+t sz)
+\item 
+\mbox{\Hypertarget{main_8c_a0cd91fd3a9608559c2a87a8ba6cba55f}\label{main_8c_a0cd91fd3a9608559c2a87a8ba6cba55f}} 
+void {\bfseries H\+A\+L\+\_\+\+G\+P\+I\+O\+\_\+\+E\+X\+T\+I\+\_\+\+Callback} (uint16\+\_\+t G\+P\+I\+O\+\_\+\+Pin)
+\item 
+int \mbox{\hyperlink{main_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
+\begin{DoxyCompactList}\small\item\em The application entry point. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{main_8c_a8a3b0ad512a6e6c6157440b68d395eac}{H\+A\+L\+\_\+\+T\+I\+M\+\_\+\+Period\+Elapsed\+Callback}} (T\+I\+M\+\_\+\+Handle\+Type\+Def $\ast$htim)
+\begin{DoxyCompactList}\small\item\em Period elapsed callback in non blocking mode. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8c_a22b804736f5648d52f639b2647d4ed13}\label{main_8c_a22b804736f5648d52f639b2647d4ed13}} 
+A\+D\+C\+\_\+\+Handle\+Type\+Def {\bfseries hadc1}
+\item 
+\mbox{\Hypertarget{main_8c_a1c126854bb1813d31ab4776b21dcc51f}\label{main_8c_a1c126854bb1813d31ab4776b21dcc51f}} 
+D\+M\+A\+\_\+\+Handle\+Type\+Def {\bfseries hdma\+\_\+adc1}
+\item 
+\mbox{\Hypertarget{main_8c_a2c80fd5510e2990a59a5c90d745c716c}\label{main_8c_a2c80fd5510e2990a59a5c90d745c716c}} 
+T\+I\+M\+\_\+\+Handle\+Type\+Def {\bfseries htim2}
+\item 
+\mbox{\Hypertarget{main_8c_aac3d2c59ee0e3bbae1b99529a154eb62}\label{main_8c_aac3d2c59ee0e3bbae1b99529a154eb62}} 
+T\+I\+M\+\_\+\+Handle\+Type\+Def {\bfseries htim3}
+\item 
+\mbox{\Hypertarget{main_8c_a85788cec5a97ee377e4ee2e74f026484}\label{main_8c_a85788cec5a97ee377e4ee2e74f026484}} 
+T\+I\+M\+\_\+\+Handle\+Type\+Def {\bfseries htim4}
+\item 
+\mbox{\Hypertarget{main_8c_a25a82fcf0cd24eb6d39977cb5864cec8}\label{main_8c_a25a82fcf0cd24eb6d39977cb5864cec8}} 
+U\+A\+R\+T\+\_\+\+Handle\+Type\+Def {\bfseries huart5}
+\item 
+\mbox{\Hypertarget{main_8c_aa9479c261d65eecedd3d9582f7f0f89c}\label{main_8c_aa9479c261d65eecedd3d9582f7f0f89c}} 
+U\+A\+R\+T\+\_\+\+Handle\+Type\+Def {\bfseries huart2}
+\item 
+\mbox{\Hypertarget{main_8c_a38905dda1d2fbff006c69db48eddba9d}\label{main_8c_a38905dda1d2fbff006c69db48eddba9d}} 
+U\+A\+R\+T\+\_\+\+Handle\+Type\+Def {\bfseries huart6}
+\item 
+\mbox{\Hypertarget{main_8c_a6a263905468b0c37de4ee5e50ede4e74}\label{main_8c_a6a263905468b0c37de4ee5e50ede4e74}} 
+os\+Thread\+Id\+\_\+t {\bfseries default\+Task\+Handle}
+\item 
+const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} {\bfseries default\+Task\+\_\+attributes}
+\item 
+\mbox{\Hypertarget{main_8c_ab62c47c070e9e0078e01a3ee13bb693d}\label{main_8c_ab62c47c070e9e0078e01a3ee13bb693d}} 
+os\+Thread\+Id\+\_\+t {\bfseries A\+C\+S\+Task\+Handle}
+\item 
+const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} {\bfseries A\+C\+S\+Task\+\_\+attributes}
+\item 
+\mbox{\Hypertarget{main_8c_a864c5604deb3266fbe637149d28b159d}\label{main_8c_a864c5604deb3266fbe637149d28b159d}} 
+os\+Thread\+Id\+\_\+t {\bfseries Debug\+Task\+Handle}
+\item 
+const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} {\bfseries Debug\+Task\+\_\+attributes}
+\item 
+\mbox{\Hypertarget{main_8c_a73f0d9ded99ddb7ed7ad567ddb8cfcb6}\label{main_8c_a73f0d9ded99ddb7ed7ad567ddb8cfcb6}} 
+os\+Thread\+Id\+\_\+t {\bfseries tvc\+Task\+Handle}
+\item 
+const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} {\bfseries tvc\+Task\+\_\+attributes}
+\item 
+\mbox{\Hypertarget{main_8c_a398f2acd84b40cfd8117f6c8c349cce2}\label{main_8c_a398f2acd84b40cfd8117f6c8c349cce2}} 
+os\+Thread\+Id\+\_\+t {\bfseries tvc\+Manual\+Task\+Handle}
+\item 
+const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} {\bfseries tvc\+Manual\+Task\+\_\+attributes}
+\item 
+\mbox{\Hypertarget{main_8c_acb1a1adf8585b4b231e124d8139d94ba}\label{main_8c_acb1a1adf8585b4b231e124d8139d94ba}} 
+os\+Thread\+Id\+\_\+t {\bfseries Kill\+Switch\+Pin\+Handle}
+\item 
+const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} {\bfseries Kill\+Switch\+Pin\+\_\+attributes}
+\item 
+\mbox{\Hypertarget{main_8c_a6e838c4a5642da1eee694bc256ccd1e3}\label{main_8c_a6e838c4a5642da1eee694bc256ccd1e3}} 
+Subsystem\+State {\bfseries acs\+State}
+\item 
+\mbox{\Hypertarget{main_8c_aef10aef137f7c6633a8eb0935775310e}\label{main_8c_aef10aef137f7c6633a8eb0935775310e}} 
+Subsystem\+State {\bfseries tvc\+State}
+\item 
+\mbox{\Hypertarget{main_8c_a80d7cb1c92582df810d64bb752c7f7a1}\label{main_8c_a80d7cb1c92582df810d64bb752c7f7a1}} 
+Subsystem\+State {\bfseries engine\+State}
+\item 
+\mbox{\Hypertarget{main_8c_a14121aeb42554499cec8da8bf0bbcd47}\label{main_8c_a14121aeb42554499cec8da8bf0bbcd47}} 
+uint8\+\_\+t {\bfseries U\+A\+R\+T6\+\_\+rx\+Buffer} \mbox{[}R\+X\+\_\+\+B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE\mbox{]}
+\item 
+\mbox{\Hypertarget{main_8c_a2b8bf132df9c5ec84202cb47903c488d}\label{main_8c_a2b8bf132df9c5ec84202cb47903c488d}} 
+volatile int16\+\_\+t {\bfseries yaw\+\_\+deg}
+\item 
+\mbox{\Hypertarget{main_8c_aa05c6c300566962a18def6b3bda58c5d}\label{main_8c_aa05c6c300566962a18def6b3bda58c5d}} 
+volatile int16\+\_\+t {\bfseries pitch\+\_\+deg}
+\item 
+\mbox{\Hypertarget{main_8c_a43dc33658ebd44135c7f4fbc59f7e5c7}\label{main_8c_a43dc33658ebd44135c7f4fbc59f7e5c7}} 
+volatile int16\+\_\+t {\bfseries roll\+\_\+deg}
+\item 
+\mbox{\Hypertarget{main_8c_a0a17940b7a28fe7a247c02586c944708}\label{main_8c_a0a17940b7a28fe7a247c02586c944708}} 
+U\+A\+R\+T\+\_\+\+Handle\+Type\+Def {\bfseries uart\+Handle}
+\item 
+\mbox{\Hypertarget{main_8c_a7ae9d3ad463ec7a0eb38ee23a15c51e7}\label{main_8c_a7ae9d3ad463ec7a0eb38ee23a15c51e7}} 
+uint16\+\_\+t {\bfseries distance} = 0.\+0f
+\item 
+\mbox{\Hypertarget{main_8c_ae28935ce70040cb40ae6426cbd4246f4}\label{main_8c_ae28935ce70040cb40ae6426cbd4246f4}} 
+uint16\+\_\+t {\bfseries strength} = 0.\+0f
+\item 
+\mbox{\Hypertarget{main_8c_a37e90f5e3bd99fac2021fb3a326607d4}\label{main_8c_a37e90f5e3bd99fac2021fb3a326607d4}} 
+uint8\+\_\+t {\bfseries mode} = 0.\+0f
+\item 
+\mbox{\Hypertarget{main_8c_aa7c2aee8b511d994f2b045e1319fd079}\label{main_8c_aa7c2aee8b511d994f2b045e1319fd079}} 
+float {\bfseries current\+\_\+angvel\+\_\+x\+\_\+degs}
+\item 
+\mbox{\Hypertarget{main_8c_ac7781341c0f63494be5af31821a62212}\label{main_8c_ac7781341c0f63494be5af31821a62212}} 
+float {\bfseries current\+\_\+angvel\+\_\+y\+\_\+degs}
+\item 
+\mbox{\Hypertarget{main_8c_a0b38da821071c4c2c1f2f88bb80f7a05}\label{main_8c_a0b38da821071c4c2c1f2f88bb80f7a05}} 
+float {\bfseries current\+\_\+angvel\+\_\+z\+\_\+degs}
+\item 
+\mbox{\Hypertarget{main_8c_a0ecbbe06a7f7ba0f6040c7412ebc575e}\label{main_8c_a0ecbbe06a7f7ba0f6040c7412ebc575e}} 
+float {\bfseries current\+\_\+acc\+\_\+x\+\_\+g}
+\item 
+\mbox{\Hypertarget{main_8c_a4b0502a17518c25481a29c31df152049}\label{main_8c_a4b0502a17518c25481a29c31df152049}} 
+float {\bfseries current\+\_\+acc\+\_\+y\+\_\+g}
+\item 
+\mbox{\Hypertarget{main_8c_a315c405fbfb08d17b639be76da8cee4d}\label{main_8c_a315c405fbfb08d17b639be76da8cee4d}} 
+float {\bfseries current\+\_\+acc\+\_\+z\+\_\+g}
+\item 
+\mbox{\Hypertarget{main_8c_ade985246aa927bd7623104b237953334}\label{main_8c_ade985246aa927bd7623104b237953334}} 
+uint8\+\_\+t {\bfseries mode\+Button} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Main program body 
+
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Copyright (c) 2024 S\+T\+Microelectronics. All rights reserved.
+
+This software is licensed under terms that can be found in the L\+I\+C\+E\+N\+SE file in the root directory of this software component. If no L\+I\+C\+E\+N\+SE file comes with this software, it is provided A\+S-\/\+IS. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8c_a8a3b0ad512a6e6c6157440b68d395eac}\label{main_8c_a8a3b0ad512a6e6c6157440b68d395eac}} 
+\index{main.c@{main.c}!HAL\_TIM\_PeriodElapsedCallback@{HAL\_TIM\_PeriodElapsedCallback}}
+\index{HAL\_TIM\_PeriodElapsedCallback@{HAL\_TIM\_PeriodElapsedCallback}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{HAL\_TIM\_PeriodElapsedCallback()}{HAL\_TIM\_PeriodElapsedCallback()}}
+{\footnotesize\ttfamily void H\+A\+L\+\_\+\+T\+I\+M\+\_\+\+Period\+Elapsed\+Callback (\begin{DoxyParamCaption}\item[{T\+I\+M\+\_\+\+Handle\+Type\+Def $\ast$}]{htim }\end{DoxyParamCaption})}
+
+
+
+Period elapsed callback in non blocking mode. 
+
+\begin{DoxyNote}{Note}
+This function is called when T\+I\+M1 interrupt took place, inside H\+A\+L\+\_\+\+T\+I\+M\+\_\+\+I\+R\+Q\+Handler(). It makes a direct call to H\+A\+L\+\_\+\+Inc\+Tick() to increment a global variable \char`\"{}uw\+Tick\char`\"{} used as application time base. 
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em htim} & \+: T\+IM handle \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{main_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{main_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+\index{main.c@{main.c}!main@{main}}
+\index{main@{main}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+The application entry point. 
+
+
+\begin{DoxyRetVals}{Return values}
+{\em int} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{main_8c_a7d5779d7313e2a7b2bd96c63ffc009f6}\label{main_8c_a7d5779d7313e2a7b2bd96c63ffc009f6}} 
+\index{main.c@{main.c}!StartACSTask@{StartACSTask}}
+\index{StartACSTask@{StartACSTask}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{StartACSTask()}{StartACSTask()}}
+{\footnotesize\ttfamily void Start\+A\+C\+S\+Task (\begin{DoxyParamCaption}\item[{void $\ast$}]{argument }\end{DoxyParamCaption})}
+
+
+
+Function implementing the A\+C\+S\+Task thread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Not used \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{main_8c_a8606969c001d27f058d6802fe2d95dbd}\label{main_8c_a8606969c001d27f058d6802fe2d95dbd}} 
+\index{main.c@{main.c}!StartDebugTask@{StartDebugTask}}
+\index{StartDebugTask@{StartDebugTask}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{StartDebugTask()}{StartDebugTask()}}
+{\footnotesize\ttfamily void Start\+Debug\+Task (\begin{DoxyParamCaption}\item[{void $\ast$}]{argument }\end{DoxyParamCaption})}
+
+
+
+Function implementing the Debug\+Task thread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Not used \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{main_8c_a99d0fdb0434092bcb24d9c9af917e4e9}\label{main_8c_a99d0fdb0434092bcb24d9c9af917e4e9}} 
+\index{main.c@{main.c}!StartDefaultTask@{StartDefaultTask}}
+\index{StartDefaultTask@{StartDefaultTask}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{StartDefaultTask()}{StartDefaultTask()}}
+{\footnotesize\ttfamily void Start\+Default\+Task (\begin{DoxyParamCaption}\item[{void $\ast$}]{argument }\end{DoxyParamCaption})}
+
+
+
+System Clock Configuration. 
+
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+A\+D\+C1} & Initialization Function \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+T\+I\+M2} & Initialization Function \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+T\+I\+M3} & Initialization Function \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+T\+I\+M4} & Initialization Function \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+U\+A\+R\+T5} & Initialization Function \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+U\+S\+A\+R\+T2} & Initialization Function \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+U\+S\+A\+R\+T6} & Initialization Function \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+Enable} & D\+MA controller clock\+G\+P\+IO Initialization Function \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None\+Function} & implementing the default\+Task thread. \\
+\hline
+\end{DoxyRetVals}
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Not used \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{main_8c_a31b604a74098eebc2d6fca712292667d}\label{main_8c_a31b604a74098eebc2d6fca712292667d}} 
+\index{main.c@{main.c}!StartKillSwitchPin@{StartKillSwitchPin}}
+\index{StartKillSwitchPin@{StartKillSwitchPin}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{StartKillSwitchPin()}{StartKillSwitchPin()}}
+{\footnotesize\ttfamily void Start\+Kill\+Switch\+Pin (\begin{DoxyParamCaption}\item[{void $\ast$}]{argument }\end{DoxyParamCaption})}
+
+
+
+Function implementing the Kill\+Switch\+Pin thread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Not used \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{main_8c_a674af71b944d9e7cdf6ee74701f7141b}\label{main_8c_a674af71b944d9e7cdf6ee74701f7141b}} 
+\index{main.c@{main.c}!StartTVCManual@{StartTVCManual}}
+\index{StartTVCManual@{StartTVCManual}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{StartTVCManual()}{StartTVCManual()}}
+{\footnotesize\ttfamily void Start\+T\+V\+C\+Manual (\begin{DoxyParamCaption}\item[{void $\ast$}]{argument }\end{DoxyParamCaption})}
+
+
+
+Function implementing the tvc\+Manual\+Task thread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Not used \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{main_8c_ac3af939e7b77c56a4355ba532d48a3d5}\label{main_8c_ac3af939e7b77c56a4355ba532d48a3d5}} 
+\index{main.c@{main.c}!StartTVCTask@{StartTVCTask}}
+\index{StartTVCTask@{StartTVCTask}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{StartTVCTask()}{StartTVCTask()}}
+{\footnotesize\ttfamily void Start\+T\+V\+C\+Task (\begin{DoxyParamCaption}\item[{void $\ast$}]{argument }\end{DoxyParamCaption})}
+
+
+
+Function implementing the tvc\+Task thread. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argument} & Not used \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{main_8c_a6870742f5e29c7d549be244590bdcbf7}\label{main_8c_a6870742f5e29c7d549be244590bdcbf7}} 
+\index{main.c@{main.c}!ACSTask\_attributes@{ACSTask\_attributes}}
+\index{ACSTask\_attributes@{ACSTask\_attributes}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{ACSTask\_attributes}{ACSTask\_attributes}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} A\+C\+S\+Task\+\_\+attributes}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{  .name = \textcolor{stringliteral}{"ACSTask"},}
+\DoxyCodeLine{  .stack\_size = 256 * 4,}
+\DoxyCodeLine{  .priority = (osPriority\_t) osPriorityNormal,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8c_a1101c7894f24dd31d2e3a75a04ca59d7}\label{main_8c_a1101c7894f24dd31d2e3a75a04ca59d7}} 
+\index{main.c@{main.c}!DebugTask\_attributes@{DebugTask\_attributes}}
+\index{DebugTask\_attributes@{DebugTask\_attributes}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{DebugTask\_attributes}{DebugTask\_attributes}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} Debug\+Task\+\_\+attributes}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{  .name = \textcolor{stringliteral}{"DebugTask"},}
+\DoxyCodeLine{  .stack\_size = 512 * 4,}
+\DoxyCodeLine{  .priority = (osPriority\_t) osPriorityNormal,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8c_a25fbb54afdba71c24ba51ed50166ac8d}\label{main_8c_a25fbb54afdba71c24ba51ed50166ac8d}} 
+\index{main.c@{main.c}!defaultTask\_attributes@{defaultTask\_attributes}}
+\index{defaultTask\_attributes@{defaultTask\_attributes}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{defaultTask\_attributes}{defaultTask\_attributes}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} default\+Task\+\_\+attributes}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{  .name = \textcolor{stringliteral}{"defaultTask"},}
+\DoxyCodeLine{  .stack\_size = 512 * 4,}
+\DoxyCodeLine{  .priority = (osPriority\_t) osPriorityNormal,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8c_a345b2517e39f3b885f1ad2e48491283c}\label{main_8c_a345b2517e39f3b885f1ad2e48491283c}} 
+\index{main.c@{main.c}!KillSwitchPin\_attributes@{KillSwitchPin\_attributes}}
+\index{KillSwitchPin\_attributes@{KillSwitchPin\_attributes}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{KillSwitchPin\_attributes}{KillSwitchPin\_attributes}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} Kill\+Switch\+Pin\+\_\+attributes}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{  .name = \textcolor{stringliteral}{"KillSwitchPin"},}
+\DoxyCodeLine{  .stack\_size = 128 * 4,}
+\DoxyCodeLine{  .priority = (osPriority\_t) osPriorityHigh,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8c_ade9736806835efa5a830626a37d5cd47}\label{main_8c_ade9736806835efa5a830626a37d5cd47}} 
+\index{main.c@{main.c}!tvcManualTask\_attributes@{tvcManualTask\_attributes}}
+\index{tvcManualTask\_attributes@{tvcManualTask\_attributes}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{tvcManualTask\_attributes}{tvcManualTask\_attributes}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} tvc\+Manual\+Task\+\_\+attributes}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{  .name = \textcolor{stringliteral}{"tvcManualTask"},}
+\DoxyCodeLine{  .stack\_size = 128 * 4,}
+\DoxyCodeLine{  .priority = (osPriority\_t) osPriorityNormal,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{main_8c_acdf1fe96589d2eb810a825b2bbabd78a}\label{main_8c_acdf1fe96589d2eb810a825b2bbabd78a}} 
+\index{main.c@{main.c}!tvcTask\_attributes@{tvcTask\_attributes}}
+\index{tvcTask\_attributes@{tvcTask\_attributes}!main.c@{main.c}}
+\subsubsection{\texorpdfstring{tvcTask\_attributes}{tvcTask\_attributes}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structos_thread_attr__t}{os\+Thread\+Attr\+\_\+t}} tvc\+Task\+\_\+attributes}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{  .name = \textcolor{stringliteral}{"tvcTask"},}
+\DoxyCodeLine{  .stack\_size = 128 * 4,}
+\DoxyCodeLine{  .priority = (osPriority\_t) osPriorityNormal,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}

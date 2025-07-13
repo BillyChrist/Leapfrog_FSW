@@ -1,0 +1,62 @@
+# === ROS2 Colcon Build Artifacts ===
+build/
+install/
+log/
+
+# === ROS1 Legacy (safe to keep for compatibility) ===
+devel/
+build_isolated/
+devel_isolated/
+msg_gen/
+srv_gen/
+msg/*Action.msg
+msg/*ActionFeedback.msg
+msg/*ActionGoal.msg
+msg/*ActionResult.msg
+msg/*Feedback.msg
+msg/*Goal.msg
+msg/*Result.msg
+msg/_*.py
+srv/_*.py
+
+# === Python Cache ===
+*.pyc
+__pycache__/
+
+# === IDE Files ===
+.vscode/
+.project
+.cproject
+qtcreator-*
+*.user
+CMakeLists.txt.user
+
+# === ROS dynamic_reconfigure (if used) ===
+*.cfgc
+/cfg/cpp/
+/cfg/*.py
+
+# === Miscellaneous Build + Docs ===
+*.dox
+*.wikidoc
+*.pcd
+
+# === Editor Backup Files ===
+*~
+.#*
+
+# === Project-specific Files ===
+logs/
+bin/
+lib/
+log/
+liveTelem.txt
+src/stm32_bridge/src/liveTelem.txt
+
+# === Catkin Tools ===
+CATKIN_IGNORE
+
+# === Planning Folder (if still present) ===
+/planning/cfg
+/planning/docs
+/planning/src

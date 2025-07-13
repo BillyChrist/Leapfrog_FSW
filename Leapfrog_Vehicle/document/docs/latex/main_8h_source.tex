@@ -1,0 +1,139 @@
+\doxysection{main.\+h}
+\hypertarget{main_8h_source}{}\label{main_8h_source}\index{/Users/charlesou/leapfrog/Core/Inc/main.h@{/Users/charlesou/leapfrog/Core/Inc/main.h}}
+\mbox{\hyperlink{main_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Header\ */}}
+\DoxyCodeLine{00019\ \textcolor{comment}{/*\ USER\ CODE\ END\ Header\ */}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{comment}{/*\ Define\ to\ prevent\ recursive\ inclusion\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#ifndef\ \_\_MAIN\_H}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ \_\_MAIN\_H}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00026\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{/*\ Includes\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#include\ "{}stm32f4xx\_hal.h"{}}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{/*\ Private\ includes\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00033\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Includes\ */}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#include\ "{}FreeRTOSConfig.h"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#include\ "{}cmsis\_os2.h"{}}}
+\DoxyCodeLine{00037\ \textcolor{comment}{/*\ USER\ CODE\ END\ Includes\ */}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{comment}{/*\ Exported\ types\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00040\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ ET\ */}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00042\ \ \ SystemDisabled\ =\ 0,}
+\DoxyCodeLine{00043\ \ \ SystemManual,}
+\DoxyCodeLine{00044\ \ \ SystemAutomatic}
+\DoxyCodeLine{00045\ \}\ SubsystemState;}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{float}\ float32\_t;}
+\DoxyCodeLine{00048\ \textcolor{comment}{//\#define\ STM32\_RESPONSE\_SIZE\ 89\ //\ Bytes\ =\ (4*9)+(4*2)+(4*5)+(4*4)+(1*3)+(4*1)+(2*1)\ =\ 89}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ STM32\_RESPONSE\_SIZE\ sizeof(STM32Response)}}
+\DoxyCodeLine{00050\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00051\ \ \ float32\_t\ roll\_deg;}
+\DoxyCodeLine{00052\ \ \ float32\_t\ pitch\_deg;}
+\DoxyCodeLine{00053\ \ \ float32\_t\ yaw\_deg;}
+\DoxyCodeLine{00054\ \ \ float32\_t\ acc\_x\_g;}
+\DoxyCodeLine{00055\ \ \ float32\_t\ acc\_y\_g;}
+\DoxyCodeLine{00056\ \ \ float32\_t\ acc\_z\_g;}
+\DoxyCodeLine{00057\ \ \ float32\_t\ angvel\_x\_degs;}
+\DoxyCodeLine{00058\ \ \ float32\_t\ angvel\_y\_degs;}
+\DoxyCodeLine{00059\ \ \ float32\_t\ angvel\_z\_degs;}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ float32\_t\ tvc\_a\_pos;}
+\DoxyCodeLine{00062\ \ \ float32\_t\ tvc\_b\_pos;}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ int32\_t\ acs\_a\_pressure;}
+\DoxyCodeLine{00065\ \ \ int32\_t\ acs\_b\_pressure;}
+\DoxyCodeLine{00066\ \ \ int32\_t\ duration\_roll;}
+\DoxyCodeLine{00067\ \ \ int32\_t\ duration\_pitch;}
+\DoxyCodeLine{00068\ \ \ int32\_t\ duration\_yaw;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ int32\_t\ engine\_turbine\_rpm;}
+\DoxyCodeLine{00071\ \ \ int32\_t\ engine\_rpm\_setpoint;}
+\DoxyCodeLine{00072\ \ \ int32\_t\ engine\_egt\_c;}
+\DoxyCodeLine{00073\ \ \ float32\_t\ engine\_pump\_voltage;}
+\DoxyCodeLine{00074\ \ \ uint8\_t\ engine\_turbine\_state;}
+\DoxyCodeLine{00075\ \ \ uint8\_t\ engine\_off\_condition;}
+\DoxyCodeLine{00076\ \ \ uint8\_t\ engine\_throttle\_percent;}
+\DoxyCodeLine{00077\ \ \ float32\_t\ engine\_current\_a;}
+\DoxyCodeLine{00078\ \ \ int16\_t\ altitude;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ uint8\_t\ heartbeat\_counter;}
+\DoxyCodeLine{00081\ \}\ \mbox{\hyperlink{struct_s_t_m32_response}{STM32Response}};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \textcolor{comment}{//\#define\ STM32\_MESSAGE\_SIZE\ 23\ //\ Bytes\ =\ (1*3)+(4*3)+(1*8)\ =\ 23}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ STM32\_MESSAGE\_SIZE\ sizeof(STM32Message)}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#define\ STM32\_SYNC\_BYTE\_COUNT\ 5}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ STM32\_SYNC\_BYTE\ 0x77}}
+\DoxyCodeLine{00087\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00088\ \ \ uint8\_t\ engine\_state;}
+\DoxyCodeLine{00089\ \ \ uint8\_t\ tvc\_state;}
+\DoxyCodeLine{00090\ \ \ uint8\_t\ acs\_state;}
+\DoxyCodeLine{00091\ \ \ float32\_t\ tvc\_angle1;}
+\DoxyCodeLine{00092\ \ \ float32\_t\ tvc\_angle2;}
+\DoxyCodeLine{00093\ \ \ float32\_t\ engine\_hover\_m;}
+\DoxyCodeLine{00094\ \ \ uint8\_t\ engine\_thrust\_p;}
+\DoxyCodeLine{00095\ \ \ int8\_t\ duration\_roll\_manual;}
+\DoxyCodeLine{00096\ \ \ int8\_t\ duration\_pitch\_manual;}
+\DoxyCodeLine{00097\ \ \ int8\_t\ duration\_yaw\_manual;}
+\DoxyCodeLine{00098\ \ \ int8\_t\ imu\_calibrate;}
+\DoxyCodeLine{00099\ \ \ uint8\_t\ engine\_safe;}
+\DoxyCodeLine{00100\ \ \ uint8\_t\ engine\_power;}
+\DoxyCodeLine{00101\ \ \ uint8\_t\ checksum;}
+\DoxyCodeLine{00102\ \}\ \mbox{\hyperlink{struct_s_t_m32_message}{STM32Message}};}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ The\ STM32Message\ structure\ isn't\ exactly\ what\ the\ STM32\ receives\ from\ the\ Pi:}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ tvc\_angle1,\ tvc\_angle2,\ and\ engine\_hover\_m\ (all\ float32\_t)\ are\ sent\ from\ the\ Pi\ as\ tvc\_angle1\_mdeg,\ tvc\_angle2\_mdeg,\ and\ engine\_hover\_mm\ (all\ int32\_t),\ but\ are\ processed\ before\ being\ put\ in\ the\ STM32Message\ structure}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{comment}{/*\ USER\ CODE\ END\ ET\ */}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{comment}{/*\ Exported\ constants\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00109\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ EC\ */}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{comment}{/*\ USER\ CODE\ END\ EC\ */}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{comment}{/*\ Exported\ macro\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00114\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ EM\ */}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{comment}{/*\ USER\ CODE\ END\ EM\ */}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{main_8h_ae70bce6c39d0b570a7523b86738cec4b}{HAL\_TIM\_MspPostInit}}(TIM\_HandleTypeDef\ *htim);}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{comment}{/*\ Exported\ functions\ prototypes\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00121\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\_Handler}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ EFP\ */}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{comment}{/*\ USER\ CODE\ END\ EFP\ */}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \textcolor{comment}{/*\ Private\ defines\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#define\ B1\_Pin\ GPIO\_PIN\_13}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#define\ B1\_GPIO\_Port\ GPIOC}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#define\ B1\_EXTI\_IRQn\ EXTI15\_10\_IRQn}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#define\ LD2\_Pin\ GPIO\_PIN\_5}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#define\ LD2\_GPIO\_Port\ GPIOA}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ TVC2\_REV\_Pin\ GPIO\_PIN\_12}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#define\ TVC2\_REV\_GPIO\_Port\ GPIOB}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#define\ TVC2\_FWD\_Pin\ GPIO\_PIN\_13}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#define\ TVC2\_FWD\_GPIO\_Port\ GPIOB}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#define\ TVC1\_REV\_Pin\ GPIO\_PIN\_14}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#define\ TVC1\_REV\_GPIO\_Port\ GPIOB}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#define\ TVC1\_FWD\_Pin\ GPIO\_PIN\_15}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#define\ TVC1\_FWD\_GPIO\_Port\ GPIOB}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \textcolor{comment}{/*\ USER\ CODE\ BEGIN\ Private\ defines\ */}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \textcolor{comment}{/*\ USER\ CODE\ END\ Private\ defines\ */}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00147\ \}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ \_\_MAIN\_H\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

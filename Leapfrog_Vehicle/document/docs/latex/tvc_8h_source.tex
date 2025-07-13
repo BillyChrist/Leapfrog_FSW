@@ -1,0 +1,39 @@
+\doxysection{tvc.\+h}
+\hypertarget{tvc_8h_source}{}\label{tvc_8h_source}\index{/Users/charlesou/leapfrog/Core/Inc/tvc.h@{/Users/charlesou/leapfrog/Core/Inc/tvc.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_TVC\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_TVC\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00005\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{main_8h}{main.h}}"{}}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\#include\ "{}acs.h"{}}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ TVC\_DEADBAND\ 100.0}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ TVC\_AXIS1\_CENTER\ 2350}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ TVC\_AXIS2\_CENTER\ 2300}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ TVC\_FILTER\_TAPS\ 2}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ TVC\_AUTO\_DEADBAND\_DEG\ 1}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ MoveForward(\textcolor{keywordtype}{int}\ axis);}
+\DoxyCodeLine{00018\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ MoveBackward(\textcolor{keywordtype}{int}\ axis);}
+\DoxyCodeLine{00019\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ Halt(\textcolor{keywordtype}{int}\ axis);}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{extern}\ osMessageQueueId\_t\ tvcimuQueueHandle;}
+\DoxyCodeLine{00022\ \textcolor{keyword}{extern}\ uint32\_t\ adcValues[4];}
+\DoxyCodeLine{00023\ \textcolor{keyword}{extern}\ SubsystemState\ tvcState;\ \textcolor{comment}{//\ State\ can\ be\ SystemDisabled,\ SystemManual,\ or\ SystemAutomatic}}
+\DoxyCodeLine{00024\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ tvcManualSetpoint1;}
+\DoxyCodeLine{00025\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ tvcManualSetpoint2;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ tvcVal1\_angular;}
+\DoxyCodeLine{00027\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ tvcVal2\_angular;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00031\ \}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

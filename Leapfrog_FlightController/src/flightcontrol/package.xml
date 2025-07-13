@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <!-- Basic package metadata -->
+  <name>flightcontrol</name>
+  <version>0.0.0</version>
+  <description>ROS 2 node(s) for managing flight logic and state transitions</description>
+  <maintainer email="antariksh.cloud@gmail.com">antariksh</maintainer>
+  <license>TODO: License declaration</license>
+
+  <!-- Required to build with ament (CMake-based build system for ROS 2) -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Required to generate messages from .msg files -->
+  <build_depend>rosidl_default_generators</build_depend>
+
+  <!-- Required at runtime to use generated messages -->
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <!-- ROS 2 C++ client library, required for all ROS 2 nodes in C++ -->
+  <depend>rclcpp</depend>
+
+  <!-- Standard message definitions (only needed if used in .cpp or .msg) -->
+  <depend>std_msgs</depend>
+
+  <!-- Required for serial and data transmission -->
+  <depend>communication</depend>
+
+  <!-- Declares that this package generates interfaces (e.g., msg/Heartbeat.msg) -->
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <!-- Linting and formatting test dependencies -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <!-- Required for ament to process this package -->
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+

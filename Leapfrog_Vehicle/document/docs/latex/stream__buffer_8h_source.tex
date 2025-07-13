@@ -1,0 +1,137 @@
+\doxysection{stream\+\_\+buffer.\+h}
+\hypertarget{stream__buffer_8h_source}{}\label{stream__buffer_8h_source}\index{/Users/charlesou/leapfrog/Middlewares/Third\_Party/FreeRTOS/Source/include/stream\_buffer.h@{/Users/charlesou/leapfrog/Middlewares/Third\_Party/FreeRTOS/Source/include/stream\_buffer.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ FreeRTOS\ Kernel\ V10.3.1}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ Copyright\ (C)\ 2020\ Amazon.com,\ Inc.\ or\ its\ affiliates.\ \ All\ Rights\ Reserved.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ Permission\ is\ hereby\ granted,\ free\ of\ charge,\ to\ any\ person\ obtaining\ a\ copy\ of}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ this\ software\ and\ associated\ documentation\ files\ (the\ "{}Software"{}),\ to\ deal\ in}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ the\ Software\ without\ restriction,\ including\ without\ limitation\ the\ rights\ to}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ use,\ copy,\ modify,\ merge,\ publish,\ distribute,\ sublicense,\ and/or\ sell\ copies\ of}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *\ the\ Software,\ and\ to\ permit\ persons\ to\ whom\ the\ Software\ is\ furnished\ to\ do\ so,}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ subject\ to\ the\ following\ conditions:}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ The\ above\ copyright\ notice\ and\ this\ permission\ notice\ shall\ be\ included\ in\ all}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ copies\ or\ substantial\ portions\ of\ the\ Software.}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ THE\ SOFTWARE\ IS\ PROVIDED\ "{}AS\ IS"{},\ WITHOUT\ WARRANTY\ OF\ ANY\ KIND,\ EXPRESS\ OR}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ IMPLIED,\ INCLUDING\ BUT\ NOT\ LIMITED\ TO\ THE\ WARRANTIES\ OF\ MERCHANTABILITY,\ FITNESS}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ FOR\ A\ PARTICULAR\ PURPOSE\ AND\ NONINFRINGEMENT.\ IN\ NO\ EVENT\ SHALL\ THE\ AUTHORS\ OR}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ COPYRIGHT\ HOLDERS\ BE\ LIABLE\ FOR\ ANY\ CLAIM,\ DAMAGES\ OR\ OTHER\ LIABILITY,\ WHETHER}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ IN\ AN\ ACTION\ OF\ CONTRACT,\ TORT\ OR\ OTHERWISE,\ ARISING\ FROM,\ OUT\ OF\ OR\ IN}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ CONNECTION\ WITH\ THE\ SOFTWARE\ OR\ THE\ USE\ OR\ OTHER\ DEALINGS\ IN\ THE\ SOFTWARE.}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *\ http://www.FreeRTOS.org}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ http://aws.amazon.com/freertos}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ *\ 1\ tab\ ==\ 4\ spaces!}}
+\DoxyCodeLine{00026\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ Stream\ buffers\ are\ used\ to\ send\ a\ continuous\ stream\ of\ data\ from\ one\ task\ or}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ interrupt\ to\ another.\ \ Their\ implementation\ is\ light\ weight,\ making\ them}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *\ particularly\ suited\ for\ interrupt\ to\ task\ and\ core\ to\ core\ communication}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *\ scenarios.}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ *\ ***NOTE***:\ \ Uniquely\ among\ FreeRTOS\ objects,\ the\ stream\ buffer}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *\ implementation\ (so\ also\ the\ message\ buffer\ implementation,\ as\ message\ buffers}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ *\ are\ built\ on\ top\ of\ stream\ buffers)\ assumes\ there\ is\ only\ one\ task\ or}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ *\ interrupt\ that\ will\ write\ to\ the\ buffer\ (the\ writer),\ and\ only\ one\ task\ or}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ *\ interrupt\ that\ will\ read\ from\ the\ buffer\ (the\ reader).\ \ It\ is\ safe\ for\ the}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ *\ writer\ and\ reader\ to\ be\ different\ tasks\ or\ interrupts,\ but,\ unlike\ other}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ *\ FreeRTOS\ objects,\ it\ is\ not\ safe\ to\ have\ multiple\ different\ writers\ or}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ *\ multiple\ different\ readers.\ \ If\ there\ are\ to\ be\ multiple\ different\ writers}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ *\ then\ the\ application\ writer\ must\ place\ each\ call\ to\ a\ writing\ API\ function}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ *\ (such\ as\ xStreamBufferSend())\ inside\ a\ critical\ section\ and\ set\ the\ send}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ block\ time\ to\ 0.\ \ Likewise,\ if\ there\ are\ to\ be\ multiple\ different\ readers}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ then\ the\ application\ writer\ must\ place\ each\ call\ to\ a\ reading\ API\ function}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *\ (such\ as\ xStreamBufferReceive())\ inside\ a\ critical\ section\ section\ and\ set\ the}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ receive\ block\ time\ to\ 0.}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#ifndef\ STREAM\_BUFFER\_H}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ STREAM\_BUFFER\_H}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#ifndef\ INC\_FREERTOS\_H}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}include\ FreeRTOS.h\ must\ appear\ in\ source\ files\ before\ include\ stream\_buffer.h"{}}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#if\ defined(\ \_\_cplusplus\ )}}
+\DoxyCodeLine{00059\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00068\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferDef\_t}};}
+\DoxyCodeLine{00069\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferDef\_t}}\ *\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#define\ xStreamBufferCreate(\ xBufferSizeBytes,\ xTriggerLevelBytes\ )\ xStreamBufferGenericCreate(\ xBufferSizeBytes,\ xTriggerLevelBytes,\ pdFALSE\ )}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#define\ xStreamBufferCreateStatic(\ xBufferSizeBytes,\ xTriggerLevelBytes,\ pucStreamBufferStorageArea,\ pxStaticStreamBuffer\ )\ xStreamBufferGenericCreateStatic(\ xBufferSizeBytes,\ xTriggerLevelBytes,\ pdFALSE,\ pucStreamBufferStorageArea,\ pxStaticStreamBuffer\ )}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00312\ \textcolor{keywordtype}{size\_t}\ xStreamBufferSend(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer,}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *pvTxData,}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ xDataLengthBytes,}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TickType\_t\ xTicksToWait\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00413\ \textcolor{keywordtype}{size\_t}\ xStreamBufferSendFromISR(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer,}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *pvTxData,}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ xDataLengthBytes,}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BaseType\_t\ *\ \textcolor{keyword}{const}\ pxHigherPriorityTaskWoken\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00502\ \textcolor{keywordtype}{size\_t}\ xStreamBufferReceive(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer,}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *pvRxData,}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ xBufferLengthBytes,}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TickType\_t\ xTicksToWait\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00588\ \textcolor{keywordtype}{size\_t}\ xStreamBufferReceiveFromISR(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer,}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *pvRxData,}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ xBufferLengthBytes,}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BaseType\_t\ *\ \textcolor{keyword}{const}\ pxHigherPriorityTaskWoken\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00592\ }
+\DoxyCodeLine{00613\ \textcolor{keywordtype}{void}\ vStreamBufferDelete(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00614\ }
+\DoxyCodeLine{00633\ BaseType\_t\ xStreamBufferIsFull(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00634\ }
+\DoxyCodeLine{00653\ BaseType\_t\ xStreamBufferIsEmpty(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00654\ }
+\DoxyCodeLine{00676\ BaseType\_t\ xStreamBufferReset(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00697\ \textcolor{keywordtype}{size\_t}\ xStreamBufferSpacesAvailable(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00698\ }
+\DoxyCodeLine{00718\ \textcolor{keywordtype}{size\_t}\ xStreamBufferBytesAvailable(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00719\ }
+\DoxyCodeLine{00755\ BaseType\_t\ xStreamBufferSetTriggerLevel(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer,\ \textcolor{keywordtype}{size\_t}\ xTriggerLevel\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00756\ }
+\DoxyCodeLine{00794\ BaseType\_t\ xStreamBufferSendCompletedFromISR(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer,\ BaseType\_t\ *pxHigherPriorityTaskWoken\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00795\ }
+\DoxyCodeLine{00834\ BaseType\_t\ xStreamBufferReceiveCompletedFromISR(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer,\ BaseType\_t\ *pxHigherPriorityTaskWoken\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00835\ }
+\DoxyCodeLine{00836\ \textcolor{comment}{/*\ Functions\ below\ here\ are\ not\ part\ of\ the\ public\ API.\ */}}
+\DoxyCodeLine{00837\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBufferGenericCreate(\ \textcolor{keywordtype}{size\_t}\ xBufferSizeBytes,}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ xTriggerLevelBytes,}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BaseType\_t\ xIsMessageBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00840\ }
+\DoxyCodeLine{00841\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBufferGenericCreateStatic(\ \textcolor{keywordtype}{size\_t}\ xBufferSizeBytes,}
+\DoxyCodeLine{00842\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ xTriggerLevelBytes,}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ BaseType\_t\ xIsMessageBuffer,}
+\DoxyCodeLine{00844\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ *\ \textcolor{keyword}{const}\ pucStreamBufferStorageArea,}
+\DoxyCodeLine{00845\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structx_s_t_a_t_i_c___s_t_r_e_a_m___b_u_f_f_e_r}{StaticStreamBuffer\_t}}\ *\ \textcolor{keyword}{const}\ pxStaticStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00846\ }
+\DoxyCodeLine{00847\ \textcolor{keywordtype}{size\_t}\ xStreamBufferNextMessageLengthBytes(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00848\ }
+\DoxyCodeLine{00849\ \textcolor{preprocessor}{\#if(\ configUSE\_TRACE\_FACILITY\ ==\ 1\ )}}
+\DoxyCodeLine{00850\ \ \ \ \ \textcolor{keywordtype}{void}\ vStreamBufferSetStreamBufferNumber(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer,\ UBaseType\_t\ uxStreamBufferNumber\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00851\ \ \ \ \ UBaseType\_t\ uxStreamBufferGetStreamBufferNumber(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00852\ \ \ \ \ uint8\_t\ ucStreamBufferGetStreamBufferType(\ \mbox{\hyperlink{struct_stream_buffer_def__t}{StreamBufferHandle\_t}}\ xStreamBuffer\ )\ PRIVILEGED\_FUNCTION;}
+\DoxyCodeLine{00853\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00854\ }
+\DoxyCodeLine{00855\ \textcolor{preprocessor}{\#if\ defined(\ \_\_cplusplus\ )}}
+\DoxyCodeLine{00856\ \}}
+\DoxyCodeLine{00857\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00858\ }
+\DoxyCodeLine{00859\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{/*\ !defined(\ STREAM\_BUFFER\_H\ )\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

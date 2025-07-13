@@ -1,0 +1,56 @@
+Codebase structure for Leapfrog_GroundStation
+
+Leapfrog_GroundStation/
+├── CMakeLists.txt                 # Build configuration
+├── package.xml                    # ROS 2 package definition
+├── src/
+│   ├── Echo.cpp                   # Serial communication test utility
+│   ├── Echo2.cpp                  # Alternative serial test utility
+│   └── ground_station/
+│       ├── include/
+│       │   ├── properties/        # Vehicle data structure definitions
+│       │   │   ├── BaseProperties.hpp
+│       │   │   ├── CommandController.hpp
+│       │   │   ├── EngineProperties.hpp
+│       │   │   ├── GimbalProperties.hpp
+│       │   │   ├── PositionDataProperties.hpp
+│       │   │   ├── Properties.hpp
+│       │   │   ├── ResourceDataProperties.hpp
+│       │   │   └── SensorDataProperties.hpp
+│       │   ├── communications/    # RFD900 modem communication
+│       │   │   ├── Serial.hpp
+│       │   │   └── Communication.hpp
+│       │   ├── GroundStation.hpp
+│       │   └── GroundStation_Terminal.hpp
+│       └── src/
+│           ├── properties/
+│           │   └── BaseProperties.cpp
+│           ├── communications/
+│           │   ├── Serial.cpp
+│           │   └── Communication.cpp
+│           ├── GroundStation.cpp
+│           └── GroundStation_Terminal.cpp
+├── launch/                        # ROS 2 launch files
+│   └── ground_station.launch.py
+├── config/                        # Configuration files
+│   └── monitoring.config
+└── scripts/                       # Utility scripts
+    └── (existing script files)
+
+Key Components:
+1. Ground Station Core:
+   - GroundStation.cpp/hpp: Main ground station functionality
+   - GroundStation_Terminal.cpp/hpp: Terminal interface
+
+2. Communications:
+   - Serial.cpp/hpp: RFD900 modem communication
+   - Communication.cpp/hpp: Data encoding/decoding
+   - Echo.cpp/Echo2.cpp: Serial communication testing
+
+3. Properties:
+   - BaseProperties.cpp/hpp: Base class for all properties
+   - Various property files for vehicle data structures
+
+4. Configuration:
+   - monitoring.config: System monitoring configuration
+   - ground_station.launch.py: ROS 2 launch configuration

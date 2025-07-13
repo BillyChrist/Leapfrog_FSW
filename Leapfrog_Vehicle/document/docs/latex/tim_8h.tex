@@ -1,0 +1,82 @@
+\hypertarget{tim_8h}{}\section{C\+:/\+Users/\+Viserion/\+S\+T\+M32\+Cube\+I\+D\+E/workspace\+\_\+1.16.0/\+Leapfrog\+\_\+\+V1/\+Core/\+Inc/tim.h File Reference}
+\label{tim_8h}\index{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Core/Inc/tim.h@{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Core/Inc/tim.h}}
+
+
+This file contains all the function prototypes for the tim.\+c file.  
+
+
+{\ttfamily \#include \char`\"{}main.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tim_8h_a4b8ff887fd3fdf26605e35927e4ff202}{M\+X\+\_\+\+T\+I\+M2\+\_\+\+Init}} (void)
+\item 
+\mbox{\Hypertarget{tim_8h_a7912f2916786a2c33cb6fb8259ade58c}\label{tim_8h_a7912f2916786a2c33cb6fb8259ade58c}} 
+void {\bfseries M\+X\+\_\+\+T\+I\+M3\+\_\+\+Init} (void)
+\item 
+\mbox{\Hypertarget{tim_8h_aef1e0b132b1af1c923cc420a57180c67}\label{tim_8h_aef1e0b132b1af1c923cc420a57180c67}} 
+void {\bfseries M\+X\+\_\+\+T\+I\+M4\+\_\+\+Init} (void)
+\item 
+void \mbox{\hyperlink{tim_8h_ae70bce6c39d0b570a7523b86738cec4b}{H\+A\+L\+\_\+\+T\+I\+M\+\_\+\+Msp\+Post\+Init}} (T\+I\+M\+\_\+\+Handle\+Type\+Def $\ast$htim)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{tim_8h_a2c80fd5510e2990a59a5c90d745c716c}\label{tim_8h_a2c80fd5510e2990a59a5c90d745c716c}} 
+T\+I\+M\+\_\+\+Handle\+Type\+Def {\bfseries htim2}
+\item 
+\mbox{\Hypertarget{tim_8h_aac3d2c59ee0e3bbae1b99529a154eb62}\label{tim_8h_aac3d2c59ee0e3bbae1b99529a154eb62}} 
+T\+I\+M\+\_\+\+Handle\+Type\+Def {\bfseries htim3}
+\item 
+\mbox{\Hypertarget{tim_8h_a85788cec5a97ee377e4ee2e74f026484}\label{tim_8h_a85788cec5a97ee377e4ee2e74f026484}} 
+T\+I\+M\+\_\+\+Handle\+Type\+Def {\bfseries htim4}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains all the function prototypes for the tim.\+c file. 
+
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Copyright (c) 2024 S\+T\+Microelectronics. All rights reserved.
+
+This software is licensed under terms that can be found in the L\+I\+C\+E\+N\+SE file in the root directory of this software component. If no L\+I\+C\+E\+N\+SE file comes with this software, it is provided A\+S-\/\+IS. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{tim_8h_ae70bce6c39d0b570a7523b86738cec4b}\label{tim_8h_ae70bce6c39d0b570a7523b86738cec4b}} 
+\index{tim.h@{tim.h}!HAL\_TIM\_MspPostInit@{HAL\_TIM\_MspPostInit}}
+\index{HAL\_TIM\_MspPostInit@{HAL\_TIM\_MspPostInit}!tim.h@{tim.h}}
+\subsubsection{\texorpdfstring{HAL\_TIM\_MspPostInit()}{HAL\_TIM\_MspPostInit()}}
+{\footnotesize\ttfamily void H\+A\+L\+\_\+\+T\+I\+M\+\_\+\+Msp\+Post\+Init (\begin{DoxyParamCaption}\item[{T\+I\+M\+\_\+\+Handle\+Type\+Def $\ast$}]{htim }\end{DoxyParamCaption})}
+
+T\+I\+M3 G\+P\+IO Configuration P\+B0 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H3 P\+B1 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H4 P\+B4 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H1 P\+B5 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H2
+
+T\+I\+M4 G\+P\+IO Configuration P\+B6 -\/-\/-\/---$>$ T\+I\+M4\+\_\+\+C\+H1 P\+B7 -\/-\/-\/---$>$ T\+I\+M4\+\_\+\+C\+H2\mbox{\Hypertarget{tim_8h_a4b8ff887fd3fdf26605e35927e4ff202}\label{tim_8h_a4b8ff887fd3fdf26605e35927e4ff202}} 
+\index{tim.h@{tim.h}!MX\_TIM2\_Init@{MX\_TIM2\_Init}}
+\index{MX\_TIM2\_Init@{MX\_TIM2\_Init}!tim.h@{tim.h}}
+\subsubsection{\texorpdfstring{MX\_TIM2\_Init()}{MX\_TIM2\_Init()}}
+{\footnotesize\ttfamily void M\+X\+\_\+\+T\+I\+M2\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initializes the T\+I\+M2 peripheral with specific configurations.
+
+This function configures the T\+I\+M2 timer to operate in basic timer mode. The following parameters are set during initialization\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Prescaler}}\+: The timer clock frequency is divided by 8400, resulting in a timer tick frequency of 10 k\+Hz (assuming a 84 M\+Hz system clock). The prescaler value is set to 8400 -\/ 1, meaning that the timer counts every 8400 clock cycles.
+\item {\bfseries{Counter Mode}}\+: The timer is set to count upwards (T\+I\+M\+\_\+\+C\+O\+U\+N\+T\+E\+R\+M\+O\+D\+E\+\_\+\+UP).
+\item {\bfseries{Period}}\+: The timer is configured with a period of 1000 -\/ 1, which means it will overflow after 1000 counts (i.\+e., after 100 milliseconds, given the configured tick frequency).
+\item {\bfseries{Clock Division}}\+: The clock division is set to T\+I\+M\+\_\+\+C\+L\+O\+C\+K\+D\+I\+V\+I\+S\+I\+O\+N\+\_\+\+D\+I\+V1, meaning no additional clock division is applied.
+\item {\bfseries{Auto-\/reload Preload}}\+: Auto-\/reload preload is enabled (T\+I\+M\+\_\+\+A\+U\+T\+O\+R\+E\+L\+O\+A\+D\+\_\+\+P\+R\+E\+L\+O\+A\+D\+\_\+\+E\+N\+A\+B\+LE), allowing the timer to reload the counter value immediately when it overflows.
+\end{DoxyItemize}
+
+The function also configures the clock source for the timer to be internal (T\+I\+M\+\_\+\+C\+L\+O\+C\+K\+S\+O\+U\+R\+C\+E\+\_\+\+I\+N\+T\+E\+R\+N\+AL) and sets the master synchronization settings. If any of the configuration steps fail, the function calls {\ttfamily \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler()}}}, which handles the error appropriately (this can involve an infinite loop, logging, etc.).
+
+This function should be called during the initialization phase of the application to ensure that T\+I\+M2 is properly configured before use. The user may insert additional code before or after the initialization steps by utilizing the U\+S\+ER C\+O\+DE sections provided in the function.
+
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}

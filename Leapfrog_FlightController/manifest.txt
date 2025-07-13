@@ -1,0 +1,37 @@
+vehicle/
+├── run_leapos.sh               # Launches ROS2 system
+├── flush_serial.py             # Pre-launch serial/GPIO reset
+├── copylogs.sh                 # Optional script for saving logs
+├── build_workspace.sh          # Optional script to build full workspace in dependency order
+├── vehicle.service             # systemd unit for auto-start (optional)
+├── 10-leapfrog.rules           # udev rules for serial port naming
+├── src/
+│   ├── communication/
+│   │   ├── CMakeLists.txt
+│   │   ├── package.xml
+│   │   ├── include/
+│   │   │   ├── Communication.hpp
+│   │   │   └── Serial.hpp
+│   │   └── src/
+│   │       ├── CommandParser.cpp
+│   │       └── Serial.cpp
+│   ├── flightcontrol/
+│   │   ├── CMakeLists.txt
+│   │   ├── package.xml
+│   │   ├── msg/
+│   │   │   └── Heartbeat.msg
+│   │   ├── include/
+│   │   │   └── flightcontrol/
+│   │   │       ├── CommandParser.hpp
+│   │   │       └── flightmanager.hpp
+│   │   └── src/
+│   │       ├── CommandParser.cpp
+│   │       └── flightmanager.cpp
+│   ├── stm32_bridge/
+│   │   ├── CMakeLists.txt
+│   │   ├── package.xml
+│   │   └── src/
+│   │       ├── stm32_bridge.cpp
+│   │       └── stm32_bridge.hpp
+│   ├── launch/
+│   │   └── vehicle.launch.py          # Top-level launch file

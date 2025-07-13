@@ -1,0 +1,73 @@
+\doxysection{ACS\+\_\+\+PID.\+h}
+\hypertarget{_a_c_s___p_i_d_8h_source}{}\label{_a_c_s___p_i_d_8h_source}\index{/Users/charlesou/leapfrog/Core/Inc/ACS\_PID.h@{/Users/charlesou/leapfrog/Core/Inc/ACS\_PID.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ PID.h}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ Created\ on:\ Jul\ 18,\ 2024}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ \ \ \ \ Author:\ Viserion}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ INC\_PID\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ INC\_PID\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ INC\_PID\_H\_\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{void}\ ACS\_PID\_Control\ (\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ yaw\_pointing;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ current\_roll\_deg;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ current\_pitch\_deg;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ current\_yaw\_deg;}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{comment}{/*\ PID\ variables\ */}}
+\DoxyCodeLine{00023\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ error\_pitch;}
+\DoxyCodeLine{00024\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ error\_roll;}
+\DoxyCodeLine{00025\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ error\_yaw;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ output\_pitch;}
+\DoxyCodeLine{00028\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ output\_roll;}
+\DoxyCodeLine{00029\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ output\_yaw;}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ integral\_pitch;}
+\DoxyCodeLine{00032\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ integral\_roll;}
+\DoxyCodeLine{00033\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ integral\_yaw;}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ prev\_error\_pitch;}
+\DoxyCodeLine{00036\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ prev\_error\_roll;}
+\DoxyCodeLine{00037\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ prev\_error\_yaw;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ PR1\_output;}
+\DoxyCodeLine{00040\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ PR2\_output;}
+\DoxyCodeLine{00041\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ PR3\_output;}
+\DoxyCodeLine{00042\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ PR4\_output;}
+\DoxyCodeLine{00043\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ Y1\_output;}
+\DoxyCodeLine{00044\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ Y2\_output;}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ PID\_pitch;}
+\DoxyCodeLine{00047\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ PID\_roll;}
+\DoxyCodeLine{00048\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ PID\_yaw;}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ correction\_pitch;}
+\DoxyCodeLine{00051\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ correction\_roll;}
+\DoxyCodeLine{00052\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ correction\_yaw;}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{comment}{/*\ PID\ constants\ */}}
+\DoxyCodeLine{00055\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ Kp\_rollpitch;}
+\DoxyCodeLine{00056\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ Ki\_rollpitch;}
+\DoxyCodeLine{00057\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ Kd\_rollpitch;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ Kp\_yaw;}
+\DoxyCodeLine{00060\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ Ki\_yaw;}
+\DoxyCodeLine{00061\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ Kd\_yaw;}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ idle\_rollpitch;}
+\DoxyCodeLine{00064\ \textcolor{keyword}{extern}\ \textcolor{keywordtype}{float}\ idle\_yaw;}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{extern}\ uint32\_t\ lastUpdate;}
+\DoxyCodeLine{00067\ }
+
+\end{DoxyCode}

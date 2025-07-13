@@ -1,0 +1,138 @@
+\hypertarget{main_8h}{}\section{C\+:/\+Users/\+Viserion/\+S\+T\+M32\+Cube\+I\+D\+E/workspace\+\_\+1.16.0/\+Leapfrog\+\_\+\+V1/\+Core/\+Inc/main.h File Reference}
+\label{main_8h}\index{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Core/Inc/main.h@{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Core/Inc/main.h}}
+
+
+\+: Header for \mbox{\hyperlink{main_8c}{main.\+c}} file. This file contains the common defines of the application.  
+
+
+{\ttfamily \#include \char`\"{}stm32f4xx\+\_\+hal.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Free\+R\+T\+O\+S\+Config.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Free\+R\+T\+O\+S.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}cmsis\+\_\+os2.\+h\char`\"{}}\newline
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_s_t_m32_response}{S\+T\+M32\+Response}}
+\item 
+struct \mbox{\hyperlink{struct_s_t_m32_message}{S\+T\+M32\+Message}}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8h_a9b8dceaddf9a88df90c3a415c2a66125}\label{main_8h_a9b8dceaddf9a88df90c3a415c2a66125}} 
+\#define {\bfseries S\+T\+M32\+\_\+\+R\+E\+S\+P\+O\+N\+S\+E\+\_\+\+S\+I\+ZE}~sizeof(\mbox{\hyperlink{struct_s_t_m32_response}{S\+T\+M32\+Response}})
+\item 
+\mbox{\Hypertarget{main_8h_a32c7c33e8630a9220ded2798c174797a}\label{main_8h_a32c7c33e8630a9220ded2798c174797a}} 
+\#define {\bfseries S\+T\+M32\+\_\+\+M\+E\+S\+S\+A\+G\+E\+\_\+\+S\+I\+ZE}~sizeof(\mbox{\hyperlink{struct_s_t_m32_message}{S\+T\+M32\+Message}})
+\item 
+\mbox{\Hypertarget{main_8h_aa3086786b600b16fd6ab42e0af3aa08a}\label{main_8h_aa3086786b600b16fd6ab42e0af3aa08a}} 
+\#define {\bfseries S\+T\+M32\+\_\+\+S\+Y\+N\+C\+\_\+\+B\+Y\+T\+E\+\_\+\+C\+O\+U\+NT}~5
+\item 
+\mbox{\Hypertarget{main_8h_a6fb546a2e53e9f6eeeabdbe990b0bf82}\label{main_8h_a6fb546a2e53e9f6eeeabdbe990b0bf82}} 
+\#define {\bfseries S\+T\+M32\+\_\+\+S\+Y\+N\+C\+\_\+\+B\+Y\+TE}~0x77
+\item 
+\mbox{\Hypertarget{main_8h_a31ac298fbbc8a1d6de1dc4577a108232}\label{main_8h_a31ac298fbbc8a1d6de1dc4577a108232}} 
+\#define {\bfseries B1\+\_\+\+Pin}~G\+P\+I\+O\+\_\+\+P\+I\+N\+\_\+13
+\item 
+\mbox{\Hypertarget{main_8h_a4926b92dcb220e465850d9616c27e171}\label{main_8h_a4926b92dcb220e465850d9616c27e171}} 
+\#define {\bfseries B1\+\_\+\+G\+P\+I\+O\+\_\+\+Port}~G\+P\+I\+OC
+\item 
+\mbox{\Hypertarget{main_8h_a1c6fc611ed1c235b33d00152ceb5ece8}\label{main_8h_a1c6fc611ed1c235b33d00152ceb5ece8}} 
+\#define {\bfseries B1\+\_\+\+E\+X\+T\+I\+\_\+\+I\+R\+Qn}~E\+X\+T\+I15\+\_\+10\+\_\+\+I\+R\+Qn
+\item 
+\mbox{\Hypertarget{main_8h_af17a94dd613cff35c699b06c7c6a2820}\label{main_8h_af17a94dd613cff35c699b06c7c6a2820}} 
+\#define {\bfseries L\+D2\+\_\+\+Pin}~G\+P\+I\+O\+\_\+\+P\+I\+N\+\_\+5
+\item 
+\mbox{\Hypertarget{main_8h_a5aff6ddf7fe557e53b048115ad322aa0}\label{main_8h_a5aff6ddf7fe557e53b048115ad322aa0}} 
+\#define {\bfseries L\+D2\+\_\+\+G\+P\+I\+O\+\_\+\+Port}~G\+P\+I\+OA
+\item 
+\mbox{\Hypertarget{main_8h_a9a6e0c459812b9d8eb37fae79fe63b39}\label{main_8h_a9a6e0c459812b9d8eb37fae79fe63b39}} 
+\#define {\bfseries T\+V\+C2\+\_\+\+R\+E\+V\+\_\+\+Pin}~G\+P\+I\+O\+\_\+\+P\+I\+N\+\_\+12
+\item 
+\mbox{\Hypertarget{main_8h_ad6caf08b621fef1ebc43ef462e5ff7a8}\label{main_8h_ad6caf08b621fef1ebc43ef462e5ff7a8}} 
+\#define {\bfseries T\+V\+C2\+\_\+\+R\+E\+V\+\_\+\+G\+P\+I\+O\+\_\+\+Port}~G\+P\+I\+OB
+\item 
+\mbox{\Hypertarget{main_8h_a2e94ae6d3456600e688096e2f46a4c93}\label{main_8h_a2e94ae6d3456600e688096e2f46a4c93}} 
+\#define {\bfseries T\+V\+C2\+\_\+\+F\+W\+D\+\_\+\+Pin}~G\+P\+I\+O\+\_\+\+P\+I\+N\+\_\+13
+\item 
+\mbox{\Hypertarget{main_8h_a2414a6317557114d4270cc4d66caf44c}\label{main_8h_a2414a6317557114d4270cc4d66caf44c}} 
+\#define {\bfseries T\+V\+C2\+\_\+\+F\+W\+D\+\_\+\+G\+P\+I\+O\+\_\+\+Port}~G\+P\+I\+OB
+\item 
+\mbox{\Hypertarget{main_8h_a3d2d8ace9a3921af0fdb0a9e485704bc}\label{main_8h_a3d2d8ace9a3921af0fdb0a9e485704bc}} 
+\#define {\bfseries T\+V\+C1\+\_\+\+R\+E\+V\+\_\+\+Pin}~G\+P\+I\+O\+\_\+\+P\+I\+N\+\_\+14
+\item 
+\mbox{\Hypertarget{main_8h_a38b4ea98148b265effcd300a1dd2b409}\label{main_8h_a38b4ea98148b265effcd300a1dd2b409}} 
+\#define {\bfseries T\+V\+C1\+\_\+\+R\+E\+V\+\_\+\+G\+P\+I\+O\+\_\+\+Port}~G\+P\+I\+OB
+\item 
+\mbox{\Hypertarget{main_8h_a6e9509a2fc0422d1a72040821bda1abe}\label{main_8h_a6e9509a2fc0422d1a72040821bda1abe}} 
+\#define {\bfseries T\+V\+C1\+\_\+\+F\+W\+D\+\_\+\+Pin}~G\+P\+I\+O\+\_\+\+P\+I\+N\+\_\+15
+\item 
+\mbox{\Hypertarget{main_8h_a87c47d63145a4203cb9de7a336848a8c}\label{main_8h_a87c47d63145a4203cb9de7a336848a8c}} 
+\#define {\bfseries T\+V\+C1\+\_\+\+F\+W\+D\+\_\+\+G\+P\+I\+O\+\_\+\+Port}~G\+P\+I\+OB
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8h_a4611b605e45ab401f02cab15c5e38715}\label{main_8h_a4611b605e45ab401f02cab15c5e38715}} 
+typedef float {\bfseries float32\+\_\+t}
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{main_8h_a02bbbe3d7ff5aac55aa2ef301bee2a1c}\label{main_8h_a02bbbe3d7ff5aac55aa2ef301bee2a1c}} 
+enum {\bfseries Subsystem\+State} \{ {\bfseries System\+Disabled} = 0, 
+{\bfseries System\+Manual}, 
+{\bfseries System\+Automatic}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{main_8h_ae70bce6c39d0b570a7523b86738cec4b}{H\+A\+L\+\_\+\+T\+I\+M\+\_\+\+Msp\+Post\+Init}} (T\+I\+M\+\_\+\+Handle\+Type\+Def $\ast$htim)
+\item 
+void \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler}} (void)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\+: Header for \mbox{\hyperlink{main_8c}{main.\+c}} file. This file contains the common defines of the application. 
+
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Copyright (c) 2024 S\+T\+Microelectronics. All rights reserved.
+
+This software is licensed under terms that can be found in the L\+I\+C\+E\+N\+SE file in the root directory of this software component. If no L\+I\+C\+E\+N\+SE file comes with this software, it is provided A\+S-\/\+IS. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{main_8h_a1730ffe1e560465665eb47d9264826f9}\label{main_8h_a1730ffe1e560465665eb47d9264826f9}} 
+\index{main.h@{main.h}!Error\_Handler@{Error\_Handler}}
+\index{Error\_Handler@{Error\_Handler}!main.h@{main.h}}
+\subsubsection{\texorpdfstring{Error\_Handler()}{Error\_Handler()}}
+{\footnotesize\ttfamily void Error\+\_\+\+Handler (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+This function handles errors reported by the H\+AL (Hardware Abstraction Layer).
+
+This function is called when a H\+AL error occurs. The user can add their own implementation to report the error state. By default, it disables interrupts and enters an infinite loop, effectively halting the system.
+
+\begin{DoxyNote}{Note}
+It is important to ensure that the system state is safe before calling this function, as it will disable interrupts and could lead to unresponsive behavior if called under critical conditions.
+\end{DoxyNote}
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & This function does not return; it enters an infinite loop.\\
+\hline
+\end{DoxyRetVals}
+\mbox{\Hypertarget{main_8h_ae70bce6c39d0b570a7523b86738cec4b}\label{main_8h_ae70bce6c39d0b570a7523b86738cec4b}} 
+\index{main.h@{main.h}!HAL\_TIM\_MspPostInit@{HAL\_TIM\_MspPostInit}}
+\index{HAL\_TIM\_MspPostInit@{HAL\_TIM\_MspPostInit}!main.h@{main.h}}
+\subsubsection{\texorpdfstring{HAL\_TIM\_MspPostInit()}{HAL\_TIM\_MspPostInit()}}
+{\footnotesize\ttfamily void H\+A\+L\+\_\+\+T\+I\+M\+\_\+\+Msp\+Post\+Init (\begin{DoxyParamCaption}\item[{T\+I\+M\+\_\+\+Handle\+Type\+Def $\ast$}]{htim }\end{DoxyParamCaption})}
+
+T\+I\+M3 G\+P\+IO Configuration P\+B0 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H3 P\+B1 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H4 P\+B4 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H1 P\+B5 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H2
+
+T\+I\+M4 G\+P\+IO Configuration P\+B6 -\/-\/-\/---$>$ T\+I\+M4\+\_\+\+C\+H1 P\+B7 -\/-\/-\/---$>$ T\+I\+M4\+\_\+\+C\+H2
+
+T\+I\+M3 G\+P\+IO Configuration P\+B0 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H3 P\+B1 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H4 P\+B4 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H1 P\+B5 -\/-\/-\/---$>$ T\+I\+M3\+\_\+\+C\+H2
+
+T\+I\+M4 G\+P\+IO Configuration P\+B6 -\/-\/-\/---$>$ T\+I\+M4\+\_\+\+C\+H1 P\+B7 -\/-\/-\/---$>$ T\+I\+M4\+\_\+\+C\+H2

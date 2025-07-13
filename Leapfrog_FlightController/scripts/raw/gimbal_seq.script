@@ -1,0 +1,22 @@
+acs enable 1
+10
+tvc enable 1
+10
+tvc move 520,550
+1000
+tvc move 350,550
+3000
+tvc move 520,550
+1000
+tvc move 700,550
+3000
+tvc move 520,550
+1000
+tvc move 520,350
+3000
+tvc move 520,550
+1000
+tvc move 520,700
+3000
+tvc move 520,550
+1000

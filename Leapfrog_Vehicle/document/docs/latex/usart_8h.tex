@@ -1,0 +1,68 @@
+\hypertarget{usart_8h}{}\section{C\+:/\+Users/\+Viserion/\+S\+T\+M32\+Cube\+I\+D\+E/workspace\+\_\+1.16.0/\+Leapfrog\+\_\+\+V1/\+Core/\+Inc/usart.h File Reference}
+\label{usart_8h}\index{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Core/Inc/usart.h@{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Core/Inc/usart.h}}
+
+
+This file contains all the function prototypes for the usart.\+c file.  
+
+
+{\ttfamily \#include \char`\"{}main.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{usart_8h_a052088fe5bb3f807a4b2502e664fd4fd}{M\+X\+\_\+\+U\+S\+A\+R\+T2\+\_\+\+U\+A\+R\+T\+\_\+\+Init}} (void)
+\item 
+\mbox{\Hypertarget{usart_8h_a503f13ebea2ea5ce8049ccb48c0ac4b2}\label{usart_8h_a503f13ebea2ea5ce8049ccb48c0ac4b2}} 
+void {\bfseries M\+X\+\_\+\+U\+S\+A\+R\+T6\+\_\+\+U\+A\+R\+T\+\_\+\+Init} (void)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{usart_8h_aa9479c261d65eecedd3d9582f7f0f89c}\label{usart_8h_aa9479c261d65eecedd3d9582f7f0f89c}} 
+U\+A\+R\+T\+\_\+\+Handle\+Type\+Def {\bfseries huart2}
+\item 
+\mbox{\Hypertarget{usart_8h_a38905dda1d2fbff006c69db48eddba9d}\label{usart_8h_a38905dda1d2fbff006c69db48eddba9d}} 
+U\+A\+R\+T\+\_\+\+Handle\+Type\+Def {\bfseries huart6}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This file contains all the function prototypes for the usart.\+c file. 
+
+\begin{DoxyAttention}{Attention}
+
+\end{DoxyAttention}
+Copyright (c) 2024 S\+T\+Microelectronics. All rights reserved.
+
+This software is licensed under terms that can be found in the L\+I\+C\+E\+N\+SE file in the root directory of this software component. If no L\+I\+C\+E\+N\+SE file comes with this software, it is provided A\+S-\/\+IS. 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{usart_8h_a052088fe5bb3f807a4b2502e664fd4fd}\label{usart_8h_a052088fe5bb3f807a4b2502e664fd4fd}} 
+\index{usart.h@{usart.h}!MX\_USART2\_UART\_Init@{MX\_USART2\_UART\_Init}}
+\index{MX\_USART2\_UART\_Init@{MX\_USART2\_UART\_Init}!usart.h@{usart.h}}
+\subsubsection{\texorpdfstring{MX\_USART2\_UART\_Init()}{MX\_USART2\_UART\_Init()}}
+{\footnotesize\ttfamily void M\+X\+\_\+\+U\+S\+A\+R\+T2\+\_\+\+U\+A\+R\+T\+\_\+\+Init (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Initializes the U\+S\+A\+R\+T2 peripheral for U\+A\+RT communication.
+
+This function configures U\+S\+A\+R\+T2 with the following parameters for serial communication\+:
+
+
+\begin{DoxyItemize}
+\item {\bfseries{Baud Rate}}\+: Set to 115200 bps, which is commonly used for high-\/speed data transmission.
+\item {\bfseries{Word Length}}\+: Configured to 8 bits (U\+A\+R\+T\+\_\+\+W\+O\+R\+D\+L\+E\+N\+G\+T\+H\+\_\+8B), allowing for standard character transmission.
+\item {\bfseries{Stop Bits}}\+: Set to 1 stop bit (U\+A\+R\+T\+\_\+\+S\+T\+O\+P\+B\+I\+T\+S\+\_\+1), which is adequate for most communication protocols.
+\item {\bfseries{Parity}}\+: No parity checking (U\+A\+R\+T\+\_\+\+P\+A\+R\+I\+T\+Y\+\_\+\+N\+O\+NE), ensuring that each byte is sent and received as a distinct unit.
+\item {\bfseries{Mode}}\+: Both transmission and reception are enabled (U\+A\+R\+T\+\_\+\+M\+O\+D\+E\+\_\+\+T\+X\+\_\+\+RX), facilitating bidirectional data flow.
+\item {\bfseries{Hardware Flow Control}}\+: Disabled (U\+A\+R\+T\+\_\+\+H\+W\+C\+O\+N\+T\+R\+O\+L\+\_\+\+N\+O\+NE), simplifying the communication without the need for additional control lines.
+\item {\bfseries{Oversampling}}\+: Configured to 16 (U\+A\+R\+T\+\_\+\+O\+V\+E\+R\+S\+A\+M\+P\+L\+I\+N\+G\+\_\+16), enhancing timing resolution and communication reliability.
+\end{DoxyItemize}
+
+If the initialization process fails, the function calls {\ttfamily \mbox{\hyperlink{main_8h_a1730ffe1e560465665eb47d9264826f9}{Error\+\_\+\+Handler()}}}, which typically handles errors by entering an error state or logging the issue.
+
+This function should be invoked during the system initialization phase to ensure that U\+S\+A\+R\+T2 is properly configured and ready for data transmission and reception. Users can insert custom code in the designated U\+S\+ER C\+O\+DE sections before or after the U\+A\+RT setup as needed.
+
+
+\begin{DoxyRetVals}{Return values}
+{\em None} & \\
+\hline
+\end{DoxyRetVals}

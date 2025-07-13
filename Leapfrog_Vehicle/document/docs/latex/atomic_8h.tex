@@ -1,0 +1,45 @@
+\hypertarget{atomic_8h}{}\section{C\+:/\+Users/\+Viserion/\+S\+T\+M32\+Cube\+I\+D\+E/workspace\+\_\+1.16.0/\+Leapfrog\+\_\+\+V1/\+Middlewares/\+Third\+\_\+\+Party/\+Free\+R\+T\+O\+S/\+Source/include/atomic.h File Reference}
+\label{atomic_8h}\index{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Middlewares/Third\_Party/FreeRTOS/Source/include/atomic.h@{C:/Users/Viserion/STM32CubeIDE/workspace\_1.16.0/Leapfrog\_V1/Middlewares/Third\_Party/FreeRTOS/Source/include/atomic.h}}
+
+
+Free\+R\+T\+OS atomic operation support.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{atomic_8h_a155d89b2444fe81cbc8d051f0fd849c9}\label{atomic_8h_a155d89b2444fe81cbc8d051f0fd849c9}} 
+\#define {\bfseries A\+T\+O\+M\+I\+C\+\_\+\+E\+N\+T\+E\+R\+\_\+\+C\+R\+I\+T\+I\+C\+AL}()~port\+E\+N\+T\+E\+R\+\_\+\+C\+R\+I\+T\+I\+C\+AL()
+\item 
+\mbox{\Hypertarget{atomic_8h_a1aab48db50f9e59e44032386aa3eb5b8}\label{atomic_8h_a1aab48db50f9e59e44032386aa3eb5b8}} 
+\#define {\bfseries A\+T\+O\+M\+I\+C\+\_\+\+E\+X\+I\+T\+\_\+\+C\+R\+I\+T\+I\+C\+AL}()~port\+E\+X\+I\+T\+\_\+\+C\+R\+I\+T\+I\+C\+AL()
+\item 
+\mbox{\Hypertarget{atomic_8h_aaa356ca7932487d20a42d6839842d308}\label{atomic_8h_aaa356ca7932487d20a42d6839842d308}} 
+\#define {\bfseries port\+F\+O\+R\+C\+E\+\_\+\+I\+N\+L\+I\+NE}
+\item 
+\#define \mbox{\hyperlink{atomic_8h_a2d30f083e50b866caf8822ec31a75969}{A\+T\+O\+M\+I\+C\+\_\+\+C\+O\+M\+P\+A\+R\+E\+\_\+\+A\+N\+D\+\_\+\+S\+W\+A\+P\+\_\+\+S\+U\+C\+C\+E\+SS}}~0x1U
+\item 
+\#define \mbox{\hyperlink{atomic_8h_ab374919fbdbc585c3436a94f5bad31b6}{A\+T\+O\+M\+I\+C\+\_\+\+C\+O\+M\+P\+A\+R\+E\+\_\+\+A\+N\+D\+\_\+\+S\+W\+A\+P\+\_\+\+F\+A\+I\+L\+U\+RE}}~0x0U
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Free\+R\+T\+OS atomic operation support. 
+
+This file implements atomic functions by disabling interrupts globally. Implementations with architecture specific atomic instructions can be provided under each compiler directory. 
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{atomic_8h_ab374919fbdbc585c3436a94f5bad31b6}\label{atomic_8h_ab374919fbdbc585c3436a94f5bad31b6}} 
+\index{atomic.h@{atomic.h}!ATOMIC\_COMPARE\_AND\_SWAP\_FAILURE@{ATOMIC\_COMPARE\_AND\_SWAP\_FAILURE}}
+\index{ATOMIC\_COMPARE\_AND\_SWAP\_FAILURE@{ATOMIC\_COMPARE\_AND\_SWAP\_FAILURE}!atomic.h@{atomic.h}}
+\subsubsection{\texorpdfstring{ATOMIC\_COMPARE\_AND\_SWAP\_FAILURE}{ATOMIC\_COMPARE\_AND\_SWAP\_FAILURE}}
+{\footnotesize\ttfamily \#define A\+T\+O\+M\+I\+C\+\_\+\+C\+O\+M\+P\+A\+R\+E\+\_\+\+A\+N\+D\+\_\+\+S\+W\+A\+P\+\_\+\+F\+A\+I\+L\+U\+RE~0x0U}
+
+Compare and swap failed, did not swap. \mbox{\Hypertarget{atomic_8h_a2d30f083e50b866caf8822ec31a75969}\label{atomic_8h_a2d30f083e50b866caf8822ec31a75969}} 
+\index{atomic.h@{atomic.h}!ATOMIC\_COMPARE\_AND\_SWAP\_SUCCESS@{ATOMIC\_COMPARE\_AND\_SWAP\_SUCCESS}}
+\index{ATOMIC\_COMPARE\_AND\_SWAP\_SUCCESS@{ATOMIC\_COMPARE\_AND\_SWAP\_SUCCESS}!atomic.h@{atomic.h}}
+\subsubsection{\texorpdfstring{ATOMIC\_COMPARE\_AND\_SWAP\_SUCCESS}{ATOMIC\_COMPARE\_AND\_SWAP\_SUCCESS}}
+{\footnotesize\ttfamily \#define A\+T\+O\+M\+I\+C\+\_\+\+C\+O\+M\+P\+A\+R\+E\+\_\+\+A\+N\+D\+\_\+\+S\+W\+A\+P\+\_\+\+S\+U\+C\+C\+E\+SS~0x1U}
+
+Compare and swap succeeded, swapped. 

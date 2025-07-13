@@ -1,0 +1,316 @@
+\doxysection{freertos\+\_\+os2.\+h}
+\hypertarget{freertos__os2_8h_source}{}\label{freertos__os2_8h_source}\index{/Users/charlesou/leapfrog/Middlewares/Third\_Party/FreeRTOS/Source/CMSIS\_RTOS\_V2/freertos\_os2.h@{/Users/charlesou/leapfrog/Middlewares/Third\_Party/FreeRTOS/Source/CMSIS\_RTOS\_V2/freertos\_os2.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2013-\/2020\ Arm\ Limited.\ All\ rights\ reserved.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ SPDX-\/License-\/Identifier:\ Apache-\/2.0}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ License);\ you\ may}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ AS\ IS\ BASIS,\ WITHOUT}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ \ \ \ \ \ Name:\ \ \ \ freertos\_os2.h}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ \ \ \ \ \ Purpose:\ CMSIS\ RTOS2\ wrapper\ for\ FreeRTOS}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#ifndef\ FREERTOS\_OS2\_H\_}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ FREERTOS\_OS2\_H\_}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ARM.FreeRTOS::RTOS:Core}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#include\ CMSIS\_device\_header}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ CMSIS-\/RTOS2\ FreeRTOS\ image\ size\ optimization\ definitions.}}
+\DoxyCodeLine{00035\ \textcolor{comment}{}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ \ Note:\ Definitions\ configUSE\_OS2\ can\ be\ used\ to\ optimize\ FreeRTOS\ image\ size\ when}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ \ \ \ \ \ \ \ certain\ functionality\ is\ not\ required\ when\ using\ CMSIS-\/RTOS2\ API.}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ \ \ \ \ \ \ In\ general\ optimization\ decisions\ are\ left\ to\ the\ tool\ chain\ but\ in\ cases}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ \ \ \ \ \ \ \ when\ coding\ style\ prevents\ it\ to\ optimize\ the\ code\ following\ optional}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ \ \ \ \ \ \ \ definitions\ can\ be\ used.}}
+\DoxyCodeLine{00041\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ \ Option\ to\ exclude\ CMSIS-\/RTOS2\ functions\ osThreadSuspend\ and\ osThreadResume\ from}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ the\ application\ image.}}
+\DoxyCodeLine{00046\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#ifndef\ configUSE\_OS2\_THREAD\_SUSPEND\_RESUME}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ configUSE\_OS2\_THREAD\_SUSPEND\_RESUME\ \ \ 1}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ \ Option\ to\ exclude\ CMSIS-\/RTOS2\ function\ osThreadEnumerate\ from\ the\ application\ image.}}
+\DoxyCodeLine{00053\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#ifndef\ configUSE\_OS2\_THREAD\_ENUMERATE}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ configUSE\_OS2\_THREAD\_ENUMERATE\ \ \ \ \ \ \ \ 1}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ Option\ to\ disable\ CMSIS-\/RTOS2\ function\ osEventFlagsSet\ and\ osEventFlagsClear}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ \ operation\ from\ ISR.}}
+\DoxyCodeLine{00061\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#ifndef\ configUSE\_OS2\_EVENTFLAGS\_FROM\_ISR}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ configUSE\_OS2\_EVENTFLAGS\_FROM\_ISR\ \ \ \ \ 1}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ \ Option\ to\ exclude\ CMSIS-\/RTOS2\ Thread\ Flags\ API\ functions\ from\ the\ application\ image.}}
+\DoxyCodeLine{00068\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#ifndef\ configUSE\_OS2\_THREAD\_FLAGS}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ configUSE\_OS2\_THREAD\_FLAGS\ \ \ \ \ \ \ \ \ \ \ \ configUSE\_TASK\_NOTIFICATIONS}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00074\ \textcolor{comment}{\ \ Option\ to\ exclude\ CMSIS-\/RTOS2\ Timer\ API\ functions\ from\ the\ application\ image.}}
+\DoxyCodeLine{00075\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#ifndef\ configUSE\_OS2\_TIMER}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#define\ configUSE\_OS2\_TIMER\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ configUSE\_TIMERS}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ \ Option\ to\ exclude\ CMSIS-\/RTOS2\ Mutex\ API\ functions\ from\ the\ application\ image.}}
+\DoxyCodeLine{00082\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#ifndef\ configUSE\_OS2\_MUTEX}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#define\ configUSE\_OS2\_MUTEX\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ configUSE\_MUTEXES}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ CMSIS-\/RTOS2\ FreeRTOS\ configuration\ check\ (FreeRTOSConfig.h).}}
+\DoxyCodeLine{00090\ \textcolor{comment}{}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ \ Note:\ CMSIS-\/RTOS\ API\ requires\ functions\ included\ by\ using\ following\ definitions.}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ \ \ \ \ \ \ \ In\ case\ if\ certain\ API\ function\ is\ not\ used\ compiler\ will\ optimize\ it\ away.}}
+\DoxyCodeLine{00093\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#if\ (INCLUDE\_xSemaphoreGetMutexHolder\ ==\ 0)}}
+\DoxyCodeLine{00095\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osMutexGetOwner\ uses\ FreeRTOS\ function\ xSemaphoreGetMutexHolder.\ In\ case\ if}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ \ \ \ osMutexGetOwner\ is\ not\ used\ in\ the\ application\ image,\ compiler\ will\ optimize\ it\ away.}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_xSemaphoreGetMutexHolder\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_xSemaphoreGetMutexHolder\ must\ equal\ 1\ to\ implement\ Mutex\ Management\ API."{}}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#if\ (INCLUDE\_vTaskDelay\ ==\ 0)}}
+\DoxyCodeLine{00103\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osDelay\ uses\ FreeRTOS\ function\ vTaskDelay.\ In\ case\ if}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ \ \ \ osDelay\ is\ not\ used\ in\ the\ application\ image,\ compiler\ will\ optimize\ it\ away.}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_vTaskDelay\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_vTaskDelay\ must\ equal\ 1\ to\ implement\ Generic\ Wait\ Functions\ API."{}}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#if\ (INCLUDE\_vTaskDelayUntil\ ==\ 0)}}
+\DoxyCodeLine{00111\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osDelayUntil\ uses\ FreeRTOS\ function\ vTaskDelayUntil.\ In\ case\ if}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ \ \ \ osDelayUntil\ is\ not\ used\ in\ the\ application\ image,\ compiler\ will\ optimize\ it\ away.}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_vTaskDelayUntil\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00115\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_vTaskDelayUntil\ must\ equal\ 1\ to\ implement\ Generic\ Wait\ Functions\ API."{}}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#if\ (INCLUDE\_vTaskDelete\ ==\ 0)}}
+\DoxyCodeLine{00119\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00120\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osThreadTerminate\ and\ osThreadExit\ uses\ FreeRTOS\ function}}
+\DoxyCodeLine{00121\ \textcolor{comment}{\ \ \ \ vTaskDelete.\ In\ case\ if\ they\ are\ not\ used\ in\ the\ application\ image,\ compiler}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ \ \ \ will\ optimize\ them\ away.}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_vTaskDelete\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_vTaskDelete\ must\ equal\ 1\ to\ implement\ Thread\ Management\ API."{}}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#if\ (INCLUDE\_xTaskGetCurrentTaskHandle\ ==\ 0)}}
+\DoxyCodeLine{00128\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00129\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ API\ uses\ FreeRTOS\ function\ xTaskGetCurrentTaskHandle\ to\ implement}}
+\DoxyCodeLine{00130\ \textcolor{comment}{\ \ \ \ functions\ osThreadGetId,\ osThreadFlagsClear\ and\ osThreadFlagsGet.\ In\ case\ if\ these}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ \ \ \ functions\ are\ not\ used\ in\ the\ application\ image,\ compiler\ will\ optimize\ them\ away.}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_xTaskGetCurrentTaskHandle\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00133\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_xTaskGetCurrentTaskHandle\ must\ equal\ 1\ to\ implement\ Thread\ Management\ API."{}}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#if\ (INCLUDE\_xTaskGetSchedulerState\ ==\ 0)}}
+\DoxyCodeLine{00137\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00138\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ API\ uses\ FreeRTOS\ function\ xTaskGetSchedulerState\ to\ implement\ Kernel}}
+\DoxyCodeLine{00139\ \textcolor{comment}{\ \ \ \ tick\ handling\ and\ therefore\ it\ is\ vital\ that\ xTaskGetSchedulerState\ is\ included\ into}}
+\DoxyCodeLine{00140\ \textcolor{comment}{\ \ \ \ the\ application\ image.}}
+\DoxyCodeLine{00141\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_xTaskGetSchedulerState\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00142\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_xTaskGetSchedulerState\ must\ equal\ 1\ to\ implement\ Kernel\ Information\ and\ Control\ API."{}}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#if\ (INCLUDE\_uxTaskGetStackHighWaterMark\ ==\ 0)}}
+\DoxyCodeLine{00146\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00147\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osThreadGetStackSpace\ uses\ FreeRTOS\ function\ uxTaskGetStackHighWaterMark.}}
+\DoxyCodeLine{00148\ \textcolor{comment}{\ \ \ \ In\ case\ if\ osThreadGetStackSpace\ is\ not\ used\ in\ the\ application\ image,\ compiler\ will}}
+\DoxyCodeLine{00149\ \textcolor{comment}{\ \ \ \ optimize\ it\ away.}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_uxTaskGetStackHighWaterMark\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_uxTaskGetStackHighWaterMark\ must\ equal\ 1\ to\ implement\ Thread\ Management\ API."{}}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#if\ (INCLUDE\_uxTaskPriorityGet\ ==\ 0)}}
+\DoxyCodeLine{00155\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00156\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osThreadGetPriority\ uses\ FreeRTOS\ function\ uxTaskPriorityGet.\ In\ case\ if}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ \ \ osThreadGetPriority\ is\ not\ used\ in\ the\ application\ image,\ compiler\ will\ optimize\ it\ away.}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_uxTaskPriorityGet\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00159\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_uxTaskPriorityGet\ must\ equal\ 1\ to\ implement\ Thread\ Management\ API."{}}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#if\ (INCLUDE\_vTaskPrioritySet\ ==\ 0)}}
+\DoxyCodeLine{00163\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00164\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osThreadSetPriority\ uses\ FreeRTOS\ function\ vTaskPrioritySet.\ In\ case\ if}}
+\DoxyCodeLine{00165\ \textcolor{comment}{\ \ \ \ osThreadSetPriority\ is\ not\ used\ in\ the\ application\ image,\ compiler\ will\ optimize\ it\ away.}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_vTaskPrioritySet\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_vTaskPrioritySet\ must\ equal\ 1\ to\ implement\ Thread\ Management\ API."{}}}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#if\ (INCLUDE\_eTaskGetState\ ==\ 0)}}
+\DoxyCodeLine{00171\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00172\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ API\ uses\ FreeRTOS\ function\ vTaskDelayUntil\ to\ implement\ functions\ osThreadGetState}}
+\DoxyCodeLine{00173\ \textcolor{comment}{\ \ \ \ and\ osThreadTerminate.\ In\ case\ if\ these\ functions\ are\ not\ used\ in\ the\ application\ image,}}
+\DoxyCodeLine{00174\ \textcolor{comment}{\ \ \ \ compiler\ will\ optimize\ them\ away.}}
+\DoxyCodeLine{00175\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_eTaskGetState\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00176\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ INCLUDE\_eTaskGetState\ must\ equal\ 1\ to\ implement\ Thread\ Management\ API."{}}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#if\ (INCLUDE\_vTaskSuspend\ ==\ 0)}}
+\DoxyCodeLine{00180\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00181\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ API\ uses\ FreeRTOS\ functions\ vTaskSuspend\ and\ vTaskResume\ to\ implement}}
+\DoxyCodeLine{00182\ \textcolor{comment}{\ \ \ \ functions\ osThreadSuspend\ and\ osThreadResume.\ In\ case\ if\ these\ functions\ are\ not}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ \ \ \ used\ in\ the\ application\ image,\ compiler\ will\ optimize\ them\ away.}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_vTaskSuspend\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00185\ \textcolor{comment}{}}
+\DoxyCodeLine{00186\ \textcolor{comment}{\ \ \ \ Alternatively,\ if\ the\ application\ does\ not\ use\ osThreadSuspend\ and}}
+\DoxyCodeLine{00187\ \textcolor{comment}{\ \ \ \ osThreadResume\ they\ can\ be\ excluded\ from\ the\ image\ code\ by\ setting:}}
+\DoxyCodeLine{00188\ \textcolor{comment}{\ \ \ \ \#define\ configUSE\_OS2\_THREAD\_SUSPEND\_RESUME\ 0\ (in\ FreeRTOSConfig.h)}}
+\DoxyCodeLine{00189\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{\ \ \#if\ (configUSE\_OS2\_THREAD\_SUSPEND\_RESUME\ ==\ 1)}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}Definition\ INCLUDE\_vTaskSuspend\ must\ equal\ 1\ to\ implement\ Kernel\ Information\ and\ Control\ API."{}}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00194\ \textcolor{preprocessor}{\#if\ (INCLUDE\_xTimerPendFunctionCall\ ==\ 0)}}
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osEventFlagsSet\ and\ osEventFlagsClear,\ when\ called\ from}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ \ \ \ the\ ISR,\ call\ FreeRTOS\ functions\ xEventGroupSetBitsFromISR\ and}}
+\DoxyCodeLine{00198\ \textcolor{comment}{\ \ \ \ xEventGroupClearBitsFromISR\ which\ are\ only\ enabled\ if\ timers\ are\ operational\ and}}
+\DoxyCodeLine{00199\ \textcolor{comment}{\ \ \ \ xTimerPendFunctionCall\ in\ enabled.}}
+\DoxyCodeLine{00200\ \textcolor{comment}{\ \ \ \ Set\ \#define\ INCLUDE\_xTimerPendFunctionCall\ 1\ and\ \#define\ configUSE\_TIMERS\ 1}}
+\DoxyCodeLine{00201\ \textcolor{comment}{\ \ \ \ to\ fix\ this\ error.}}
+\DoxyCodeLine{00202\ \textcolor{comment}{}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ \ \ \ Alternatively,\ if\ the\ application\ does\ not\ use\ osEventFlagsSet\ and\ osEventFlagsClear}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ \ \ from\ the\ ISR\ their\ operation\ from\ ISR\ can\ be\ restricted\ by\ setting:}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ \ \ \#define\ configUSE\_OS2\_EVENTFLAGS\_FROM\_ISR\ 0\ (in\ FreeRTOSConfig.h)}}
+\DoxyCodeLine{00206\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00207\ \textcolor{preprocessor}{\ \ \#if\ (configUSE\_OS2\_EVENTFLAGS\_FROM\_ISR\ ==\ 1)}}
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}Definition\ INCLUDE\_xTimerPendFunctionCall\ must\ equal\ 1\ to\ implement\ Event\ Flags\ API."{}}}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#if\ (configUSE\_TIMERS\ ==\ 0)}}
+\DoxyCodeLine{00213\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00214\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ Timer\ Management\ API\ functions\ use\ FreeRTOS\ timer\ functions\ to\ implement}}
+\DoxyCodeLine{00215\ \textcolor{comment}{\ \ \ \ timer\ management.\ In\ case\ if\ these\ functions\ are\ not\ used\ in\ the\ application\ image,}}
+\DoxyCodeLine{00216\ \textcolor{comment}{\ \ \ \ compiler\ will\ optimize\ them\ away.}}
+\DoxyCodeLine{00217\ \textcolor{comment}{\ \ \ \ Set\ \#define\ configUSE\_TIMERS\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00218\ \textcolor{comment}{}}
+\DoxyCodeLine{00219\ \textcolor{comment}{\ \ \ \ Alternatively,\ if\ the\ application\ does\ not\ use\ timer\ functions\ they\ can\ be}}
+\DoxyCodeLine{00220\ \textcolor{comment}{\ \ \ \ excluded\ from\ the\ image\ code\ by\ setting:}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ \ \ \ \#define\ configUSE\_OS2\_TIMER\ 0\ (in\ FreeRTOSConfig.h)}}
+\DoxyCodeLine{00222\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\ \ \#if\ (configUSE\_OS2\_TIMER\ ==\ 1)}}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}Definition\ configUSE\_TIMERS\ must\ equal\ 1\ to\ implement\ Timer\ Management\ API."{}}}
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#if\ (configUSE\_MUTEXES\ ==\ 0)}}
+\DoxyCodeLine{00229\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00230\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ Mutex\ Management\ API\ functions\ use\ FreeRTOS\ mutex\ functions\ to\ implement}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ \ \ \ mutex\ management.\ In\ case\ if\ these\ functions\ are\ not\ used\ in\ the\ application\ image,}}
+\DoxyCodeLine{00232\ \textcolor{comment}{\ \ \ \ compiler\ will\ optimize\ them\ away.}}
+\DoxyCodeLine{00233\ \textcolor{comment}{\ \ \ \ Set\ \#define\ configUSE\_MUTEXES\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00234\ \textcolor{comment}{}}
+\DoxyCodeLine{00235\ \textcolor{comment}{\ \ \ \ Alternatively,\ if\ the\ application\ does\ not\ use\ mutex\ functions\ they\ can\ be}}
+\DoxyCodeLine{00236\ \textcolor{comment}{\ \ \ \ excluded\ from\ the\ image\ code\ by\ setting:}}
+\DoxyCodeLine{00237\ \textcolor{comment}{\ \ \ \ \#define\ configUSE\_OS2\_MUTEX\ 0\ (in\ FreeRTOSConfig.h)}}
+\DoxyCodeLine{00238\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\ \ \#if\ (configUSE\_OS2\_MUTEX\ ==\ 1)}}
+\DoxyCodeLine{00240\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}Definition\ configUSE\_MUTEXES\ must\ equal\ 1\ to\ implement\ Mutex\ Management\ API."{}}}
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00242\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#if\ (configUSE\_COUNTING\_SEMAPHORES\ ==\ 0)}}
+\DoxyCodeLine{00245\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00246\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ Memory\ Pool\ functions\ use\ FreeRTOS\ function\ xSemaphoreCreateCounting}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ \ \ \ to\ implement\ memory\ pools.\ In\ case\ if\ these\ functions\ are\ not\ used\ in\ the\ application\ image,}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ \ \ \ compiler\ will\ optimize\ them\ away.}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ \ \ \ Set\ \#define\ configUSE\_COUNTING\_SEMAPHORES\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00250\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ configUSE\_COUNTING\_SEMAPHORES\ must\ equal\ 1\ to\ implement\ Memory\ Pool\ API."{}}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00253\ \textcolor{preprocessor}{\#if\ (configUSE\_TASK\_NOTIFICATIONS\ ==\ 0)}}
+\DoxyCodeLine{00254\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ Thread\ Flags\ API\ functions\ use\ FreeRTOS\ Task\ Notification\ functions\ to\ implement}}
+\DoxyCodeLine{00256\ \textcolor{comment}{\ \ \ \ thread\ flag\ management.\ In\ case\ if\ these\ functions\ are\ not\ used\ in\ the\ application\ image,}}
+\DoxyCodeLine{00257\ \textcolor{comment}{\ \ \ \ compiler\ will\ optimize\ them\ away.}}
+\DoxyCodeLine{00258\ \textcolor{comment}{\ \ \ \ Set\ \#define\ configUSE\_TASK\_NOTIFICATIONS\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00259\ \textcolor{comment}{}}
+\DoxyCodeLine{00260\ \textcolor{comment}{\ \ \ \ Alternatively,\ if\ the\ application\ does\ not\ use\ thread\ flags\ functions\ they\ can\ be}}
+\DoxyCodeLine{00261\ \textcolor{comment}{\ \ \ \ excluded\ from\ the\ image\ code\ by\ setting:}}
+\DoxyCodeLine{00262\ \textcolor{comment}{\ \ \ \ \#define\ configUSE\_OS2\_THREAD\_FLAGS\ 0\ (in\ FreeRTOSConfig.h)}}
+\DoxyCodeLine{00263\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00264\ \textcolor{preprocessor}{\ \ \#if\ (configUSE\_OS2\_THREAD\_FLAGS\ ==\ 1)}}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}Definition\ configUSE\_TASK\_NOTIFICATIONS\ must\ equal\ 1\ to\ implement\ Thread\ Flags\ API."{}}}
+\DoxyCodeLine{00266\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#if\ (configUSE\_TRACE\_FACILITY\ ==\ 0)}}
+\DoxyCodeLine{00270\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00271\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ function\ osThreadEnumerate\ requires\ FreeRTOS\ function\ uxTaskGetSystemState}}
+\DoxyCodeLine{00272\ \textcolor{comment}{\ \ \ \ which\ is\ only\ enabled\ if\ configUSE\_TRACE\_FACILITY\ ==\ 1.}}
+\DoxyCodeLine{00273\ \textcolor{comment}{\ \ \ \ Set\ \#define\ configUSE\_TRACE\_FACILITY\ 1\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00274\ \textcolor{comment}{}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ \ \ \ Alternatively,\ if\ the\ application\ does\ not\ use\ osThreadEnumerate\ it\ can\ be}}
+\DoxyCodeLine{00276\ \textcolor{comment}{\ \ \ \ excluded\ from\ the\ image\ code\ by\ setting:}}
+\DoxyCodeLine{00277\ \textcolor{comment}{\ \ \ \ \#define\ configUSE\_OS2\_THREAD\_ENUMERATE\ 0\ (in\ FreeRTOSConfig.h)}}
+\DoxyCodeLine{00278\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\ \ \#if\ (configUSE\_OS2\_THREAD\_ENUMERATE\ ==\ 1)}}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\ \ \ \ \#error\ "{}Definition\ configUSE\_TRACE\_FACILITY\ must\ equal\ 1\ to\ implement\ osThreadEnumerate."{}}}
+\DoxyCodeLine{00281\ \textcolor{preprocessor}{\ \ \#endif}}
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#if\ (configUSE\_16\_BIT\_TICKS\ ==\ 1)}}
+\DoxyCodeLine{00285\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00286\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ wrapper\ for\ FreeRTOS\ relies\ on\ 32-\/bit\ tick\ timer\ which\ is\ also\ optimal\ on}}
+\DoxyCodeLine{00287\ \textcolor{comment}{\ \ \ \ a\ 32-\/bit\ CPU\ architectures.}}
+\DoxyCodeLine{00288\ \textcolor{comment}{\ \ \ \ Set\ \#define\ configUSE\_16\_BIT\_TICKS\ 0\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00289\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00290\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ configUSE\_16\_BIT\_TICKS\ must\ be\ zero\ to\ implement\ CMSIS-\/RTOS2\ API."{}}}
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00293\ \textcolor{preprocessor}{\#if\ (configMAX\_PRIORITIES\ !=\ 56)}}
+\DoxyCodeLine{00294\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00295\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ defines\ 56\ different\ priorities\ (see\ osPriority\_t)\ and\ portable\ CMSIS-\/RTOS2}}
+\DoxyCodeLine{00296\ \textcolor{comment}{\ \ \ \ implementation\ should\ implement\ the\ same\ number\ of\ priorities.}}
+\DoxyCodeLine{00297\ \textcolor{comment}{\ \ \ \ Set\ \#define\ configMAX\_PRIORITIES\ 56\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00298\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00299\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ configMAX\_PRIORITIES\ must\ equal\ 56\ to\ implement\ Thread\ Management\ API."{}}}
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00301\ \textcolor{preprocessor}{\#if\ (configUSE\_PORT\_OPTIMISED\_TASK\_SELECTION\ !=\ 0)}}
+\DoxyCodeLine{00302\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00303\ \textcolor{comment}{\ \ \ \ CMSIS-\/RTOS2\ requires\ handling\ of\ 56\ different\ priorities\ (see\ osPriority\_t)\ while\ FreeRTOS\ port}}
+\DoxyCodeLine{00304\ \textcolor{comment}{\ \ \ \ optimised\ selection\ for\ Cortex\ core\ only\ handles\ 32\ different\ priorities.}}
+\DoxyCodeLine{00305\ \textcolor{comment}{\ \ \ \ Set\ \#define\ configUSE\_PORT\_OPTIMISED\_TASK\_SELECTION\ 0\ to\ fix\ this\ error.}}
+\DoxyCodeLine{00306\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{\ \ \#error\ "{}Definition\ configUSE\_PORT\_OPTIMISED\_TASK\_SELECTION\ must\ be\ zero\ to\ implement\ Thread\ Management\ API."{}}}
+\DoxyCodeLine{00308\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ FREERTOS\_OS2\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

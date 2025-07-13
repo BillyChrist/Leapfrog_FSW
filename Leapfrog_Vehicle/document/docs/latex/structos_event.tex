@@ -1,0 +1,49 @@
+\hypertarget{structos_event}{}\section{os\+Event Struct Reference}
+\label{structos_event}\index{osEvent@{osEvent}}
+
+
+Event structure contains detailed information about an event.  
+
+
+
+
+{\ttfamily \#include $<$cmsis\+\_\+os.\+h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structos_event_aafcd2cedd08e033f9df25fd9875caaf2}\label{structos_event_aafcd2cedd08e033f9df25fd9875caaf2}} 
+os\+Status \mbox{\hyperlink{structos_event_aafcd2cedd08e033f9df25fd9875caaf2}{status}}
+\begin{DoxyCompactList}\small\item\em status code\+: event or error information \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_event_a6ab3a136fcbc038e555992db3d3e95ba}\label{structos_event_a6ab3a136fcbc038e555992db3d3e95ba}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>uint32\_t \mbox{\hyperlink{structos_event_a5d2bb38f7be9c75f508646c24d2de4b1}{v}}\\
+\>\>{\em message as 32-\/bit value }\\
+\>void $\ast$ \mbox{\hyperlink{structos_event_a70b8f3f364cf158c9e538c5f590d1393}{p}}\\
+\>\>{\em message or mail as void pointer }\\
+\>int32\_t \mbox{\hyperlink{structos_event_ad63c33b8b5d3bb37b45433d7c67d1e09}{signals}}\\
+\>\>{\em signal flags }\\
+\} \mbox{\hyperlink{structos_event_a6ab3a136fcbc038e555992db3d3e95ba}{value}}\\
+
+\end{tabbing}\begin{DoxyCompactList}\small\item\em event value \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_event_a90f9650ceb8eb3a9481270a99caaa47f}\label{structos_event_a90f9650ceb8eb3a9481270a99caaa47f}} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>osMailQId \mbox{\hyperlink{structos_event_aeeccddfa51120e20a2316e73bdba099a}{mail\_id}}\\
+\>\>{\em mail id obtained by osMailCreate }\\
+\>osMessageQId \mbox{\hyperlink{structos_event_af759bde42477c29f56ed1bf8a19c4db8}{message\_id}}\\
+\>\>{\em message id obtained by osMessageCreate }\\
+\} \mbox{\hyperlink{structos_event_a90f9650ceb8eb3a9481270a99caaa47f}{def}}\\
+
+\end{tabbing}\begin{DoxyCompactList}\small\item\em event definition \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Event structure contains detailed information about an event. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Viserion/\+S\+T\+M32\+Cube\+I\+D\+E/workspace\+\_\+1.\+16.\+0/\+Leapfrog\+\_\+\+V1/\+Middlewares/\+Third\+\_\+\+Party/\+Free\+R\+T\+O\+S/\+Source/\+C\+M\+S\+I\+S\+\_\+\+R\+T\+O\+S\+\_\+\+V2/cmsis\+\_\+os.\+h\end{DoxyCompactItemize}

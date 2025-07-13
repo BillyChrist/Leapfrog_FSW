@@ -1,0 +1,1556 @@
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{Sys\+Tick Functions}
+\hypertarget{group___c_m_s_i_s___core___sys_tick_functions}{}\label{group___c_m_s_i_s___core___sys_tick_functions}\index{SysTick Functions@{SysTick Functions}}
+
+
+Functions that configure the System.  
+
+
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection*{Topics}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions}{ITM Functions}}
+\begin{DoxyCompactList}\small\item\em Functions that access the ITM debug interface. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:28
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\_Type::\_reserved0}}:28\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf5a288aeaec4d230b6c1b69bd2694864}{APSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:23
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\_Type::\_reserved0}}:23\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga469044f9fca8628083a08dff647cabb6}{IPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{x\+PSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:15
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{x\+PSR\+\_\+\+Type\+::T}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved1}}\+:3
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{x\+PSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{x\+PSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{x\+PSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{x\+PSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{xPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{xPSR\_Type::\_reserved0}}:15\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{xPSR\_Type::T}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{xPSR\_Type::\_reserved1}}:3\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{xPSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{xPSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{xPSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{xPSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga69d95f4ce67a1365214913d37f1b4744}{xPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga35c1732cf153b7b5c4bd321cf1de9605}{CONTROL\+\_\+\+Type\+::n\+PRIV}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\+\_\+\+Type\+::\+SPSEL}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\+\_\+\+Type\+::\+\_\+reserved1}}\+:30
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga35c1732cf153b7b5c4bd321cf1de9605}{CONTROL\_Type::nPRIV}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\_Type::SPSEL}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\_Type::\_reserved1}}:30\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga8b85a07b9da98b72b43acec79e9dbc7b}{CONTROL\_Type::b}}\\
+
+\end{tabbing}\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf3f9fb94da83f22f758ad13c0b416944}{NVIC\+\_\+\+Type\+::\+IPR}} \mbox{[}124U\mbox{]}
+\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga10960cdc703f661c83a237d9c69db23c}\label{group___c_m_s_i_s___core___sys_tick_functions_ga10960cdc703f661c83a237d9c69db23c} 
+uint32\+\_\+t {\bfseries SCB\+\_\+\+Type\+::\+RESERVED0}
+\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gadddd65958c1c4c0301f62ede0a9bf12e}\label{group___c_m_s_i_s___core___sys_tick_functions_gadddd65958c1c4c0301f62ede0a9bf12e} 
+uint32\+\_\+t {\bfseries SCB\+\_\+\+Type\+::\+RESERVED1}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gafb22e89dbfb984022a6f8ecbaf0c3b2c}{SCB\+\_\+\+Type\+::\+SHPR}} \mbox{[}2U\mbox{]}
+\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga383c3272908da383b6e23a059007f728}\label{group___c_m_s_i_s___core___sys_tick_functions_ga383c3272908da383b6e23a059007f728} 
+uint32\+\_\+t {\bfseries DWT\+\_\+\+Type\+::\+RESERVED0} \mbox{[}6U\mbox{]}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t {\bfseries MPU\+\_\+\+Type\+::\+MAIR} \mbox{[}2\mbox{]}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b47c220774ad7786bb42ea3622b0693}{MPU\+\_\+\+Type\+::\+MAIR0}}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gac2840c137a056aeb543bd2d618992a03}{MPU\+\_\+\+Type\+::\+MAIR1}}
+\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga432d33daaa762dfeea3c4c5c80351f25}\label{group___c_m_s_i_s___core___sys_tick_functions_ga432d33daaa762dfeea3c4c5c80351f25} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\_\_IOM uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b47c220774ad7786bb42ea3622b0693}{MPU\_Type::MAIR0}}\\
+\>\_\_IOM uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gac2840c137a056aeb543bd2d618992a03}{MPU\_Type::MAIR1}}\\
+\} \\
+
+\end{tabbing}\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga5042d01b350d24b7c325e84d6f169a70}\label{group___c_m_s_i_s___core___sys_tick_functions_ga5042d01b350d24b7c325e84d6f169a70} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>\_\_IOM uint32\_t {\bfseries MAIR} \mbox{[}2\mbox{]}\\
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga432d33daaa762dfeea3c4c5c80351f25}\label{group___c_m_s_i_s___core___sys_tick_functions_ga432d33daaa762dfeea3c4c5c80351f25} 
+\>struct \{\\
+\>\>\_\_IOM uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b47c220774ad7786bb42ea3622b0693}{MPU\_Type::MAIR0}}\\
+\>\>\_\_IOM uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gac2840c137a056aeb543bd2d618992a03}{MPU\_Type::MAIR1}}\\
+\>\} \\
+\}; \\
+
+\end{tabbing}\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga57e848c96daca14fc3987a2daa95b082}\label{group___c_m_s_i_s___core___sys_tick_functions_ga57e848c96daca14fc3987a2daa95b082} 
+uint32\+\_\+t {\bfseries Core\+Debug\+\_\+\+Type\+::\+RESERVED0} \mbox{[}1U\mbox{]}
+\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaeb67cead1058df8b46eab5c22632aedd}\label{group___c_m_s_i_s___core___sys_tick_functions_gaeb67cead1058df8b46eab5c22632aedd} 
+uint32\+\_\+t {\bfseries DCB\+\_\+\+Type\+::\+RESERVED0} \mbox{[}1U\mbox{]}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:28
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\_Type::\_reserved0}}:28\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gab727333653efa5f9164ce4766735587a}{APSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:23
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\_Type::\_reserved0}}:23\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gab3032342fc90d51572b072dc40a0dd19}{IPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{x\+PSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:15
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{x\+PSR\+\_\+\+Type\+::T}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved1}}\+:3
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{x\+PSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{x\+PSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{x\+PSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{x\+PSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{xPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{xPSR\_Type::\_reserved0}}:15\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{xPSR\_Type::T}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{xPSR\_Type::\_reserved1}}:3\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{xPSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{xPSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{xPSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{xPSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga586b8db4a0dac325bc60558a47d49752}{xPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf8c314273a1e4970a5671bd7f8184f50}{CONTROL\+\_\+\+Type\+::\+\_\+reserved0}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\+\_\+\+Type\+::\+SPSEL}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\+\_\+\+Type\+::\+\_\+reserved1}}\+:30
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf8c314273a1e4970a5671bd7f8184f50}{CONTROL\_Type::\_reserved0}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\_Type::SPSEL}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\_Type::\_reserved1}}:30\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga3b0588c77d1d0bc889fc660bedf1ac8f}{CONTROL\_Type::b}}\\
+
+\end{tabbing}\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga5b95686171d6d31a0ea15c216eec517b}\label{group___c_m_s_i_s___core___sys_tick_functions_ga5b95686171d6d31a0ea15c216eec517b} 
+uint32\+\_\+t {\bfseries NVIC\+\_\+\+Type\+::\+RESERVED1} \mbox{[}31U\mbox{]}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga4eef47929a0d1317a107f1ac62e28464}{NVIC\+\_\+\+Type\+::\+IP}} \mbox{[}8U\mbox{]}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga5c40d124f95a3f7f431a3d5409d6ad28}{SCB\+\_\+\+Type\+::\+SHP}} \mbox{[}2U\mbox{]}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:28
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\_Type::\_reserved0}}:28\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaff6efb5fd398b16cd7008d34b59fcaf1}{APSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:23
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\_Type::\_reserved0}}:23\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gac6afb3084d299f2bd0fad196dd8a061c}{IPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{x\+PSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:15
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{x\+PSR\+\_\+\+Type\+::T}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved1}}\+:3
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{x\+PSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{x\+PSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{x\+PSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{x\+PSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{xPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{xPSR\_Type::\_reserved0}}:15\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{xPSR\_Type::T}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{xPSR\_Type::\_reserved1}}:3\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{xPSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{xPSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{xPSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{xPSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga3d382d42015f6046d2026108b937aea9}{xPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga35c1732cf153b7b5c4bd321cf1de9605}{CONTROL\+\_\+\+Type\+::n\+PRIV}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\+\_\+\+Type\+::\+SPSEL}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\+\_\+\+Type\+::\+\_\+reserved1}}\+:30
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga35c1732cf153b7b5c4bd321cf1de9605}{CONTROL\_Type::nPRIV}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\_Type::SPSEL}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\_Type::\_reserved1}}:30\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga3aa726115ee25ea5e6bff5470003a015}{CONTROL\_Type::b}}\\
+
+\end{tabbing}\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga9236c629b7cf86f8bd2459c610fdf715}{MPU\+\_\+\+Type\+::\+RASR}}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:28
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\_Type::\_reserved0}}:28\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga7a673ae1cd3c2749fb3c95acd6c48708}{APSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:23
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\_Type::\_reserved0}}:23\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga6bbb954cf6d1b107413685011220de48}{IPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{x\+PSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:15
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{x\+PSR\+\_\+\+Type\+::T}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved1}}\+:3
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{x\+PSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{x\+PSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{x\+PSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{x\+PSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{xPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{xPSR\_Type::\_reserved0}}:15\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{xPSR\_Type::T}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{xPSR\_Type::\_reserved1}}:3\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{xPSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{xPSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{xPSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{xPSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga58d4879592c789286b66aca396ded434}{xPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf8c314273a1e4970a5671bd7f8184f50}{CONTROL\+\_\+\+Type\+::\+\_\+reserved0}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\+\_\+\+Type\+::\+SPSEL}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\+\_\+\+Type\+::\+\_\+reserved1}}\+:30
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf8c314273a1e4970a5671bd7f8184f50}{CONTROL\_Type::\_reserved0}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\_Type::SPSEL}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\_Type::\_reserved1}}:30\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga651f2d59ae1f929d389ebd4191395bf4}{CONTROL\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:28
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\_Type::\_reserved0}}:28\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga9f17acdfce69f893bd34179ee7324769}{APSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:23
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\_Type::\_reserved0}}:23\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga3ef2f0396f79f1daa9c6f8b3c7350abe}{IPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{x\+PSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:15
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{x\+PSR\+\_\+\+Type\+::T}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved1}}\+:3
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{x\+PSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{x\+PSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{x\+PSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{x\+PSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{xPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{xPSR\_Type::\_reserved0}}:15\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{xPSR\_Type::T}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{xPSR\_Type::\_reserved1}}:3\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{xPSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{xPSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{xPSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{xPSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga6a0d8c8bd9bda806a0ad6c2a1bbb84ce}{xPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga35c1732cf153b7b5c4bd321cf1de9605}{CONTROL\+\_\+\+Type\+::n\+PRIV}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\+\_\+\+Type\+::\+SPSEL}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\+\_\+\+Type\+::\+\_\+reserved1}}\+:30
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga35c1732cf153b7b5c4bd321cf1de9605}{CONTROL\_Type::nPRIV}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\_Type::SPSEL}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\_Type::\_reserved1}}:30\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gad2b72c6548d7ba457dee056182205f45}{CONTROL\_Type::b}}\\
+
+\end{tabbing}\item 
+\+\_\+\+\_\+\+IM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga4d4cd2357f72333a82a1313228287bbd}{TPI\+\_\+\+Type\+::\+TRIGGER}}
+\item 
+\+\_\+\+\_\+\+IM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga4c53b48c6bb49037c97742136d14b4f7}{TPI\+\_\+\+Type\+::\+ITFTTD0}}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gafde4a3b09318d1ec4a061d5e479a01bc}{TPI\+\_\+\+Type\+::\+ITATBCTR2}}
+\item 
+\+\_\+\+\_\+\+IM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaaa573b2e073e76e93c51ecec79c616d0}{TPI\+\_\+\+Type\+::\+ITATBCTR0}}
+\item 
+\+\_\+\+\_\+\+IM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaaf0447dd4b2c16dc1db1e2172c9dac8f}{TPI\+\_\+\+Type\+::\+ITFTTD1}}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaaa4c823c10f115f7517c82ef86a5a68d}{TPI\+\_\+\+Type\+::\+ITCTRL}}
+\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga9c1ac143e09b64b1f6eb92ecd65d60d0}\label{group___c_m_s_i_s___core___sys_tick_functions_ga9c1ac143e09b64b1f6eb92ecd65d60d0} 
+uint32\+\_\+t {\bfseries TPI\+\_\+\+Type\+::\+RESERVED5} \mbox{[}39U\mbox{]}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf8b7d15fa5252b733dd4b11fa1b5730a}{TPI\+\_\+\+Type\+::\+CLAIMSET}}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga0e10e292cb019a832b03ddd055b2f6ac}{TPI\+\_\+\+Type\+::\+CLAIMCLR}}
+\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga33bb14730a444fdeeb91ea9cb7218e62}\label{group___c_m_s_i_s___core___sys_tick_functions_ga33bb14730a444fdeeb91ea9cb7218e62} 
+uint32\+\_\+t {\bfseries TPI\+\_\+\+Type\+::\+RESERVED7} \mbox{[}8U\mbox{]}
+\item 
+\+\_\+\+\_\+\+IM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gabc0ecda8a5446bc754080276bad77514}{TPI\+\_\+\+Type\+::\+DEVID}}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t {\bfseries MPU\+\_\+\+Type\+::\+MAIR} \mbox{[}2\mbox{]}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b47c220774ad7786bb42ea3622b0693}{MPU\+\_\+\+Type\+::\+MAIR0}}
+\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gac2840c137a056aeb543bd2d618992a03}{MPU\+\_\+\+Type\+::\+MAIR1}}
+\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaa3b1d1492b78d05da84b911074392ff4}\label{group___c_m_s_i_s___core___sys_tick_functions_gaa3b1d1492b78d05da84b911074392ff4} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\_\_IOM uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b47c220774ad7786bb42ea3622b0693}{MPU\_Type::MAIR0}}\\
+\>\_\_IOM uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gac2840c137a056aeb543bd2d618992a03}{MPU\_Type::MAIR1}}\\
+\} \\
+
+\end{tabbing}\item 
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaa87f2a630fc86bf45c0158f51eeb6e61}\label{group___c_m_s_i_s___core___sys_tick_functions_gaa87f2a630fc86bf45c0158f51eeb6e61} 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>\_\_IOM uint32\_t {\bfseries MAIR} \mbox{[}2\mbox{]}\\
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaa3b1d1492b78d05da84b911074392ff4}\label{group___c_m_s_i_s___core___sys_tick_functions_gaa3b1d1492b78d05da84b911074392ff4} 
+\>struct \{\\
+\>\>\_\_IOM uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b47c220774ad7786bb42ea3622b0693}{MPU\_Type::MAIR0}}\\
+\>\>\_\_IOM uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gac2840c137a056aeb543bd2d618992a03}{MPU\_Type::MAIR1}}\\
+\>\} \\
+\}; \\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:28
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gafbce95646fd514c10aa85ec0a33db728}{APSR\_Type::\_reserved0}}:28\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8004d224aacb78ca37774c35f9156e7e}{APSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga86e2c5b891ecef1ab55b1edac0da79a6}{APSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3b04d58738b66a28ff13f23d8b0ba7e5}{APSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7e7bbba9b00b0bb3283dc07f1abe37e0}{APSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gae479f9526703c22b363fbe656c981914}{APSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:23
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gab46e5f1b2f4d17cfb9aca4fffcbb2fa5}{IPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gad2eb0a06de4f03f58874a727716aa9aa}{IPSR\_Type::\_reserved0}}:23\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga7dce6eec1780af971a5304ad235920f8}{IPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{x\+PSR\+\_\+\+Type\+::\+ISR}}\+:9
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved0}}\+:15
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{x\+PSR\+\_\+\+Type\+::T}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{x\+PSR\+\_\+\+Type\+::\+\_\+reserved1}}\+:3
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{x\+PSR\+\_\+\+Type\+::V}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{x\+PSR\+\_\+\+Type\+::C}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{x\+PSR\+\_\+\+Type\+::Z}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{x\+PSR\+\_\+\+Type\+::N}}\+:1
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga3e9120dcf1a829fc8d2302b4d0673970}{xPSR\_Type::ISR}}:9\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf438e0f407357e914a70b5bd4d6a97c5}{xPSR\_Type::\_reserved0}}:15\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga7eed9fe24ae8d354cd76ae1c1110a658}{xPSR\_Type::T}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga790056bb6f20ea16cecc784b0dd19ad6}{xPSR\_Type::\_reserved1}}:3\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaf14df16ea0690070c45b95f2116b7a0a}{xPSR\_Type::V}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga40213a6b5620410cac83b0d89564609d}{xPSR\_Type::C}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga1e5d9801013d5146f2e02d9b7b3da562}{xPSR\_Type::Z}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga2db9a52f6d42809627d1a7a607c5dbc5}{xPSR\_Type::N}}:1\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga8d0f8f85ce4113f24fbdd4997b9dc7af}{xPSR\_Type::b}}\\
+
+\end{tabbing}\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf8c314273a1e4970a5671bd7f8184f50}{CONTROL\+\_\+\+Type\+::\+\_\+reserved0}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\+\_\+\+Type\+::\+SPSEL}}\+:1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\+\_\+\+Type\+::\+\_\+reserved1}}\+:30
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_gaf8c314273a1e4970a5671bd7f8184f50}{CONTROL\_Type::\_reserved0}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_ga8cc085fea1c50a8bd9adea63931ee8e2}{CONTROL\_Type::SPSEL}}:1\\
+\>uint32\_t \mbox{\hyperlink{group___c_m_s_i_s__core___debug_functions_gaa7a5662079a447f801034d108f80ce49}{CONTROL\_Type::\_reserved1}}:30\\
+\} \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga6ad5e60dcc42c09e2effb694011244d3}{CONTROL\_Type::b}}\\
+
+\end{tabbing}\item 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___sys_tick_functions_ga82273352d2e8c7a28a7b7cbdfc3d6a75}{SCB\+\_\+\+Type\+::\+SFCR}}
+\end{DoxyCompactItemize}
+\begin{DoxyCompactItemize}
+\item 
+\+\_\+\+\_\+\+STATIC\+\_\+\+INLINE uint32\+\_\+t \mbox{\hyperlink{group___c_m_s_i_s___core___n_v_i_c_functions_gae4e8f0238527c69f522029b93c8e5b78}{Sys\+Tick\+\_\+\+Config}} (uint32\+\_\+t ticks)
+\begin{DoxyCompactList}\small\item\em System Tick Configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{Detailed Description}
+Functions that configure the System. 
+
+
+
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{Function Documentation}
+\Hypertarget{group___c_m_s_i_s___core___n_v_i_c_functions_gae4e8f0238527c69f522029b93c8e5b78}\index{SysTick Functions@{SysTick Functions}!SysTick\_Config@{SysTick\_Config}}
+\index{SysTick\_Config@{SysTick\_Config}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{SysTick\_Config()}{SysTick\_Config()}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___n_v_i_c_functions_gae4e8f0238527c69f522029b93c8e5b78} 
+\+\_\+\+\_\+\+STATIC\+\_\+\+INLINE uint32\+\_\+t Sys\+Tick\+\_\+\+Config (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{ticks}{}\end{DoxyParamCaption})}
+
+
+
+System Tick Configuration. 
+
+Initializes the System Timer and its interrupt, and starts the System Tick Timer. Counter is in free running mode to generate periodic interrupts. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em ticks} & Number of ticks between two interrupts. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 Function succeeded. 
+
+1 Function failed. 
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+When the variable {\bfseries{\+\_\+\+\_\+\+Vendor\+\_\+\+Sys\+Tick\+Config}} is set to 1, then the function {\bfseries{Sys\+Tick\+\_\+\+Config}} is not included. In this case, the file {\bfseries{{\itshape device}.h}} must contain a vendor-\/specific implementation of this function. 
+\end{DoxyNote}
+
+
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{Variable Documentation}
+\Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaa301d11d26c86ce01f528aacecacb20c}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaa301d11d26c86ce01f528aacecacb20c} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga14e9af002e766722872ba47e52ead867}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga14e9af002e766722872ba47e52ead867} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga88086064d9086a4af90f373e1638bc19}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga88086064d9086a4af90f373e1638bc19} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gab64506f717e41c65976a06d51dd68b41}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gab64506f717e41c65976a06d51dd68b41} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gad0ba1abfe0635d84e335e7d9cef71a80}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gad0ba1abfe0635d84e335e7d9cef71a80} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6cdb11c1f7682987fbb9d7482183b9d3}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6cdb11c1f7682987fbb9d7482183b9d3} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga039c11d4b6efabd7c46c7df1b5e9e94b}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [7/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga039c11d4b6efabd7c46c7df1b5e9e94b} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga2850a340f811ffe089983cfe994f7caa}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [8/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga2850a340f811ffe089983cfe994f7caa} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gabb4a5188f519493bb91960000e5442d9}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [9/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gabb4a5188f519493bb91960000e5442d9} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 0 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf8c314273a1e4970a5671bd7f8184f50}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{\_reserved0}{\_reserved0}\hspace{0.1cm}{\footnotesize\ttfamily [10/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf8c314273a1e4970a5671bd7f8184f50} 
+uint32\+\_\+t CONTROL\+\_\+\+Type\+::\+\_\+reserved0}
+
+bit\+: 0 Reserved
+
+bit\+: 3..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga2ceae024ab8b106cbbebf77343e4ca85}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [11/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga2ceae024ab8b106cbbebf77343e4ca85} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga7de2dd30d2751c3a88a8b1962fca1b10}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [12/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga7de2dd30d2751c3a88a8b1962fca1b10} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gac4ed5da270c5898324884e0f84627928}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [13/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gac4ed5da270c5898324884e0f84627928} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf019a35252bdd1e8e2f59360c9a70aeb}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [14/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf019a35252bdd1e8e2f59360c9a70aeb} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga652d88095a8e2406dc4d91eb477ccfa1}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [15/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga652d88095a8e2406dc4d91eb477ccfa1} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6d884c4767d8cedf3c8a282853a9f708}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [16/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6d884c4767d8cedf3c8a282853a9f708} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf9a16b374620ba11fef561b8356fe757}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [17/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf9a16b374620ba11fef561b8356fe757} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..23 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gae2d1b36be23a26e73f0deae5f0ccb28b}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [18/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gae2d1b36be23a26e73f0deae5f0ccb28b} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..23 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga219cb7016c0ac86ace52a4bcbe4e6e88}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [19/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga219cb7016c0ac86ace52a4bcbe4e6e88} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..23 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga2b223264dc56634a8c809022751bb1ab}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [20/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga2b223264dc56634a8c809022751bb1ab} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..23 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga96f997892920aa17f6546a948a154817}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [21/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga96f997892920aa17f6546a948a154817} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..23 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga833ae3837feca19c7b829724f0ce243d}\index{SysTick Functions@{SysTick Functions}!\_reserved0@{\_reserved0}}
+\index{\_reserved0@{\_reserved0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [22/22]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga833ae3837feca19c7b829724f0ce243d} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved0}
+
+bit\+: 9..23 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga87a59fb1a944794f42ee458aa95c4b8b}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga87a59fb1a944794f42ee458aa95c4b8b} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 2..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gae22d63f26286b5d9daa6a52c54bc9616}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gae22d63f26286b5d9daa6a52c54bc9616} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 2..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gab99bc61706587a13a3b8bd1208f7830b}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gab99bc61706587a13a3b8bd1208f7830b} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 2..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga97ae65210ddc18f4b402b78fcbe4d591}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga97ae65210ddc18f4b402b78fcbe4d591} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 2..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga81d275fdfa84c21068bd9374d188f3f9}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga81d275fdfa84c21068bd9374d188f3f9} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 2..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga52336a1480e50b21ed53d3d83595d89c}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga52336a1480e50b21ed53d3d83595d89c} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 2..31 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaed76ebf51274b4ba27d88d31915b2414}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [7/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaed76ebf51274b4ba27d88d31915b2414} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 25..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf81e4894f83348d445907116a34dc44a}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [8/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf81e4894f83348d445907116a34dc44a} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 25..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaec22646358b07bfb839ac4b2b447d852}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [9/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaec22646358b07bfb839ac4b2b447d852} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 25..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga31e81b87723ff80331b9f7dba64388dc}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [10/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga31e81b87723ff80331b9f7dba64388dc} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 25..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga865ebd7a4f3b24a13d93656462141b6f}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [11/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga865ebd7a4f3b24a13d93656462141b6f} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 25..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga2d989fcf3efbce6d2380af11120ac03e}\index{SysTick Functions@{SysTick Functions}!\_reserved1@{\_reserved1}}
+\index{\_reserved1@{\_reserved1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [12/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga2d989fcf3efbce6d2380af11120ac03e} 
+uint32\+\_\+t  \{ ... \} \+::\+\_\+reserved1}
+
+bit\+: 25..27 Reserved \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf5a288aeaec4d230b6c1b69bd2694864}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [1/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf5a288aeaec4d230b6c1b69bd2694864} 
+struct  \{ ... \}  APSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gab727333653efa5f9164ce4766735587a}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [2/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gab727333653efa5f9164ce4766735587a} 
+struct  \{ ... \}  APSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaff6efb5fd398b16cd7008d34b59fcaf1}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [3/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaff6efb5fd398b16cd7008d34b59fcaf1} 
+struct  \{ ... \}  APSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga7a673ae1cd3c2749fb3c95acd6c48708}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [4/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga7a673ae1cd3c2749fb3c95acd6c48708} 
+struct  \{ ... \}  APSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga9f17acdfce69f893bd34179ee7324769}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [5/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga9f17acdfce69f893bd34179ee7324769} 
+struct  \{ ... \}  APSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gae479f9526703c22b363fbe656c981914}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [6/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gae479f9526703c22b363fbe656c981914} 
+struct  \{ ... \}  APSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga8b85a07b9da98b72b43acec79e9dbc7b}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [7/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga8b85a07b9da98b72b43acec79e9dbc7b} 
+struct  \{ ... \}  CONTROL\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3b0588c77d1d0bc889fc660bedf1ac8f}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [8/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3b0588c77d1d0bc889fc660bedf1ac8f} 
+struct  \{ ... \}  CONTROL\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3aa726115ee25ea5e6bff5470003a015}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [9/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3aa726115ee25ea5e6bff5470003a015} 
+struct  \{ ... \}  CONTROL\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga651f2d59ae1f929d389ebd4191395bf4}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [10/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga651f2d59ae1f929d389ebd4191395bf4} 
+struct  \{ ... \}  CONTROL\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gad2b72c6548d7ba457dee056182205f45}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [11/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gad2b72c6548d7ba457dee056182205f45} 
+struct  \{ ... \}  CONTROL\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6ad5e60dcc42c09e2effb694011244d3}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [12/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6ad5e60dcc42c09e2effb694011244d3} 
+struct  \{ ... \}  CONTROL\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga469044f9fca8628083a08dff647cabb6}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [13/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga469044f9fca8628083a08dff647cabb6} 
+struct  \{ ... \}  IPSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gab3032342fc90d51572b072dc40a0dd19}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [14/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gab3032342fc90d51572b072dc40a0dd19} 
+struct  \{ ... \}  IPSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gac6afb3084d299f2bd0fad196dd8a061c}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [15/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gac6afb3084d299f2bd0fad196dd8a061c} 
+struct  \{ ... \}  IPSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6bbb954cf6d1b107413685011220de48}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [16/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6bbb954cf6d1b107413685011220de48} 
+struct  \{ ... \}  IPSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3ef2f0396f79f1daa9c6f8b3c7350abe}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [17/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3ef2f0396f79f1daa9c6f8b3c7350abe} 
+struct  \{ ... \}  IPSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga7dce6eec1780af971a5304ad235920f8}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [18/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga7dce6eec1780af971a5304ad235920f8} 
+struct  \{ ... \}  IPSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga69d95f4ce67a1365214913d37f1b4744}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [19/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga69d95f4ce67a1365214913d37f1b4744} 
+struct  \{ ... \}  x\+PSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga586b8db4a0dac325bc60558a47d49752}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [20/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga586b8db4a0dac325bc60558a47d49752} 
+struct  \{ ... \}  x\+PSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3d382d42015f6046d2026108b937aea9}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [21/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3d382d42015f6046d2026108b937aea9} 
+struct  \{ ... \}  x\+PSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga58d4879592c789286b66aca396ded434}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [22/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga58d4879592c789286b66aca396ded434} 
+struct  \{ ... \}  x\+PSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6a0d8c8bd9bda806a0ad6c2a1bbb84ce}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [23/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6a0d8c8bd9bda806a0ad6c2a1bbb84ce} 
+struct  \{ ... \}  x\+PSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga8d0f8f85ce4113f24fbdd4997b9dc7af}\index{SysTick Functions@{SysTick Functions}!b@{b}}
+\index{b@{b}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[struct]}{[struct]}\hspace{0.1cm}{\footnotesize\ttfamily [24/24]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga8d0f8f85ce4113f24fbdd4997b9dc7af} 
+struct  \{ ... \}  x\+PSR\+\_\+\+Type\+::b}
+
+Structure used for bit access \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf9956b9a569c0e8a8459795aa0a0fddd}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf9956b9a569c0e8a8459795aa0a0fddd} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gafba1be466f6f732d16ac2890ab915376}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gafba1be466f6f732d16ac2890ab915376} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga5eef1f4b3f3bc8bbb432d9662e015d4b}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga5eef1f4b3f3bc8bbb432d9662e015d4b} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3f476d230b54714f59f4558665710409}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3f476d230b54714f59f4558665710409} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaaea209febb6c6cf3f3ef600c59171a80}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaaea209febb6c6cf3f3ef600c59171a80} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gae4179d3b9155265392f755eeebc73933}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gae4179d3b9155265392f755eeebc73933} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3626ef1d2d2f22c35446cb9d604fe446}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [7/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3626ef1d2d2f22c35446cb9d604fe446} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga763735b955f647dd0318deec3d9a47f6}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [8/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga763735b955f647dd0318deec3d9a47f6} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga61b86ae7164d1a677df7863695e44a6c}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [9/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga61b86ae7164d1a677df7863695e44a6c} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga4203d54c69b1296ebc93ff264a4c9a63}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [10/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga4203d54c69b1296ebc93ff264a4c9a63} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga522a4e1bda4b565c7a25b816f58f0d98}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [11/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga522a4e1bda4b565c7a25b816f58f0d98} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga419d3bea404208cc75eb6afa39e69f81}\index{SysTick Functions@{SysTick Functions}!C@{C}}
+\index{C@{C}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [12/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga419d3bea404208cc75eb6afa39e69f81} 
+uint32\+\_\+t  \{ ... \} \+::C}
+
+bit\+: 29 Carry condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga0e10e292cb019a832b03ddd055b2f6ac}\index{SysTick Functions@{SysTick Functions}!CLAIMCLR@{CLAIMCLR}}
+\index{CLAIMCLR@{CLAIMCLR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{CLAIMCLR}{CLAIMCLR}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga0e10e292cb019a832b03ddd055b2f6ac} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t TPI\+\_\+\+Type\+::\+CLAIMCLR}
+
+Offset\+: 0x\+FA4 (R/W) Claim tag clear \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf8b7d15fa5252b733dd4b11fa1b5730a}\index{SysTick Functions@{SysTick Functions}!CLAIMSET@{CLAIMSET}}
+\index{CLAIMSET@{CLAIMSET}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{CLAIMSET}{CLAIMSET}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf8b7d15fa5252b733dd4b11fa1b5730a} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t TPI\+\_\+\+Type\+::\+CLAIMSET}
+
+Offset\+: 0x\+FA0 (R/W) Claim tag set \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gabc0ecda8a5446bc754080276bad77514}\index{SysTick Functions@{SysTick Functions}!DEVID@{DEVID}}
+\index{DEVID@{DEVID}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{DEVID}{DEVID}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gabc0ecda8a5446bc754080276bad77514} 
+\+\_\+\+\_\+\+IM uint32\+\_\+t TPI\+\_\+\+Type\+::\+DEVID}
+
+Offset\+: 0x\+FC8 (R/ ) Device Configuration Register
+
+Offset\+: 0x\+FC8 (R/ ) TPIU\+\_\+\+DEVID \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga4eef47929a0d1317a107f1ac62e28464}\index{SysTick Functions@{SysTick Functions}!IP@{IP}}
+\index{IP@{IP}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{IP}{IP}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga4eef47929a0d1317a107f1ac62e28464} 
+\+\_\+\+\_\+\+IOM uint8\+\_\+t NVIC\+\_\+\+Type\+::\+IP}
+
+Offset\+: 0x300 (R/W) Interrupt Priority Register
+
+Offset\+: 0x300 (R/W) Interrupt Priority Register (8Bit wide) \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf3f9fb94da83f22f758ad13c0b416944}\index{SysTick Functions@{SysTick Functions}!IPR@{IPR}}
+\index{IPR@{IPR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{IPR}{IPR}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf3f9fb94da83f22f758ad13c0b416944} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t NVIC\+\_\+\+Type\+::\+IPR\mbox{[}124U\mbox{]}}
+
+Offset\+: 0x300 (R/W) Interrupt Priority Register \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3d6b4f4154de5bc10e89165ecd4fffb0}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3d6b4f4154de5bc10e89165ecd4fffb0} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga9960a51e82c45a851a115c218b7dfd3e}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga9960a51e82c45a851a115c218b7dfd3e} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaa4bacf943b8494f362fddcafd0b3dcec}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaa4bacf943b8494f362fddcafd0b3dcec} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gada404a724b3af0d09709b5ba4a8b1dae}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gada404a724b3af0d09709b5ba4a8b1dae} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaed3a0bb18db00348ec2a1f0cf83497b1}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaed3a0bb18db00348ec2a1f0cf83497b1} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gae1cdd948302fa47fbb12e468b7925522}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gae1cdd948302fa47fbb12e468b7925522} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gadea2f5ac2d0fa8aefc818cf4c92297ea}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [7/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gadea2f5ac2d0fa8aefc818cf4c92297ea} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gafb54b6d9b52718987477fdd302e885bf}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [8/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gafb54b6d9b52718987477fdd302e885bf} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gadb153a6ebad3f084538884c82dd059d8}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [9/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gadb153a6ebad3f084538884c82dd059d8} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga581425785613f6d1ab5f135c53201142}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [10/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga581425785613f6d1ab5f135c53201142} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gabc22a7fb8640fb0c1806a2ac7bbd5326}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [11/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gabc22a7fb8640fb0c1806a2ac7bbd5326} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaaecdd1d3bedd2aa52f2f3eef2d822038}\index{SysTick Functions@{SysTick Functions}!ISR@{ISR}}
+\index{ISR@{ISR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [12/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaaecdd1d3bedd2aa52f2f3eef2d822038} 
+uint32\+\_\+t  \{ ... \} \+::\+ISR}
+
+bit\+: 0.. 8 Exception number \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaaa573b2e073e76e93c51ecec79c616d0}\index{SysTick Functions@{SysTick Functions}!ITATBCTR0@{ITATBCTR0}}
+\index{ITATBCTR0@{ITATBCTR0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{ITATBCTR0}{ITATBCTR0}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaaa573b2e073e76e93c51ecec79c616d0} 
+\+\_\+\+\_\+\+IM uint32\+\_\+t TPI\+\_\+\+Type\+::\+ITATBCTR0}
+
+Offset\+: 0x\+EF8 (R/ ) Integration Test ATB Control Register 0
+
+Offset\+: 0x\+EF8 (R/ ) ITATBCTR0 \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gafde4a3b09318d1ec4a061d5e479a01bc}\index{SysTick Functions@{SysTick Functions}!ITATBCTR2@{ITATBCTR2}}
+\index{ITATBCTR2@{ITATBCTR2}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{ITATBCTR2}{ITATBCTR2}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gafde4a3b09318d1ec4a061d5e479a01bc} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t TPI\+\_\+\+Type\+::\+ITATBCTR2}
+
+Offset\+: 0x\+EF0 (R/W) Integration Test ATB Control Register 2
+
+Offset\+: 0x\+EF0 (R/ ) ITATBCTR2 \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaaa4c823c10f115f7517c82ef86a5a68d}\index{SysTick Functions@{SysTick Functions}!ITCTRL@{ITCTRL}}
+\index{ITCTRL@{ITCTRL}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{ITCTRL}{ITCTRL}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaaa4c823c10f115f7517c82ef86a5a68d} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t TPI\+\_\+\+Type\+::\+ITCTRL}
+
+Offset\+: 0x\+F00 (R/W) Integration Mode Control \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga4c53b48c6bb49037c97742136d14b4f7}\index{SysTick Functions@{SysTick Functions}!ITFTTD0@{ITFTTD0}}
+\index{ITFTTD0@{ITFTTD0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{ITFTTD0}{ITFTTD0}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga4c53b48c6bb49037c97742136d14b4f7} 
+\+\_\+\+\_\+\+IM uint32\+\_\+t TPI\+\_\+\+Type\+::\+ITFTTD0}
+
+Offset\+: 0x\+EEC (R/ ) Integration Test FIFO Test Data 0 Register \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaaf0447dd4b2c16dc1db1e2172c9dac8f}\index{SysTick Functions@{SysTick Functions}!ITFTTD1@{ITFTTD1}}
+\index{ITFTTD1@{ITFTTD1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{ITFTTD1}{ITFTTD1}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaaf0447dd4b2c16dc1db1e2172c9dac8f} 
+\+\_\+\+\_\+\+IM uint32\+\_\+t TPI\+\_\+\+Type\+::\+ITFTTD1}
+
+Offset\+: 0x\+EFC (R/ ) Integration Test FIFO Test Data 1 Register \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga679806eb389b3eb022c96228982668ad}\index{SysTick Functions@{SysTick Functions}!MAIR0@{MAIR0}}
+\index{MAIR0@{MAIR0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga679806eb389b3eb022c96228982668ad} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t  \{ ... \} \+::\+MAIR0}
+
+Offset\+: 0x030 (R/W) MPU Memory Attribute Indirection Register 0 \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga4049edfae5b4d050421252bc28467676}\index{SysTick Functions@{SysTick Functions}!MAIR0@{MAIR0}}
+\index{MAIR0@{MAIR0}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga4049edfae5b4d050421252bc28467676} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t  \{ ... \} \+::\+MAIR0}
+
+Offset\+: 0x030 (R/W) MPU Memory Attribute Indirection Register 0 \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga49463d18fa889aa889cb9ef258f50a53}\index{SysTick Functions@{SysTick Functions}!MAIR1@{MAIR1}}
+\index{MAIR1@{MAIR1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga49463d18fa889aa889cb9ef258f50a53} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t  \{ ... \} \+::\+MAIR1}
+
+Offset\+: 0x034 (R/W) MPU Memory Attribute Indirection Register 1 \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga17949b59e724ab6d01f3d8af9fb1441e}\index{SysTick Functions@{SysTick Functions}!MAIR1@{MAIR1}}
+\index{MAIR1@{MAIR1}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga17949b59e724ab6d01f3d8af9fb1441e} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t  \{ ... \} \+::\+MAIR1}
+
+Offset\+: 0x034 (R/W) MPU Memory Attribute Indirection Register 1 \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6df20fbb0d53a8f1f50547df84e91a1a}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6df20fbb0d53a8f1f50547df84e91a1a} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3b6d74daf509798fa929f6a94fb2a36e}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3b6d74daf509798fa929f6a94fb2a36e} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf5413f67eadc406882f1e7a156efe66b}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf5413f67eadc406882f1e7a156efe66b} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga405ddd134f78ae9620e2a13dda6218a2}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga405ddd134f78ae9620e2a13dda6218a2} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gad8f5a7242cb5414171910e55b8e1fd2b}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gad8f5a7242cb5414171910e55b8e1fd2b} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gafb7954554ee392a054d8b877f33bb37e}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gafb7954554ee392a054d8b877f33bb37e} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gae4e6d4794176088009e6f15555232327}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [7/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gae4e6d4794176088009e6f15555232327} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga266b5f7df54b8628d3eec824c9ac6a3e}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [8/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga266b5f7df54b8628d3eec824c9ac6a3e} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga0044cfde6d77d6d6d771b79e54fde697}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [9/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga0044cfde6d77d6d6d771b79e54fde697} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga1a9a5e4c5d8822ab161e921ca01bcf52}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [10/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga1a9a5e4c5d8822ab161e921ca01bcf52} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf70d08ee3196a0fa35a851f6e249d247}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [11/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf70d08ee3196a0fa35a851f6e249d247} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga701d401e951790757977a839b61c95d9}\index{SysTick Functions@{SysTick Functions}!N@{N}}
+\index{N@{N}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [12/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga701d401e951790757977a839b61c95d9} 
+uint32\+\_\+t  \{ ... \} \+::N}
+
+bit\+: 31 Negative condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaa42b6b7122eca5deeeaf967d5e20a637}\index{SysTick Functions@{SysTick Functions}!nPRIV@{nPRIV}}
+\index{nPRIV@{nPRIV}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaa42b6b7122eca5deeeaf967d5e20a637} 
+uint32\+\_\+t  \{ ... \} \+::n\+PRIV}
+
+bit\+: 0 Execution privilege in Thread mode \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga77279dd3c0c905db76c5f8eceba19640}\index{SysTick Functions@{SysTick Functions}!nPRIV@{nPRIV}}
+\index{nPRIV@{nPRIV}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga77279dd3c0c905db76c5f8eceba19640} 
+uint32\+\_\+t  \{ ... \} \+::n\+PRIV}
+
+bit\+: 0 Execution privilege in Thread mode \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6c7d8323f0b0c65fec578199407dad89}\index{SysTick Functions@{SysTick Functions}!nPRIV@{nPRIV}}
+\index{nPRIV@{nPRIV}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6c7d8323f0b0c65fec578199407dad89} 
+uint32\+\_\+t  \{ ... \} \+::n\+PRIV}
+
+bit\+: 0 Execution privilege in Thread mode \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga9236c629b7cf86f8bd2459c610fdf715}\index{SysTick Functions@{SysTick Functions}!RASR@{RASR}}
+\index{RASR@{RASR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{RASR}{RASR}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga9236c629b7cf86f8bd2459c610fdf715} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t MPU\+\_\+\+Type\+::\+RASR}
+
+Offset\+: 0x010 (R/W) MPU Region Attribute and Size Register \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga82273352d2e8c7a28a7b7cbdfc3d6a75}\index{SysTick Functions@{SysTick Functions}!SFCR@{SFCR}}
+\index{SFCR@{SFCR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{SFCR}{SFCR}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga82273352d2e8c7a28a7b7cbdfc3d6a75} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t SCB\+\_\+\+Type\+::\+SFCR}
+
+Offset\+: 0x290 (R/W) Security Features Control Register \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga5c40d124f95a3f7f431a3d5409d6ad28}\index{SysTick Functions@{SysTick Functions}!SHP@{SHP}}
+\index{SHP@{SHP}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{SHP}{SHP}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga5c40d124f95a3f7f431a3d5409d6ad28} 
+\+\_\+\+\_\+\+IOM uint8\+\_\+t SCB\+\_\+\+Type\+::\+SHP}
+
+Offset\+: 0x01C (R/W) System Handlers Priority Registers. \mbox{[}0\mbox{]} is RESERVED
+
+Offset\+: 0x018 (R/W) System Handlers Priority Registers (4-\/7, 8-\/11, 12-\/15) \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gafb22e89dbfb984022a6f8ecbaf0c3b2c}\index{SysTick Functions@{SysTick Functions}!SHPR@{SHPR}}
+\index{SHPR@{SHPR}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{SHPR}{SHPR}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gafb22e89dbfb984022a6f8ecbaf0c3b2c} 
+\+\_\+\+\_\+\+IOM uint32\+\_\+t SCB\+\_\+\+Type\+::\+SHPR\mbox{[}2U\mbox{]}}
+
+Offset\+: 0x01C (R/W) System Handlers Priority Registers. \mbox{[}0\mbox{]} is RESERVED \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga15bca359c4a4bb271e1898e1d6851401}\index{SysTick Functions@{SysTick Functions}!SPSEL@{SPSEL}}
+\index{SPSEL@{SPSEL}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga15bca359c4a4bb271e1898e1d6851401} 
+uint32\+\_\+t  \{ ... \} \+::\+SPSEL}
+
+bit\+: 1 Stack to be used \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gab84fa89e3bf07b423f4fc14c04b7c5b4}\index{SysTick Functions@{SysTick Functions}!SPSEL@{SPSEL}}
+\index{SPSEL@{SPSEL}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gab84fa89e3bf07b423f4fc14c04b7c5b4} 
+uint32\+\_\+t  \{ ... \} \+::\+SPSEL}
+
+bit\+: 1 Stack-\/pointer select \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga0356f35b5d5a507f234a893bdb31cf8a}\index{SysTick Functions@{SysTick Functions}!SPSEL@{SPSEL}}
+\index{SPSEL@{SPSEL}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga0356f35b5d5a507f234a893bdb31cf8a} 
+uint32\+\_\+t  \{ ... \} \+::\+SPSEL}
+
+bit\+: 1 Stack to be used \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga744521bbb073daa311330247c3f5bf4c}\index{SysTick Functions@{SysTick Functions}!SPSEL@{SPSEL}}
+\index{SPSEL@{SPSEL}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga744521bbb073daa311330247c3f5bf4c} 
+uint32\+\_\+t  \{ ... \} \+::\+SPSEL}
+
+bit\+: 1 Stack to be used \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaaa68ed7608bd9dffc76a0784720faf8b}\index{SysTick Functions@{SysTick Functions}!SPSEL@{SPSEL}}
+\index{SPSEL@{SPSEL}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaaa68ed7608bd9dffc76a0784720faf8b} 
+uint32\+\_\+t  \{ ... \} \+::\+SPSEL}
+
+bit\+: 1 Stack to be used \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga91ab93b7c91070c7ee22ff1c1ed862d7}\index{SysTick Functions@{SysTick Functions}!SPSEL@{SPSEL}}
+\index{SPSEL@{SPSEL}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga91ab93b7c91070c7ee22ff1c1ed862d7} 
+uint32\+\_\+t  \{ ... \} \+::\+SPSEL}
+
+bit\+: 1 Stack-\/pointer select \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gad2c2dfb87d20e94ba78573ad87a5a25e}\index{SysTick Functions@{SysTick Functions}!T@{T}}
+\index{T@{T}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gad2c2dfb87d20e94ba78573ad87a5a25e} 
+uint32\+\_\+t  \{ ... \} \+::T}
+
+bit\+: 24 Thumb bit (read 0) \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga0ecf6207bed20fad5c4be2af68ed258d}\index{SysTick Functions@{SysTick Functions}!T@{T}}
+\index{T@{T}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga0ecf6207bed20fad5c4be2af68ed258d} 
+uint32\+\_\+t  \{ ... \} \+::T}
+
+bit\+: 24 Thumb bit (read 0) \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga2349c2b688bdc7699d31a4344aa72b70}\index{SysTick Functions@{SysTick Functions}!T@{T}}
+\index{T@{T}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga2349c2b688bdc7699d31a4344aa72b70} 
+uint32\+\_\+t  \{ ... \} \+::T}
+
+bit\+: 24 Thumb bit (read 0) \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga60c9fb8df2416eb4da3e99d316c0b52e}\index{SysTick Functions@{SysTick Functions}!T@{T}}
+\index{T@{T}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga60c9fb8df2416eb4da3e99d316c0b52e} 
+uint32\+\_\+t  \{ ... \} \+::T}
+
+bit\+: 24 Thumb bit (read 0) \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gafac87e194d7762fe6b145473f27896e3}\index{SysTick Functions@{SysTick Functions}!T@{T}}
+\index{T@{T}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gafac87e194d7762fe6b145473f27896e3} 
+uint32\+\_\+t  \{ ... \} \+::T}
+
+bit\+: 24 Thumb bit (read 0) \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga38b9c610ec781adb285cb6c3fca98a81}\index{SysTick Functions@{SysTick Functions}!T@{T}}
+\index{T@{T}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga38b9c610ec781adb285cb6c3fca98a81} 
+uint32\+\_\+t  \{ ... \} \+::T}
+
+bit\+: 24 Thumb bit (read 0) \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga4d4cd2357f72333a82a1313228287bbd}\index{SysTick Functions@{SysTick Functions}!TRIGGER@{TRIGGER}}
+\index{TRIGGER@{TRIGGER}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{TRIGGER}{TRIGGER}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga4d4cd2357f72333a82a1313228287bbd} 
+\+\_\+\+\_\+\+IM uint32\+\_\+t TPI\+\_\+\+Type\+::\+TRIGGER}
+
+Offset\+: 0x\+EE8 (R/ ) TRIGGER Register \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga04f197bbf5c3c0a34d1f7824eb5c679e}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga04f197bbf5c3c0a34d1f7824eb5c679e} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga5e970f9de4de37598ae69668563ae62f}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga5e970f9de4de37598ae69668563ae62f} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga68761e007e890409ff69d4d578f7e21c}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga68761e007e890409ff69d4d578f7e21c} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaf5ba3fb6dcc1f37b8145675ec35bbe45}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaf5ba3fb6dcc1f37b8145675ec35bbe45} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gaa5b81b7669cf57391cec9d17a88a82ed}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gaa5b81b7669cf57391cec9d17a88a82ed} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gac3984a2f4012a8984a5ebb59186e84e7}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gac3984a2f4012a8984a5ebb59186e84e7} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga2da99054e0730f9d0a0906b4abdcba21}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [7/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga2da99054e0730f9d0a0906b4abdcba21} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6826b02a0205cd5e5f03ecdcd8e4a9f0}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [8/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6826b02a0205cd5e5f03ecdcd8e4a9f0} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga5fdef2e37153823ff16062e3da87cd80}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [9/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga5fdef2e37153823ff16062e3da87cd80} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga961b60ebd0701bff15bd55d419ef8474}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [10/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga961b60ebd0701bff15bd55d419ef8474} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gae398f29033f1a1f90c9d8a544da4fb2a}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [11/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gae398f29033f1a1f90c9d8a544da4fb2a} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga115ec7825026c6577e24839b953bef81}\index{SysTick Functions@{SysTick Functions}!V@{V}}
+\index{V@{V}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [12/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga115ec7825026c6577e24839b953bef81} 
+uint32\+\_\+t  \{ ... \} \+::V}
+
+bit\+: 28 Overflow condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga86dca9ab7dea32353212265e49f1deb2}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [1/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga86dca9ab7dea32353212265e49f1deb2} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga6cfe922bd2c03052cc93e817b983e33a}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [2/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga6cfe922bd2c03052cc93e817b983e33a} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga25c15f9723688eecc792d5445d97d7aa}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [3/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga25c15f9723688eecc792d5445d97d7aa} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga29f7494edb02e5e70e483a7229254873}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [4/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga29f7494edb02e5e70e483a7229254873} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga420e1845b32e65d22ebe7f84d6f5b6b4}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [5/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga420e1845b32e65d22ebe7f84d6f5b6b4} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga2dc48ab2298b09836df267f640eb4479}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [6/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga2dc48ab2298b09836df267f640eb4479} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gabb326da90b485d05e1d390a3f0cf3efe}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [7/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gabb326da90b485d05e1d390a3f0cf3efe} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga58f653b53327bd8300b9f3f6bbe247a3}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [8/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga58f653b53327bd8300b9f3f6bbe247a3} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga3c3ab26098c9aa4114a889fe274543fa}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [9/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga3c3ab26098c9aa4114a889fe274543fa} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga7fb33114ca66bcaa792e694629009a3c}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [10/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga7fb33114ca66bcaa792e694629009a3c} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_ga04e3d44ff051a6a1f0d6250028ca8655}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [11/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_ga04e3d44ff051a6a1f0d6250028ca8655} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \Hypertarget{group___c_m_s_i_s___core___sys_tick_functions_gafb5b0ea281840d9882a79408ec56d741}\index{SysTick Functions@{SysTick Functions}!Z@{Z}}
+\index{Z@{Z}!SysTick Functions@{SysTick Functions}}
+\doxysubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsubsection{\texorpdfstring{[]}{[]}\hspace{0.1cm}{\footnotesize\ttfamily [12/12]}}
+{\footnotesize\ttfamily \label{group___c_m_s_i_s___core___sys_tick_functions_gafb5b0ea281840d9882a79408ec56d741} 
+uint32\+\_\+t  \{ ... \} \+::Z}
+
+bit\+: 30 Zero condition code flag \input{group___c_m_s_i_s__core___debug_functions}

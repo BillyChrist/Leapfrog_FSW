@@ -1,0 +1,201 @@
+This is the G\+IT push of the project software for Leapfrog as of 22nd August 2024. It is hosted on a private repostiroy belonging to Howard Hall and will be regularly synced with the S\+E\+RC gitlab.
+
+This repository will contain a version control of the associated software and branch from the main. Any long term changes will then be merged back with main after review.
+
+Currently the main contains two main sections\+: flight software for the S\+T\+M32 and the ground station software, in the associated folders.
+
+By our own convention, version 0.\+0 will denote the files uploaded as of 22nd August 2024.
+
+To see Documentation, open documents/docs/html/index.\+html on local computer since github doesn\textquotesingle{}t allow so many files uploaded {\ttfamily \+:(}
+
+Please adhere to at least the basic practises of git push/pull/commits/merges. See instructions below.
+
+
+\begin{DoxyItemize}
+\item \href{\#developer-workflow}{\texttt{ Developer Workflow}}
+\begin{DoxyItemize}
+\item \href{\#create-a-new-branch}{\texttt{ 1. Create a New Branch}}
+\item \href{\#make-changes-and-commit}{\texttt{ 2. Make Changes and Commit}}
+\item \href{\#create-a-pull-request-pr}{\texttt{ 3. Create a Pull Request (PR)}}
+\item \href{\#review-and-approval}{\texttt{ 4. Review and Approval}}
+\item \href{\#merging-the-pr-into-develop}{\texttt{ 5. Merging the PR into {\ttfamily develop}}}
+\item \href{\#clean-up}{\texttt{ 6. Clean Up}}
+\end{DoxyItemize}
+\item \href{\#how-to-git}{\texttt{ First Timers}}
+\begin{DoxyItemize}
+\item \href{\#prerequisites}{\texttt{ Prerequisites}}
+\item \href{\#setting-up-your-ssh-key}{\texttt{ Setting Up Your S\+SH Key}}
+\item \href{\#cloning-the-repository}{\texttt{ Cloning the Repository}}
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+
+
+
+
+temporary todo task \tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{5}{|X[-1]}|}
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Task  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Status  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Assignee  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Due Date  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Priority   }\\\cline{1-5}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Task  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Status  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Assignee  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Due Date  }&\PBS\centering \cellcolor{\tableheadbgcolor}\textbf{ Priority   }\\\cline{1-5}
+\endhead
+Jenkins/github action for doxygen  &Not Started  &Charles  &2024-\/10-\/20  &Low   \\\cline{1-5}
+Improve Documentation(doxygen)  &Not Started  &Any Team Member  &2024-\/10-\/20  &Mid   \\\cline{1-5}
+\end{longtabu}
+
+
+no touch main!
+
+Whenever a new feature, bug fix, or change needs to be made, start by creating a new branch. This ensures that the {\ttfamily develop} branch remains stable and can receive tested code only.
+
+
+\begin{DoxyEnumerate}
+\item Fetch the latest updates from the remote repository\+: \`{}\`{}\`{}bash git fetch origin \`{}\`{}\`{}
+\item Switch to the {\ttfamily develop} branch to ensure you\textquotesingle{}re branching off the latest state\+: \`{}\`{}\`{}bash git checkout develop \`{}\`{}\`{}
+\item Pull the latest changes to avoid working on an outdated version\+: \`{}\`{}\`{}bash git pull origin develop \`{}\`{}\`{}
+\item Create and switch to a new branch for your changes\+: \`{}\`{}\`{}bash git checkout -\/b feature/your-\/feature-\/name \`{}\`{}{\ttfamily 
+\begin{DoxyItemize}
+\item $\ast$\+Tip\+:$\ast$ Use descriptive branch names prefixed with the type of change, such asfeature/{\ttfamily ,}fix/{\ttfamily , or}hotfix/\`{}.
+\end{DoxyItemize}}
+\end{DoxyEnumerate}
+
+{\ttfamily }
+
+{\ttfamily  After switching to your new branch, you can begin making changes.}
+
+{\ttfamily }
+
+{\ttfamily 
+\begin{DoxyEnumerate}
+\item Add the changes to be staged for commit\+: \`{}\`{}\`{}bash git add . \`{}\`{}\`{}
+\item Commit the changes with a descriptive message\+: \`{}\`{}\`{}bash git commit -\/m \char`\"{}\+Add detailed description of the changes made\char`\"{} \`{}\`{}\`{}
+\item Push your branch to the remote repository\+: \`{}\`{}\`{}bash git push origin feature/your-\/feature-\/name \`{}\`{}\`{}
+\end{DoxyEnumerate}}
+
+{\ttfamily }
+
+{\ttfamily  Once changes are made and pushed to the new branch, create a Pull Request (PR) to merge it into the {\ttfamily develop} branch. This process allows for code review and testing before merging.}
+
+{\ttfamily 
+\begin{DoxyEnumerate}
+\item Go to the Git\+Hub repository.
+\item Navigate to the \char`\"{}\+Pull Requests\char`\"{} tab.
+\item Select \char`\"{}\+New Pull Request.\char`\"{}
+\item Set the base branch to {\ttfamily develop} and compare it with your feature branch.
+\item Add a title and description to explain the changes.
+\item Submit the PR for review.
+\end{DoxyEnumerate}}
+
+{\ttfamily }
+
+{\ttfamily 
+\begin{DoxyItemize}
+\item Once the PR is submitted, the code will be reviewed by peers or maintainers.
+\item Address any requested changes or feedback.
+\item Once approved, the PR can be merged into the {\ttfamily develop} branch.
+\end{DoxyItemize}}
+
+{\ttfamily }
+
+{\ttfamily  }
+
+{\ttfamily 
+\begin{DoxyEnumerate}
+\item Once the PR is approved, ensure your {\ttfamily develop} branch is up to date\+: \`{}\`{}\`{}bash git checkout develop git pull origin develop \`{}\`{}\`{}
+\item Merge the feature branch into {\ttfamily develop}\+: \`{}\`{}\`{}bash git merge --no-\/ff feature/your-\/feature-\/name \`{}\`{}{\ttfamily 
+\begin{DoxyItemize}
+\item $\ast$\+Tip\+:$\ast$ The--no-\/ff\`{} flag ensures that the merge creates a commit, preserving the history of the branch.
+\end{DoxyItemize}}
+\item {\ttfamily Push the updated {\ttfamily develop} branch to the remote repository\+: \`{}\`{}\`{}bash git push origin develop \`{}\`{}\`{}}
+\end{DoxyEnumerate}}
+
+{\ttfamily {\ttfamily }}
+
+{\ttfamily {\ttfamily  Once the feature is merged, you can delete the branch locally and remotely\+:}}
+
+{\ttfamily {\ttfamily }}
+
+{\ttfamily {\ttfamily 
+\begin{DoxyEnumerate}
+\item Delete the local branch\+: \`{}\`{}\`{}bash git branch -\/d feature/your-\/feature-\/name \`{}\`{}\`{}
+\item Delete the remote branch\+: \`{}\`{}\`{}bash git push origin --delete feature/your-\/feature-\/name \`{}\`{}\`{}
+\end{DoxyEnumerate}}}
+
+{\ttfamily {\ttfamily \href{\#table-of-contents}{\texttt{ Back to Top}}}}
+
+{\ttfamily {\ttfamily 
+
+}}
+
+{\ttfamily {\ttfamily }}
+
+{\ttfamily {\ttfamily }}
+
+{\ttfamily {\ttfamily }}
+
+{\ttfamily {\ttfamily Before you begin, ensure you have the following installed on your machine\+:
+\begin{DoxyItemize}
+\item Git
+\item A text editor (e.\+g., {\bfseries{Visual Studio Code}} recommended, Atom, etc.)
+\end{DoxyItemize}}}
+
+{\ttfamily {\ttfamily }}
+
+{\ttfamily {\ttfamily Only first time. Follow these steps to create and add your S\+SH key\+:}}
+
+{\ttfamily {\ttfamily 
+\begin{DoxyEnumerate}
+\item {\bfseries{Open your terminal (or Git Bash on Windows)}}.
+\item {\bfseries{Generate a new S\+SH key}}\+:
+\begin{DoxyItemize}
+\item Use the command {\ttfamily ssh-\/keygen -\/t rsa -\/b 4096 -\/C \char`\"{}your\+\_\+email@example.\+com\char`\"{}}, replacing {\ttfamily your\+\_\+email@example.\+com} with the email address associated with your Git\+Hub account.
+\end{DoxyItemize}
+\item {\bfseries{When prompted, press Enter}} to accept the default file location. If you want to add a passphrase for additional security, you can do that as well.
+\item {\bfseries{Start the S\+SH agent}}\+:
+\begin{DoxyItemize}
+\item Run the command {\ttfamily eval \char`\"{}\$(ssh-\/agent -\/s)\char`\"{}}.
+\end{DoxyItemize}
+\item {\bfseries{Add your S\+SH private key to the S\+SH agent}}\+:
+\begin{DoxyItemize}
+\item Use {\ttfamily ssh-\/add $\sim$/.ssh/id\+\_\+rsa}.
+\end{DoxyItemize}
+\item {\bfseries{Copy your S\+SH key to the clipboard}}\+:
+\begin{DoxyItemize}
+\item For Windows, use {\ttfamily clip $<$ $\sim$/.ssh/id\+\_\+rsa.\+pub}.
+\item For mac\+OS, use {\ttfamily pbcopy $<$ $\sim$/.ssh/id\+\_\+rsa.\+pub}.
+\item For Linux, use {\ttfamily xclip -\/sel clip $<$ $\sim$/.ssh/id\+\_\+rsa.\+pub}.
+\end{DoxyItemize}
+\item {\bfseries{Add the S\+SH key to your Git\+Hub account}}\+:
+\begin{DoxyItemize}
+\item Go to your Git\+Hub account.
+\item Navigate to {\bfseries{Settings}} $>$ {\bfseries{S\+SH and G\+PG keys}} $>$ {\bfseries{New S\+SH key}}.
+\item Paste your S\+SH key and give it a title.
+\item Click {\bfseries{Add S\+SH key}}.
+\end{DoxyItemize}
+\end{DoxyEnumerate}}}
+
+{\ttfamily {\ttfamily }}
+
+{\ttfamily {\ttfamily Once your S\+SH key is set up, you can clone the repository using the command {\ttfamily git clone git@github.\+com\+:hall-\/engine/leapfrog.\+git}.}}
+
+{\ttfamily {\ttfamily Navigate into the project directory with the command {\ttfamily cd leapfrog}.}}
+
+{\ttfamily {\ttfamily See \href{\#developer-workflow}{\texttt{ Developer Workflow}} for implementing changes}}
+
+{\ttfamily {\ttfamily \href{\#table-of-contents}{\texttt{ Back to Top}}}}
+
+{\ttfamily {\ttfamily }}
+
+{\ttfamily {\ttfamily {\bfseries{Will Christian}} \href{mailto:william.christian@usc.edu}{\texttt{ william.\+christian@usc.\+edu}}}}
+
+{\ttfamily {\ttfamily {\bfseries{Varick John}} \href{mailto:vjohn@usc.edu}{\texttt{ vjohn@usc.\+edu}}}}
+
+{\ttfamily {\ttfamily {\bfseries{Howard Hall}} \href{mailto:hahall@usc.edu}{\texttt{ hahall@usc.\+edu}}}}
+
+{\ttfamily {\ttfamily {\bfseries{Briana Zeggane}} \href{mailto:zeggane@usc.edu}{\texttt{ zeggane@usc.\+edu}}}}
+
+{\ttfamily {\ttfamily {\bfseries{Trevor Gross}} \href{mailto:trevorg@usc.edu}{\texttt{ trevorg@usc.\+edu}} }}

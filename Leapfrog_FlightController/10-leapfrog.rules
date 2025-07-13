@@ -1,0 +1,1 @@
+SUBSYSTEMS=="usb", ATTRS{interface}=="ST-Link VCP Ctrl", SYMLINK+="stm32"

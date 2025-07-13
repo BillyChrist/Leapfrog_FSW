@@ -1,0 +1,49 @@
+\hypertarget{structos_thread_attr__t}{}\section{os\+Thread\+Attr\+\_\+t Struct Reference}
+\label{structos_thread_attr__t}\index{osThreadAttr\_t@{osThreadAttr\_t}}
+
+
+Attributes structure for thread.  
+
+
+
+
+{\ttfamily \#include $<$cmsis\+\_\+os2.\+h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structos_thread_attr__t_aed20d9f112c97dcb4fc6374290ab7446}\label{structos_thread_attr__t_aed20d9f112c97dcb4fc6374290ab7446}} 
+const char $\ast$ \mbox{\hyperlink{structos_thread_attr__t_aed20d9f112c97dcb4fc6374290ab7446}{name}}
+\begin{DoxyCompactList}\small\item\em name of the thread \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_thread_attr__t_a5f48a821ddc41410fe625860b6380d3a}\label{structos_thread_attr__t_a5f48a821ddc41410fe625860b6380d3a}} 
+uint32\+\_\+t \mbox{\hyperlink{structos_thread_attr__t_a5f48a821ddc41410fe625860b6380d3a}{attr\+\_\+bits}}
+\begin{DoxyCompactList}\small\item\em attribute bits \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_thread_attr__t_a378962e098d6fc89cd0bdecaf03b59de}\label{structos_thread_attr__t_a378962e098d6fc89cd0bdecaf03b59de}} 
+void $\ast$ \mbox{\hyperlink{structos_thread_attr__t_a378962e098d6fc89cd0bdecaf03b59de}{cb\+\_\+mem}}
+\begin{DoxyCompactList}\small\item\em memory for control block \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_thread_attr__t_a8992f7ce1ac52bb8682ccd4f42751de5}\label{structos_thread_attr__t_a8992f7ce1ac52bb8682ccd4f42751de5}} 
+uint32\+\_\+t \mbox{\hyperlink{structos_thread_attr__t_a8992f7ce1ac52bb8682ccd4f42751de5}{cb\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em size of provided memory for control block \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_thread_attr__t_a8ce05e5336d40cba01b6e1d1e36afe77}\label{structos_thread_attr__t_a8ce05e5336d40cba01b6e1d1e36afe77}} 
+void $\ast$ \mbox{\hyperlink{structos_thread_attr__t_a8ce05e5336d40cba01b6e1d1e36afe77}{stack\+\_\+mem}}
+\begin{DoxyCompactList}\small\item\em memory for stack \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_thread_attr__t_acb537dae7fecd9c744852ff6d6ea2c04}\label{structos_thread_attr__t_acb537dae7fecd9c744852ff6d6ea2c04}} 
+uint32\+\_\+t \mbox{\hyperlink{structos_thread_attr__t_acb537dae7fecd9c744852ff6d6ea2c04}{stack\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em size of stack \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_thread_attr__t_a90ae74b20698ee175b68f7f53a0b9091}\label{structos_thread_attr__t_a90ae74b20698ee175b68f7f53a0b9091}} 
+os\+Priority\+\_\+t \mbox{\hyperlink{structos_thread_attr__t_a90ae74b20698ee175b68f7f53a0b9091}{priority}}
+\begin{DoxyCompactList}\small\item\em initial thread priority (default\+: os\+Priority\+Normal) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_thread_attr__t_a5cefc38447dae2c9f3fb81c193c49536}\label{structos_thread_attr__t_a5cefc38447dae2c9f3fb81c193c49536}} 
+T\+Z\+\_\+\+Module\+Id\+\_\+t \mbox{\hyperlink{structos_thread_attr__t_a5cefc38447dae2c9f3fb81c193c49536}{tz\+\_\+module}}
+\begin{DoxyCompactList}\small\item\em Trust\+Zone module identifier. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{structos_thread_attr__t_a553fd9961d8f9e4562f84cd68709ae2d}\label{structos_thread_attr__t_a553fd9961d8f9e4562f84cd68709ae2d}} 
+uint32\+\_\+t \mbox{\hyperlink{structos_thread_attr__t_a553fd9961d8f9e4562f84cd68709ae2d}{reserved}}
+\begin{DoxyCompactList}\small\item\em reserved (must be 0) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Attributes structure for thread. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Viserion/\+S\+T\+M32\+Cube\+I\+D\+E/workspace\+\_\+1.\+16.\+0/\+Leapfrog\+\_\+\+V1/\+Middlewares/\+Third\+\_\+\+Party/\+Free\+R\+T\+O\+S/\+Source/\+C\+M\+S\+I\+S\+\_\+\+R\+T\+O\+S\+\_\+\+V2/cmsis\+\_\+os2.\+h\end{DoxyCompactItemize}

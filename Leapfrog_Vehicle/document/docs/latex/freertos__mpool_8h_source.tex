@@ -1,0 +1,69 @@
+\doxysection{freertos\+\_\+mpool.\+h}
+\hypertarget{freertos__mpool_8h_source}{}\label{freertos__mpool_8h_source}\index{/Users/charlesou/leapfrog/Middlewares/Third\_Party/FreeRTOS/Source/CMSIS\_RTOS\_V2/freertos\_mpool.h@{/Users/charlesou/leapfrog/Middlewares/Third\_Party/FreeRTOS/Source/CMSIS\_RTOS\_V2/freertos\_mpool.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Copyright\ (c)\ 2013-\/2020\ Arm\ Limited.\ All\ rights\ reserved.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ SPDX-\/License-\/Identifier:\ Apache-\/2.0}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ Licensed\ under\ the\ Apache\ License,\ Version\ 2.0\ (the\ License);\ you\ may}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ not\ use\ this\ file\ except\ in\ compliance\ with\ the\ License.}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ You\ may\ obtain\ a\ copy\ of\ the\ License\ at}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ www.apache.org/licenses/LICENSE-\/2.0}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ Unless\ required\ by\ applicable\ law\ or\ agreed\ to\ in\ writing,\ software}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ distributed\ under\ the\ License\ is\ distributed\ on\ an\ AS\ IS\ BASIS,\ WITHOUT}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ WARRANTIES\ OR\ CONDITIONS\ OF\ ANY\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *\ See\ the\ License\ for\ the\ specific\ language\ governing\ permissions\ and}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ limitations\ under\ the\ License.}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ \ \ \ \ \ Name:\ \ \ \ freertos\_mpool.h}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *\ \ \ \ \ \ Purpose:\ CMSIS\ RTOS2\ wrapper\ for\ FreeRTOS}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#ifndef\ FREERTOS\_MPOOL\_H\_}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ FREERTOS\_MPOOL\_H\_}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}FreeRTOS.h"{}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ "{}semphr.h"{}}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{/*\ Memory\ Pool\ implementation\ definitions\ */}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ MPOOL\_STATUS\ \ \ \ \ \ \ \ \ \ \ \ \ \ 0x5EED0000U}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{/*\ Memory\ Block\ header\ */}}
+\DoxyCodeLine{00034\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ *next;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Pointer\ to\ next\ block\ \ */}}
+\DoxyCodeLine{00036\ \}\ \mbox{\hyperlink{struct_mem_pool_block__t}{MemPoolBlock\_t}};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{comment}{/*\ Memory\ Pool\ control\ block\ */}}
+\DoxyCodeLine{00039\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_mem_pool_def__t}{MemPoolDef\_t}}\ \{}
+\DoxyCodeLine{00040\ \ \ \mbox{\hyperlink{struct_mem_pool_block__t}{MemPoolBlock\_t}}\ \ \ \ *head;\ \ \ \ \ \ \textcolor{comment}{/*\ Pointer\ to\ head\ block\ \ \ */}}
+\DoxyCodeLine{00041\ \ \ \mbox{\hyperlink{struct_queue_definition}{SemaphoreHandle\_t}}\ \ sem;\ \ \ \ \ \ \ \textcolor{comment}{/*\ Pool\ semaphore\ handle\ \ \ */}}
+\DoxyCodeLine{00042\ \ \ uint8\_t\ \ \ \ \ \ \ \ \ \ \ *mem\_arr;\ \ \ \textcolor{comment}{/*\ Pool\ memory\ array\ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00043\ \ \ uint32\_t\ \ \ \ \ \ \ \ \ \ \ mem\_sz;\ \ \ \ \textcolor{comment}{/*\ Pool\ memory\ array\ size\ \ */}}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ \ \ \ \ \ \ \ *name;\ \ \ \ \ \ \textcolor{comment}{/*\ Pointer\ to\ name\ string\ \ */}}
+\DoxyCodeLine{00045\ \ \ uint32\_t\ \ \ \ \ \ \ \ \ \ \ bl\_sz;\ \ \ \ \ \textcolor{comment}{/*\ Size\ of\ a\ single\ block\ \ */}}
+\DoxyCodeLine{00046\ \ \ uint32\_t\ \ \ \ \ \ \ \ \ \ \ bl\_cnt;\ \ \ \ \textcolor{comment}{/*\ Number\ of\ blocks\ \ \ \ \ \ \ \ */}}
+\DoxyCodeLine{00047\ \ \ uint32\_t\ \ \ \ \ \ \ \ \ \ \ n;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Block\ allocation\ index\ \ */}}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{volatile}\ uint32\_t\ \ status;\ \ \ \ \textcolor{comment}{/*\ Object\ status\ flags\ \ \ \ \ */}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#if\ (configSUPPORT\_STATIC\_ALLOCATION\ ==\ 1)}}
+\DoxyCodeLine{00050\ \ \ \mbox{\hyperlink{structx_s_t_a_t_i_c___q_u_e_u_e}{StaticSemaphore\_t}}\ \ mem\_sem;\ \ \ \textcolor{comment}{/*\ Semaphore\ object\ memory\ */}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00052\ \}\ \mbox{\hyperlink{struct_mem_pool_def__t}{MemPool\_t}};}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{comment}{/*\ No\ need\ to\ hide\ static\ object\ type,\ just\ align\ to\ coding\ style\ */}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#define\ StaticMemPool\_t\ \ \ \ \ \ \ \ \ MemPool\_t}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{comment}{/*\ Define\ memory\ pool\ control\ block\ size\ */}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ MEMPOOL\_CB\_SIZE\ \ \ \ \ \ \ \ \ (sizeof(StaticMemPool\_t))}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{comment}{/*\ Define\ size\ of\ the\ byte\ array\ required\ to\ create\ count\ of\ blocks\ of\ given\ size\ */}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ MEMPOOL\_ARR\_SIZE(bl\_count,\ bl\_size)\ (((((bl\_size)\ +\ (4\ -\/\ 1))\ /\ 4)\ *\ 4)*(bl\_count))}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ FREERTOS\_MPOOL\_H\_\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

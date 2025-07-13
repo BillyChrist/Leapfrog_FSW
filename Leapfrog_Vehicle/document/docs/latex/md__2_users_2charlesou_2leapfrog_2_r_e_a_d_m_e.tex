@@ -1,0 +1,209 @@
+\chapter{leapfrog}
+\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e}{}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e}\index{leapfrog@{leapfrog}}
+\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md0}%
+\Hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md0}%
+
+
+This is the GIT push of the project software for Leapfrog as of 22nd August 2024. It is hosted on a private repostiroy belonging to Howard Hall and will be regularly synced with the SERC gitlab.\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md1}{}\doxysection{\texorpdfstring{Notes}{Notes}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md1}
+This repository will contain a version control of the associated software and branch from the main. Any long term changes will then be merged back with main after review.
+
+Currently the main contains two main sections\+: flight software for the STM32 and the ground station software, in the associated folders.
+
+By our own convention, version 0.\+0 will denote the files uploaded as of 22nd August 2024.
+
+Please adhere to at least the basic practises of git push/pull/commits/merges. See instructions below.\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md2}{}\doxysection{\texorpdfstring{Table of Contents}{Table of Contents}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md2}
+
+\begin{DoxyItemize}
+\item Developer Workflow
+\begin{DoxyItemize}
+\item 1. Create a New Branch
+\item 2. Make Changes and Commit
+\item 3. Create a Pull Request (PR)
+\item 4. Review and Approval
+\item 5. Merging the PR into \`{}develop\`{}
+\item 6. Clean Up
+\end{DoxyItemize}
+\item First Timers
+\begin{DoxyItemize}
+\item Prerequisites
+\item Setting Up Your SSH Key
+\item Cloning the Repository
+\end{DoxyItemize}
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md4}{}\doxysection{\texorpdfstring{Developer Workflow (TBC)}{Developer Workflow (TBC)}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md4}
+\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md5}{}\doxysubsection{\texorpdfstring{1. Create a New Branch}{1. Create a New Branch}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md5}
+no touch main!
+
+Whenever a new feature, bug fix, or change needs to be made, start by creating a new branch. This ensures that the {\ttfamily develop} branch remains stable and can receive tested code only.\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md6}{}\doxysubsubsection{\texorpdfstring{Commands\+:}{Commands\+:}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md6}
+
+\begin{DoxyEnumerate}
+\item Fetch the latest updates from the remote repository\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ fetch\ origin}
+
+\end{DoxyCode}
+
+\item Switch to the {\ttfamily develop} branch to ensure you\textquotesingle{}re branching off the latest state\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ checkout\ develop}
+
+\end{DoxyCode}
+
+\item Pull the latest changes to avoid working on an outdated version\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ pull\ origin\ develop}
+
+\end{DoxyCode}
+
+\item Create and switch to a new branch for your changes\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ checkout\ -\/b\ feature/your-\/feature-\/name}
+
+\end{DoxyCode}
+
+\begin{DoxyItemize}
+\item {\itshape Tip\+:} Use descriptive branch names prefixed with the type of change, such as {\ttfamily feature/}, {\ttfamily fix/}, or {\ttfamily hotfix/}.
+\end{DoxyItemize}
+\end{DoxyEnumerate}\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md7}{}\doxysubsection{\texorpdfstring{2. Make Changes and Commit}{2. Make Changes and Commit}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md7}
+After switching to your new branch, you can begin making changes.\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md8}{}\doxysubsubsection{\texorpdfstring{Commands\+:}{Commands\+:}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md8}
+
+\begin{DoxyEnumerate}
+\item Add the changes to be staged for commit\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ add\ .}
+
+\end{DoxyCode}
+
+\item Commit the changes with a descriptive message\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ commit\ -\/m\ "{}Add\ detailed\ description\ of\ the\ changes\ made"{}}
+
+\end{DoxyCode}
+
+\item Push your branch to the remote repository\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ push\ origin\ feature/your-\/feature-\/name}
+
+\end{DoxyCode}
+
+\end{DoxyEnumerate}\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md9}{}\doxysubsection{\texorpdfstring{3. Create a Pull Request (PR)}{3. Create a Pull Request (PR)}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md9}
+Once changes are made and pushed to the new branch, create a Pull Request (PR) to merge it into the {\ttfamily develop} branch. This process allows for code review and testing before merging.
+
+
+\begin{DoxyEnumerate}
+\item Go to the Git\+Hub repository.
+\item Navigate to the "{}\+Pull Requests"{} tab.
+\item Select "{}\+New Pull Request."{}
+\item Set the base branch to {\ttfamily develop} and compare it with your feature branch.
+\item Add a title and description to explain the changes.
+\item Submit the PR for review.
+\end{DoxyEnumerate}\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md10}{}\doxysubsection{\texorpdfstring{4. Review and Approval}{4. Review and Approval}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md10}
+
+\begin{DoxyItemize}
+\item Once the PR is submitted, the code will be reviewed by peers or maintainers.
+\item Address any requested changes or feedback.
+\item Once approved, the PR can be merged into the {\ttfamily develop} branch.
+\end{DoxyItemize}\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md11}{}\doxysubsection{\texorpdfstring{5. Merging the PR into {\ttfamily develop}}{5. Merging the PR into {\ttfamily develop}}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md11}
+\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md12}{}\doxysubsubsection{\texorpdfstring{Commands\+:}{Commands\+:}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md12}
+
+\begin{DoxyEnumerate}
+\item Once the PR is approved, ensure your {\ttfamily develop} branch is up to date\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ checkout\ develop}
+\DoxyCodeLine{git\ pull\ origin\ develop}
+
+\end{DoxyCode}
+
+\item Merge the feature branch into {\ttfamily develop}\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ merge\ -\/-\/no-\/ff\ feature/your-\/feature-\/name}
+
+\end{DoxyCode}
+
+\begin{DoxyItemize}
+\item {\itshape Tip\+:} The {\ttfamily -\/-\/no-\/ff} flag ensures that the merge creates a commit, preserving the history of the branch.
+\end{DoxyItemize}
+\item Push the updated {\ttfamily develop} branch to the remote repository\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ push\ origin\ develop}
+
+\end{DoxyCode}
+
+\end{DoxyEnumerate}\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md13}{}\doxysubsection{\texorpdfstring{6. Clean Up}{6. Clean Up}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md13}
+Once the feature is merged, you can delete the branch locally and remotely\+:\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md14}{}\doxysubsubsection{\texorpdfstring{Commands\+:}{Commands\+:}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md14}
+
+\begin{DoxyEnumerate}
+\item Delete the local branch\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ branch\ -\/d\ feature/your-\/feature-\/name}
+
+\end{DoxyCode}
+
+\item Delete the remote branch\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{git\ push\ origin\ -\/-\/delete\ feature/your-\/feature-\/name}
+
+\end{DoxyCode}
+
+\end{DoxyEnumerate}
+
+Back to Top
+
+\DoxyHorRuler{0}
+\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md16}{}\doxysection{\texorpdfstring{How to GIT}{How to GIT}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md16}
+\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md17}{}\doxysubsection{\texorpdfstring{Prerequisites}{Prerequisites}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md17}
+Before you begin, ensure you have the following installed on your machine\+:
+\begin{DoxyItemize}
+\item Git
+\item A text editor (e.\+g., {\bfseries{Visual Studio Code}} recommended, Atom, etc.)
+\end{DoxyItemize}\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md18}{}\doxysubsection{\texorpdfstring{Setting Up Your SSH Key}{Setting Up Your SSH Key}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md18}
+Only first time. Follow these steps to create and add your SSH key\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Open your terminal (or Git Bash on Windows)}}.
+\item {\bfseries{Generate a new SSH key}}\+:
+\begin{DoxyItemize}
+\item Use the command {\ttfamily ssh-\/keygen -\/t rsa -\/b 4096 -\/C "{}your\+\_\+email@example.\+com"{}}, replacing {\ttfamily your\+\_\+email@example.\+com} with the email address associated with your Git\+Hub account.
+\end{DoxyItemize}
+\item {\bfseries{When prompted, press Enter}} to accept the default file location. If you want to add a passphrase for additional security, you can do that as well.
+\item {\bfseries{Start the SSH agent}}\+:
+\begin{DoxyItemize}
+\item Run the command {\ttfamily eval "{}\$(ssh-\/agent -\/s)"{}}.
+\end{DoxyItemize}
+\item {\bfseries{Add your SSH private key to the SSH agent}}\+:
+\begin{DoxyItemize}
+\item Use {\ttfamily ssh-\/add \texorpdfstring{$\sim$}{\string~}/.ssh/id\+\_\+rsa}.
+\end{DoxyItemize}
+\item {\bfseries{Copy your SSH key to the clipboard}}\+:
+\begin{DoxyItemize}
+\item For Windows, use {\ttfamily clip \texorpdfstring{$<$}{<} \texorpdfstring{$\sim$}{\string~}/.ssh/id\+\_\+rsa.\+pub}.
+\item For mac\+OS, use {\ttfamily pbcopy \texorpdfstring{$<$}{<} \texorpdfstring{$\sim$}{\string~}/.ssh/id\+\_\+rsa.\+pub}.
+\item For Linux, use {\ttfamily xclip -\/sel clip \texorpdfstring{$<$}{<} \texorpdfstring{$\sim$}{\string~}/.ssh/id\+\_\+rsa.\+pub}.
+\end{DoxyItemize}
+\item {\bfseries{Add the SSH key to your Git\+Hub account}}\+:
+\begin{DoxyItemize}
+\item Go to your Git\+Hub account.
+\item Navigate to {\bfseries{Settings}} \texorpdfstring{$>$}{>} {\bfseries{SSH and GPG keys}} \texorpdfstring{$>$}{>} {\bfseries{New SSH key}}.
+\item Paste your SSH key and give it a title.
+\item Click {\bfseries{Add SSH key}}.
+\end{DoxyItemize}
+\end{DoxyEnumerate}\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md19}{}\doxysubsection{\texorpdfstring{Cloning the Repository}{Cloning the Repository}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md19}
+Once your SSH key is set up, you can clone the repository using the command {\ttfamily git clone git@github.\+com\+:hall-\/engine/leapfrog.\+git}.
+
+Navigate into the project directory with the command {\ttfamily cd leapfrog}.
+
+See Developer Workflow for implementing changes
+
+Back to Top\hypertarget{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md20}{}\doxysection{\texorpdfstring{Current Team}{Current Team}}\label{md__2_users_2charlesou_2leapfrog_2_r_e_a_d_m_e_autotoc_md20}
+{\bfseries{Will Christian}} \href{mailto:william.christian@usc.edu}{\texttt{ william.\+christian@usc.\+edu}}
+
+{\bfseries{Varick John}} \href{mailto:vjohn@usc.edu}{\texttt{ vjohn@usc.\+edu}}
+
+{\bfseries{Howard Hall}} \href{mailto:hahall@usc.edu}{\texttt{ hahall@usc.\+edu}}
+
+{\bfseries{Briana Zeggane}} \href{mailto:zeggane@usc.edu}{\texttt{ zeggane@usc.\+edu}}
+
+{\bfseries{Trevor Gross}} \href{mailto:trevorg@usc.edu}{\texttt{ trevorg@usc.\+edu}} 
