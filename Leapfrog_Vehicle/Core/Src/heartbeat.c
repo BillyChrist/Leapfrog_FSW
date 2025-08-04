@@ -1,11 +1,12 @@
-/*
- * heartbeat.c
+/* ******************************************************************************
+ * @file  : heartbeat.c
  *
+ * @brief : This module handles telemetry packaging to send up to the flight controller (raspberry Pi), and reads incoming packets from CLI.
+ * 
  *  Created on: Apr 10, 2025
  *      Author: BillyChrist
- *
+ *  ******************************************************************************
  */
-
 
 #include "cmsis_os.h"
 #include <stdio.h>

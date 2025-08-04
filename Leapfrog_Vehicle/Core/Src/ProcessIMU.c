@@ -1,6 +1,9 @@
-/*
- * processIMU.c
+/* ******************************************************************************
+ * @file  : processIMU.c
  *
+ * @brief : This module reads all IMU data, performs sensor fusion, cross check, 
+ *          and implements fallback logic upon sensor failure.
+ * 
  *  Created on: Oct 08, 2024
  *      Author: BillyChrist
  *      Contributors: William Henrie

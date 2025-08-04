@@ -1,9 +1,13 @@
-/*
- * alt_imu_coupling.c
+/* ******************************************************************************
+ * @file   : alt_imu_coupling.c
  *
+ * @brief  : This module provides sensor fusion between LIDAR and IMU sensors to compensate for the vehicle's tilt angle
+ *           when calculating altitude.
+ * 
  *  Created on: Mar 7, 2025
  *      Author: Brad Barakat and Matthew Basha on 6/30/22.
  *      Updated by Billy Christ on 3/07/2025
+ *  ******************************************************************************
  */
 
 #include <stdint.h>

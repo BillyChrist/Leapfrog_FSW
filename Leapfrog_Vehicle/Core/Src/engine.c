@@ -1,11 +1,15 @@
-/*
- * engine.c
+/* ******************************************************************************
+ * @file engine.c
  *
+ * @brief This module handles engine operation and telemetry. All throttle control called from this code, including PID variables for tuning.
+ * 
  *  Created on: Nov 19, 2024
  *      Author: Julia Schatz
  *      Updated by: Billy Christ on 3/07/2025
+ *  ******************************************************************************
  */
 
+// TODO Add calculation to compensate for vehicle mass... tune only with PID control, or add variable?
 
 #include <engine_PID.h>
 #include <string.h>
@@ -15,7 +19,6 @@
 #include "queue.h"
 #include <stdio.h>
 #include "printf.h"
-
 #include "main.h"
 #include "heartbeat.h"
 #include "engine.h"
@@ -24,8 +27,6 @@
 #include "ACS_PID.h"
 #include "processIMU.h"
 #include "alt_imu_coupling.h"
-
-
 
 
 // Engine PID Values
@@ -267,7 +268,7 @@ void runEngineControl(void) {
           else {
             engineRxBuffPtr++;
             if (engineRxBuffPtr >= ENGINE_RX_BUF_SIZE) {
-              // this should never happen, but it's going to be a weird error when it does
+              // this should never happen, but it's going to be a weird error if it does
               engineRxBuffPtr = 0;
             }
           }
@@ -356,7 +357,7 @@ void runEngineControl(void) {
           }
           else if (msgState == 3) {
             // Only send a throttle command if the engine should be enabled
-    //        if (engineState != DISABLE) {
+            // if (engineState != DISABLE) {
             if (engineState != SystemDisabled) {
 
               sendWPE(throttle);
@@ -415,6 +416,7 @@ void sendTCO(uint8_t state) {
 /**
  * Set throttle using PWM. Input is [0.0, 1.0]
  */
+
 // TODO Reset the timer channel to the corresponding engine PWM.TIM3 is currently used for the EDF...
 void setThrottlePWM(float throttle) {
   const uint16_t minThrottle_us = 1000;

@@ -1,10 +1,14 @@
-/*
- * gps.c
+/* ******************************************************************************
+ * @file   : gps.c
  *
+ * @brief  : This module handles GPS sensor data. 
+ * 
  *  Created on: Mar 7, 2025
  *      Author: Billy Christ
+ *  ******************************************************************************
  */
 
+// TODO move sensor to raspberry pi, or include redundant GPS sensor data and fusion between controllers
 
 #include "gps.h"
 #include <string.h>

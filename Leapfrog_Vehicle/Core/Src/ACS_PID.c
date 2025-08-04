@@ -1,8 +1,11 @@
-/*
- * ACS_PID.c
+/* ******************************************************************************
+ * @file   : ACS_PID.c
  *
+ * @brief  : This code reads the IMU data, performs PID calculations, and outputs updated ACS power variables.
+ * 
  *  Created on: Aug 14, 2024
  *      Author: BillyChrist
+ *  ******************************************************************************
  */
 
 /* Includes ------------------------------------------------------------------*/
@@ -20,8 +23,12 @@
 #include <string.h>
 #include <stdio.h>
 
-/* PID constants */
+// TODO Consider converting to arrays
+// ex: PID[] = {1.200, 0.000, 0.050}
+// current[P, R, Y] = {.f, .f, .f}
+// ... etc
 
+/* ~~~~~~~~~~~~~ PID constants ~~~~~~~~~~~~~ */
 	// Constants for roll & pitch fans
 	float Kp_rollpitch = 2.000f;
 	float Ki_rollpitch = 1.200f;
@@ -32,18 +39,34 @@
 	float Ki_yaw = 0.200f;
 	float Kd_yaw = 0.900f;
 
-/* PID variables */
 float yaw_pointing = 0.00f;
 
-// TODO Consider converting to arrays
-// ex: PID[] = {1.200, 0.000, 0.050}
-// current[P, R, Y] = {.f, .f, .f}
-// ... etc
+// Determine the maximum PID output value
+float max_pid_output = 95.0f;              // Adjust based on output range
+float min_pid_output = 60.0f;
 
+// Integral Clamping values
+// Explanation in line with code
+float pitchroll_integral_clamp_max = (19.5/(.1389*3));
+float pitchroll_integral_clamp_min = (-14.5/(.1389*3));
+
+float yaw_integral_clamp_max = (19.5 / 0.1389);
+float yaw_integral_clamp_min = (-14.5 / 0.1389);
+
+// Idle speed
+float idle_rollpitch = 75.0f;
+float idle_yaw = 75.0f;
+
+// TODO These terms were replaced - Delete this after testing system
 //float current_roll_deg;
 //float current_pitch_deg;
 //float current_yaw_deg;
 
+//float current_angvel_x_degs;
+//float current_angvel_y_degs;
+
+
+/* ~~~~~~~~~~~~~ Variables~~~~~~~~~~~~~ */
 float error_pitch;
 float error_roll;
 float error_yaw;
@@ -91,28 +114,10 @@ float PR4_output;
 float Y1_output;
 float Y2_output;
 
-//float current_angvel_x_degs;
-//float current_angvel_y_degs;
-
-// Determine the maximum PID output value
-float max_pid_output = 95.0f;              // Adjust based on output range
-float min_pid_output = 60.0f;
-
-// Integral Clamping values
-// Explanation in line with code
-float pitchroll_integral_clamp_max = (19.5/(.1389*3));
-float pitchroll_integral_clamp_min = (-14.5/(.1389*3));
-
-float yaw_integral_clamp_max = (19.5 / 0.1389);
-float yaw_integral_clamp_min = (-14.5 / 0.1389);
-
-// Idle speed
-float idle_rollpitch = 75.0f;
-float idle_yaw = 75.0f;
-
 uint32_t lastUpdate = 0;
 
-/* ******************** MAIN FUNCTION LOOP **************************** */
+
+/* ~~~~~~~~~~~~~  MAIN LOOP ~~~~~~~~~~~~~  */
 
 void ACS_PID_Control(void) {
     uint32_t currentTime = HAL_GetTick(); 			   // Current time in ms
@@ -150,7 +155,7 @@ void ACS_PID_Control(void) {
 
     /* Integral Term Calculations & Windup Clamping
     Clamps to just below min and max values in output.
-    Idle is 75, so -14.5 brings output to just above min output (60)
+    Idle is 75 (50%), so -14.5 brings output to just above min output (60)
     19.5 brings output to just below maximum output (95)
     If the I terms are within the bounds, the integrator is allowed to continue to sum the errors
     If the I terms are not within the bounds, the integrator is not allowed to sum the errors in
@@ -223,12 +228,12 @@ void ACS_PID_Control(void) {
      		}
      }
 
- 	// TODO Add overshoot ramp-up, (from ang_vel?)
+// TODO Add overshoot ramp-up, (from ang_vel)
 
     // If angle is approaching zero, flip integral sign at 0?
     // "Critical Damping" - anticipate angular momentum
 
-    // Consider adding a "Deadzone" to prevent rapid reactions at equilibrium
+    // Implement a "Deadzone" to prevent rapid reactions at equilibrium
 
   // Example Ramp-up logic
   //       if (target_CCR_pitch > CCR_pitch) {

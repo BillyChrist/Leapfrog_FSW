@@ -1,8 +1,11 @@
-/*
- * altimeter.c
+/* ******************************************************************************
+ * @file   : altimeter.c
  *
+ * @brief  : This module handles i2c communication with LIDAR sensor, and outputs updated altitude measurements.
+ * 
  *  Created on: Mar 7, 2025
  *      Author: Billy Christ
+ *  ******************************************************************************
  */
 
 #include "altimeter.h"

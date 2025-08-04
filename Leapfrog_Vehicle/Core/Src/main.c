@@ -13,6 +13,8 @@
  * in the root directory of this software component.
  * If no LICENSE file comes with this software, it is provided AS-IS.
  *
+ * NOTE: 
+ * 
  ******************************************************************************
  */
 
@@ -1550,8 +1552,24 @@ void StartKillSwitchPin(void *argument)
   for(;;)
   {
     osDelay(1); // skeleton code for safe land logic and engine kill switch overrides...
-    check_for_safeland();
-  }
+    check_for_safeland(); 
+
+    /* 
+    > check for killswitch command on every loop
+    > If vehicle velocity exceeds safe value, attempt hover state, if hover attempt takes too long, attempt safe land, if vehicle is failing to slow, enter emergency_land
+    > Check engine status (fuel, power etc) for safe operation margins
+    > Check for ACS power status
+    > if any system returns low or critical, call SafeLand
+    > If safeLand called, declare system states (safe_land)
+    > ACS should keep operating until altimeter detects landed state (initial altitude + no changes for x-time)
+    > Engine should execute "safe land" sequence, throttle down slowly until landed, cooldown, then once safe temperature reached, power off
+    > If safe_land is not possible (system critical or unavailable), execute emergency_land
+      > if ACS system fail: throttle down quickly and attempt to use TVC for platform leveling until grounded
+      > if engine system fail: attempt to enter cooldown sequence for engine, increase "nominal" ACS thrust (set point from 50% to 75-80%) until landed
+      > if altimeter fail, attempt to utilize velocity and acceleration reading from IMU. Slowly throttle down until velocity reached 0, look out for spike in acceleration to signal landed state
+      > if emergyency_land fails, kill switch engage!
+    */
+  
   /* USER CODE END StartKillSwitchPin */
 }
 

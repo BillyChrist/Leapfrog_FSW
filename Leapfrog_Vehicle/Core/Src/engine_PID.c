@@ -1,21 +1,18 @@
- /*
-------------------------------------------------------------------------------
+ /* ******************************************************************************
 ~ File   : engine_pid.c
 ~ Author : Majid Derhambakhsh
 ~ Version: V1.0.0
 ~ Created: 02/11/2021 03:43:00 AM
 ~ Updated: 03/07/2025 by Billy Christ
-~ Brief  :
+~ Brief  : This code exclusively handles PID calculations, and outputs updated throttle % for engine control
 ~ Support:
 		   E-Mail : Majid.do16@gmail.com (subject : Embedded Library Support)
 		   Github : https://github.com/Majid-Derhambakhsh
-------------------------------------------------------------------------------
-~ Description:
 
-~ Attention  :
-
-~ Changes    :
 ------------------------------------------------------------------------------
+NOTE: Update PID values for engine control from engine.c
+------------------------------------------------------------------------------
+ ******************************************************************************
 */
 
 #include "engine_PID.h"
@@ -23,6 +20,7 @@
 
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
 /* ~~~~~~~~~~~~~~~~~ Initialize ~~~~~~~~~~~~~~~~ */
 void PID_Init(PID_TypeDef *uPID)
 {

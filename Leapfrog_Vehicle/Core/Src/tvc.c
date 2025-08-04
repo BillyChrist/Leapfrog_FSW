@@ -1,8 +1,13 @@
-/*
- * TVC.c
+/* ******************************************************************************
+ * @file  : TVC.c
  *
+ * @brief : This module reads linear actuator positions, performs angle calculations, 
+ *          and includes controls and state handling for navigation.
+ * 
  *  Created on: Aug 14, 2024
  *      Author: Viserion
+ * 
+ *  ******************************************************************************
  */
 
 /* Includes ------------------------------------------------------------------*/
