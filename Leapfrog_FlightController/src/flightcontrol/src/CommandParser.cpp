@@ -128,7 +128,7 @@ string CommandParser::engineParser(string cmd, string values) {
 
 string CommandParser::imuParser(string cmd, string values) {
     if (cmd == "calibrate") {
-        return this->imu_calibrate();
+        return this->imu_calibration();
     }
     return this->INVALID_COMMAND;
 }

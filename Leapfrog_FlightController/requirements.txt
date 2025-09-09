@@ -1,0 +1,39 @@
+# Leapfrog Flight Controller - Raspberry Pi Requirements
+# Ubuntu 22.04 LTS (jammy) + ROS 2 Humble + ARM64
+
+# Core ROS 2 Humble packages
+ros-humble-desktop
+ros-humble-rclcpp
+ros-humble-std-msgs
+ros-humble-geometry-msgs
+ros-humble-sensor-msgs
+ros-humble-nav-msgs
+ros-humble-tf2-ros
+ros-humble-tf2-geometry-msgs
+
+# Build tools and development packages
+build-essential
+cmake
+make
+git
+python3-pip
+python3-colcon-common-extensions
+
+# Protobuf support
+libprotobuf-dev
+protobuf-compiler
+python3-protobuf
+
+# Serial communication
+python3-serial
+
+# Additional development tools
+vim
+nano
+htop
+tree
+
+# Optional: For debugging and monitoring
+ros-humble-rqt
+ros-humble-rqt-common-plugins
+ros-humble-rqt-console
