@@ -23,6 +23,7 @@
 
 // Project headers
 #include "Serial.hpp"
+#include "Communication.hpp"
 #include "flightcontrol/msg/heartbeat.hpp"
 #include "CommandParser.hpp"
 

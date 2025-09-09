@@ -30,7 +30,7 @@
 
 typedef std::chrono::steady_clock stClock;
 
-FlightManager::FlightManager(string port, int baudrate, std::future<void> fut) : Node("FlightManager"), Serial(port, baudrate), comm_(std::make_unique<Utilities::Communication>(port, baudrate)) {
+FlightManager::FlightManager(string port, int baudrate, std::future<void> fut) : Node("FlightManager"), Serial(port, baudrate, '\n', 100, 100), comm_(std::make_unique<Utilities::Communication>(port, baudrate)) {
     // Load Script files
     string filename = this->path_to_files + this->custom_script_file;
     ifstream file;
