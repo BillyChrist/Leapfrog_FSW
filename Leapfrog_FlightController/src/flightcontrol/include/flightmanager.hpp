@@ -23,7 +23,6 @@
 
 // Project headers
 #include "Serial.hpp"
-#include "Communication.hpp"
 #include "flightcontrol/msg/heartbeat.hpp"
 #include "CommandParser.hpp"
 
@@ -40,6 +39,11 @@
 #include <fstream>
 #include <cstdlib>
 #include <mutex>
+
+// Forward declarations
+namespace Utilities {
+    class Communication;
+}
 
 #define HEARTBEAT_DURATION 2500
 
