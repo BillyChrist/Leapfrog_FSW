@@ -57,6 +57,9 @@ private:
     // Latest telemetry data from STM32 bridge
     flightcontrol::msg::Heartbeat latest_telemetry_;
     std::mutex telemetry_mutex_;
+    
+    // Communication object
+    std::unique_ptr<Utilities::Communication> comm_;
 
     // Local variables
     bool enable_engine = false;
@@ -68,7 +71,7 @@ private:
     bool guidance_internal = false;
     int enable_script = 0;
 
-    uint8 imu_calibration_status = 0;
+    uint8_t imu_calibration_status = 0;
     bool imu_calibration_flag = false;
     int imu_calibration_counter = 0;
     
@@ -140,4 +143,7 @@ public:
     // Heartbeat methods
     void SendProtobufHeartbeat();
     void telemetry_callback(const flightcontrol::msg::Heartbeat::SharedPtr msg);
+    
+    // Calibration methods
+    string imu_calibrate();
 };
