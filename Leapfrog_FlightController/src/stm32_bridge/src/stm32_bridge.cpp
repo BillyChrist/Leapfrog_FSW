@@ -216,18 +216,50 @@ void STM32Bridge::timer_callback() {
 
         // Create and publish telemetry message
         auto telemetry_msg = flightcontrol::msg::Heartbeat();
+        
+        // IMU Data
+        telemetry_msg.roll_deg = packet.roll_deg;
+        telemetry_msg.pitch_deg = packet.pitch_deg;
+        telemetry_msg.yaw_deg = packet.yaw_deg;
+        telemetry_msg.acc_x_g = packet.acc_x_g;
+        telemetry_msg.acc_y_g = packet.acc_y_g;
+        telemetry_msg.acc_z_g = packet.acc_z_g;
+        telemetry_msg.angvel_x_degs = packet.angvel_x_degs;
+        telemetry_msg.angvel_y_degs = packet.angvel_y_degs;
+        telemetry_msg.angvel_z_degs = packet.angvel_z_degs;
+        
+        // TVC Data
+        telemetry_msg.tvc_a_pos = packet.tvc_a_pos;
+        telemetry_msg.tvc_b_pos = packet.tvc_b_pos;
+        
+        // Engine Data
+        telemetry_msg.engine_turbine_rpm = packet.engine_turbine_rpm;
+        telemetry_msg.engine_rpm_setpoint = packet.engine_rpm_setpoint;
+        telemetry_msg.engine_egt_c = packet.engine_egt_c;
+        telemetry_msg.engine_pump_voltage = packet.engine_pump_voltage;
+        telemetry_msg.engine_turbine_state = packet.engine_turbine_state;
+        telemetry_msg.engine_off_condition = packet.engine_off_condition;
+        telemetry_msg.engine_throttle_percent = packet.engine_throttle_percent;
+        telemetry_msg.engine_current_a = packet.engine_current_a;
+        
+        // Altitude Data
+        telemetry_msg.altitude = packet.altitude;
+        
+        // System Status
+        telemetry_msg.heartbeat_counter = packet.heartbeat_counter;
         telemetry_msg.guidance_internal = guidance_internal;
-        telemetry_msg.enable_tvc = enable_tvc;
         telemetry_msg.enable_acs = enable_acs;
+        telemetry_msg.enable_tvc = enable_tvc;
         telemetry_msg.enable_engine = enable_engine;
+        telemetry_msg.imu_calibration_status = packet.imu_calibration_status;
+        
+        // Additional fields for compatibility
         telemetry_msg.tvc_angle1 = packet.tvc_a_pos;
         telemetry_msg.tvc_angle2 = packet.tvc_b_pos;
-        telemetry_msg.engine_thrust = engine_thrust;
         telemetry_msg.engine_hover_height = engine_hover;
-        telemetry_msg.imu_calibration_status = packet.imu_calibration_status;
-        // TODO add GPS telemetry
         telemetry_msg.safe_engine = safe_engine;
         telemetry_msg.power_engine = power_engine;
+        telemetry_msg.engine_thrust = engine_thrust;
         // When publishing telemetry, add error flags to the message
         telemetry_msg.error_flags = 0;
         if (heartbeat_timeout_flag) telemetry_msg.error_flags |= 0x01;
