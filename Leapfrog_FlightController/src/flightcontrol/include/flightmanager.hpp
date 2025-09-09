@@ -38,6 +38,7 @@
 #include <thread>
 #include <fstream>
 #include <cstdlib>
+#include <mutex>
 
 #define HEARTBEAT_DURATION 2500
 
@@ -50,7 +51,12 @@ class FlightManager : public rclcpp::Node, public Serial, public CommandParser
 private:
     // ROS variables
     rclcpp::Publisher<flightcontrol::msg::Heartbeat>::SharedPtr heartbeat_publisher_;
+    rclcpp::Subscription<flightcontrol::msg::Heartbeat>::SharedPtr telemetry_subscription_;
     rclcpp::TimerBase::SharedPtr autorun;
+    
+    // Latest telemetry data from STM32 bridge
+    flightcontrol::msg::Heartbeat latest_telemetry_;
+    std::mutex telemetry_mutex_;
 
     // Local variables
     bool enable_engine = false;
@@ -131,5 +137,7 @@ public:
 
     virtual void feed_watchdog() override;
 
+    // Heartbeat methods
     void SendProtobufHeartbeat();
+    void telemetry_callback(const flightcontrol::msg::Heartbeat::SharedPtr msg);
 };

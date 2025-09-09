@@ -44,6 +44,23 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 
 # ========================================
+# Protobuf generation
+# ========================================
+
+# Generate protobuf files
+set(PROTO_FILES
+  "heartbeat.proto"
+)
+
+# Generate C++ protobuf files
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
+
+# Create protobuf library
+add_library(leapfrog_proto ${PROTO_SRCS} ${PROTO_HDRS})
+target_include_directories(leapfrog_proto PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(leapfrog_proto ${Protobuf_LIBRARIES})
+
+# ========================================
 # Executable: flightmanager
 # ========================================
 
@@ -54,6 +71,7 @@ add_executable(flightmanager
 
 target_include_directories(flightmanager PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   $<INSTALL_INTERFACE:include>
 )
 

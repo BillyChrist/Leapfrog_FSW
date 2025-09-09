@@ -98,57 +98,12 @@ void FlightManager::InitializeSequence() {
 
 	RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Initialized Clients", getTimeSinceEpoch());
 
+	// Subscribe to telemetry from STM32 bridge
+	this->telemetry_subscription_ = this->create_subscription<flightcontrol::msg::Heartbeat>(
+		"telemetry", 10, std::bind(&FlightManager::telemetry_callback, this, std::placeholders::_1));
+	
+	// Timer for protobuf heartbeat to groundstation
 	this->autorun = this->create_wall_timer(100ms, [this]() -> void {
-		flightcontrol::msg::Heartbeat heartbeat;
-		if (std::chrono::system_clock::now() - lastPacketTime > groundstation_timeout) {
-			// Timeout
-			// We could just not publish anything and let the cascaded heartbeats take care of it, but if we want to hit a safe state ASAP
-			// it's faster and better to actively say "turn off"
-			heartbeat.guidance_internal = false;
-			heartbeat.enable_acs = false;
-			heartbeat.enable_engine = false;
-			heartbeat.safe_engine = false;
-			heartbeat.power_engine = false;
-			heartbeat.enable_tvc = false;
-		}
-		else {
-			heartbeat.guidance_internal = guidance_internal;
-			heartbeat.enable_acs = enable_acs;
-			heartbeat.enable_engine = enable_engine;
-			heartbeat.safe_engine = safe_engine;
-			heartbeat.power_engine = power_engine;
-			heartbeat.enable_tvc = enable_tvc;
-		}
-		// These have no effect if systems are disabled, so send them anyway for simplicity and filtering (if necessary)
-		heartbeat.tvc_angle1 = tvc_angle1;
-		heartbeat.tvc_angle2 = tvc_angle2;
-		heartbeat.engine_hover_height = engine_height;
-		heartbeat.engine_thrust = engine_thrust_cmd;
-
-        // Handle IMU calibration timeout
-        if (imu_calibrate_flag) {
-            imu_calibrate_counter++;
-            if (imu_calibrate_counter >= 150) {  // 15 seconds at 100ms heartbeat rate
-                imu_calibrate_flag = false;
-                imu_calibrate_counter = 0;
-                RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "t=%.4fs: IMU calibration timeout reached", getTimeSinceEpoch());
-            }
-        }
-        heartbeat.imu_calibration_status = imu_calibrate_flag;
-
-        // Handle TVC calibration timeout
-        if (tvc_calibrate_flag) {
-            tvc_calibrate_counter++;
-            if (tvc_calibrate_counter >= 150) {  // 15 seconds at 100ms heartbeat rate
-                tvc_calibrate_flag = false;
-                tvc_calibrate_counter = 0;
-                RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: TVC calibration timeout reached", getTimeSinceEpoch());
-            }
-        }
-        heartbeat.tvc_calibration = tvc_calibrate_flag;
-
-        // Publish heartbeat
-		heartbeat_publisher_->publish(heartbeat);
 		this->SendProtobufHeartbeat();
 	});
 
@@ -385,49 +340,49 @@ string FlightManager::guidance_enable(int value) {
 	return guidance_internal ? "Guidance is going internal!" : "Switched to manual control";
 }
 
+void FlightManager::telemetry_callback(const flightcontrol::msg::Heartbeat::SharedPtr msg) {
+    std::lock_guard<std::mutex> lock(telemetry_mutex_);
+    latest_telemetry_ = *msg;
+}
+
 void FlightManager::SendProtobufHeartbeat() {
+    std::lock_guard<std::mutex> lock(telemetry_mutex_);
+    
     leapfrog::Heartbeat hb_msg;
-    // IMU Data (TODO: assign real values when available)
-    // If you have these as member variables, use them. Otherwise, leave a single TODO.
-    // Example: hb_msg.set_roll_deg(roll_deg);
-    // For now, leave a single TODO for IMU fields:
-    // TODO: Populate IMU fields from STM32 telemetry when available
-    hb_msg.set_roll_deg(0.0f);
-    hb_msg.set_pitch_deg(0.0f);
-    hb_msg.set_yaw_deg(0.0f);
-    hb_msg.set_acc_x_g(0.0f);
-    hb_msg.set_acc_y_g(0.0f);
-    hb_msg.set_acc_z_g(0.0f);
-    hb_msg.set_angvel_x_degs(0.0f);
-    hb_msg.set_angvel_y_degs(0.0f);
-    hb_msg.set_angvel_z_degs(0.0f);
+    
+    // Use telemetry data from STM32 bridge
+    hb_msg.set_roll_deg(latest_telemetry_.roll_deg);
+    hb_msg.set_pitch_deg(latest_telemetry_.pitch_deg);
+    hb_msg.set_yaw_deg(latest_telemetry_.yaw_deg);
+    hb_msg.set_acc_x_g(latest_telemetry_.acc_x_g);
+    hb_msg.set_acc_y_g(latest_telemetry_.acc_y_g);
+    hb_msg.set_acc_z_g(latest_telemetry_.acc_z_g);
+    hb_msg.set_angvel_x_degs(latest_telemetry_.angvel_x_degs);
+    hb_msg.set_angvel_y_degs(latest_telemetry_.angvel_y_degs);
+    hb_msg.set_angvel_z_degs(latest_telemetry_.angvel_z_degs);
 
-    // TVC Data
-    hb_msg.set_tvc_a_pos(tvc_angle1);
-    hb_msg.set_tvc_b_pos(tvc_angle2);
+    hb_msg.set_tvc_a_pos(latest_telemetry_.tvc_a_pos);
+    hb_msg.set_tvc_b_pos(latest_telemetry_.tvc_b_pos);
 
-    // Engine Telemetry (TODO: assign real values when available)
-    hb_msg.set_engine_turbine_rpm(0);
-    hb_msg.set_engine_rpm_setpoint(0);
-    hb_msg.set_engine_egt_c(0);
-    hb_msg.set_engine_pump_voltage(0.0f);
-    hb_msg.set_engine_turbine_state(0);
-    hb_msg.set_engine_off_condition(0);
-    hb_msg.set_engine_throttle_percent(0);
-    hb_msg.set_engine_current_a(0.0f);
+    hb_msg.set_engine_turbine_rpm(latest_telemetry_.engine_turbine_rpm);
+    hb_msg.set_engine_rpm_setpoint(latest_telemetry_.engine_rpm_setpoint);
+    hb_msg.set_engine_egt_c(latest_telemetry_.engine_egt_c);
+    hb_msg.set_engine_pump_voltage(latest_telemetry_.engine_pump_voltage);
+    hb_msg.set_engine_turbine_state(latest_telemetry_.engine_turbine_state);
+    hb_msg.set_engine_off_condition(latest_telemetry_.engine_off_condition);
+    hb_msg.set_engine_throttle_percent(latest_telemetry_.engine_throttle_percent);
+    hb_msg.set_engine_current_a(latest_telemetry_.engine_current_a);
 
-    // Altitude
-    hb_msg.set_altitude(0);
+    hb_msg.set_altitude(latest_telemetry_.altitude);
 
-    // System Status
-    static uint32_t heartbeat_counter = 0;
-    hb_msg.set_heartbeat_counter(heartbeat_counter++);
-    hb_msg.set_guidance_internal(guidance_internal);
-    hb_msg.set_enable_acs(enable_acs);
-    hb_msg.set_enable_tvc(enable_tvc);
-    hb_msg.set_enable_engine(enable_engine);
-    hb_msg.set_imu_calibration_status(imu_calibration_flag);
+    hb_msg.set_heartbeat_counter(latest_telemetry_.heartbeat_counter);
+    hb_msg.set_guidance_internal(latest_telemetry_.guidance_internal);
+    hb_msg.set_enable_acs(latest_telemetry_.enable_acs);
+    hb_msg.set_enable_tvc(latest_telemetry_.enable_tvc);
+    hb_msg.set_enable_engine(latest_telemetry_.enable_engine);
+    hb_msg.set_imu_calibration_status(latest_telemetry_.imu_calibration_status);
 
+    // Serialize and send
     std::string out;
     hb_msg.SerializeToString(&out);
     std::vector<uint8_t> out_bytes(out.begin(), out.end());
