@@ -25,6 +25,9 @@
 
   <!-- Required for serial and data transmission -->
   <depend>communication</depend>
+  
+  <!-- Required for protobuf support -->
+  <depend>protobuf</depend>
 
   <!-- Declares that this package generates interfaces (e.g., msg/Heartbeat.msg) -->
   <member_of_group>rosidl_interface_packages</member_of_group>

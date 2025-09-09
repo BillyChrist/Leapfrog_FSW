@@ -30,9 +30,6 @@ source install/setup.bash
 echo "🔧 Building flightcontrol packages..."
 colcon build --symlink-install --packages-up-to flightcontrol --event-handlers console_direct+
 
-echo "🔧 Building stm32_bridge package and dependencies..."
-colcon build --symlink-install --packages-up-to stm32_bridge --event-handlers console_direct+
-
 # =====================================
 # 5. Build STM32 bridge
 # =====================================

@@ -29,6 +29,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(communication REQUIRED)
+find_package(Protobuf REQUIRED)
 
 # ========================================
 # Interface message files
@@ -59,11 +60,12 @@ target_include_directories(flightmanager PUBLIC
 ament_target_dependencies(flightmanager
   rclcpp
   communication
+  Protobuf
 )
 
-# Problem Spot... colcon consistently fails to find communication.so
+# Link with communication library and protobuf
 target_link_libraries(flightmanager
-  /home/leapfrog/Leapfrog_FlightController/install/communication/lib/libcommunication.so
+  communication
   leapfrog_proto
 )
 
@@ -98,7 +100,6 @@ endif()
 ament_export_include_directories(include)
 ament_export_dependencies(communication)
 
-# Temporary hardcoded fix to help linker find the communication library
-link_directories("/home/leapfrog/Leapfrog_FlightController/install/communication/lib")
+# Remove hardcoded path - use proper CMake target linking instead
 
 ament_package()

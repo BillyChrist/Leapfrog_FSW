@@ -17,6 +17,7 @@
   <depend>std_msgs</depend>
   <depend>communication</depend> <!-- used for Serial.hpp-->
   <depend>flightcontrol</depend> <!-- Used for Heartbeat.msg -->
+  <depend>protobuf</depend> <!-- Required for protobuf support -->
 
   <!-- Linting and code quality tools -->
   <test_depend>ament_lint_auto</test_depend>

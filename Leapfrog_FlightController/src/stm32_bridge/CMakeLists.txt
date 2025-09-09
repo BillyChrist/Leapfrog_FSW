@@ -30,6 +30,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(communication REQUIRED)
 find_package(flightcontrol REQUIRED)  # For Heartbeat.msg
+find_package(Protobuf REQUIRED)
 
 # ========================================
 # Executable definition
@@ -50,6 +51,7 @@ ament_target_dependencies(stm32_bridge
   std_msgs
   flightcontrol
   communication
+  Protobuf
 )
 
 # Explicitly link the compiled communication library
