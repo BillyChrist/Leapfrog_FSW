@@ -81,9 +81,8 @@ ament_target_dependencies(flightmanager
   Protobuf
 )
 
-# Link with communication library and protobuf
+# Link with protobuf library
 target_link_libraries(flightmanager
-  communication
   leapfrog_proto
 )
 
