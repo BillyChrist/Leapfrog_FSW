@@ -66,16 +66,16 @@ float FlightManager::getTimeSinceEpoch() {
 void FlightManager::SerialMonitor(std::future<void> fut) {
 	// ROS2 logging system: RCLCPP_INFO(logger, "format_string", args...);
 	RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Started Serial Monitor.", getTimeSinceEpoch());
-    uint8_t heartbeat_interval = 100; 	// time in milliseconds
-    uint8_t loop_sleep_time = 50; 		// time in milliseconds; must be less than heartbeat_interval
-	int heartbeat_counter = HEARTBEAT_DURATION * ((double)heartbeat_interval/loop_sleep_time);
-    if (heartbeat_counter < 10) {heartbeat_counter = 10;} // Just in case (heartbeat_interval/loop_sleep_time) gets too small
+    
+    // heartbeat is handled by ROS 2 timer
+    uint8_t loop_sleep_time = 50; // time in milliseconds
     std::vector<uint8_t> data_bytes;
     std::string data;
-	while (fut.wait_for(chrono::milliseconds(loop_sleep_time)) == std::future_status::timeout && heartbeat_counter > 0) {
+    
+	while (fut.wait_for(chrono::milliseconds(loop_sleep_time)) == std::future_status::timeout) {
 		if (this->IsAvailable()) {
             // Receive raw bytes from groundstation
-            data_bytes = comm_->RecvSerialRaw(); // <-- you may need to add this method to Communication/Serial
+            data_bytes = comm_->RecvSerialRaw();
             leapfrog::Command cmd_msg;
             if (cmd_msg.ParseFromArray(data_bytes.data(), data_bytes.size())) {
                 std::string cmd = cmd_msg.command_text();
@@ -86,21 +86,11 @@ void FlightManager::SerialMonitor(std::future<void> fut) {
             } else {
                 RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "t=%.4fs: Failed to parse protobuf Command message from groundstation.", getTimeSinceEpoch());
             }
-			heartbeat_counter = HEARTBEAT_DURATION;
 		}
-		else {
-			heartbeat_counter--;
-			if (heartbeat_counter % 100 == 0) {
-				RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Waiting %d", getTimeSinceEpoch(), heartbeat_counter);
-			}
-			if (heartbeat_counter == 500) {
-                // Optionally send a protobuf status message here
-			}
-		}
-		//this_thread::sleep_for(chrono::milliseconds(200));
+		// No heartbeat counter logic - heartbeat is handled by ROS 2 timer in InitializeSequence()
 	}
 	this->ShutdownSequence();
-	RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Stopped Serial Monitor. %d", getTimeSinceEpoch(), heartbeat_counter);
+	RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "t=%.4fs: Stopped Serial Monitor.", getTimeSinceEpoch());
 }
 
 void FlightManager::InitializeSequence() {

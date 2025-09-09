@@ -21,22 +21,30 @@ int32 engine_turbine_rpm
 int32 engine_rpm_setpoint
 int32 engine_egt_c
 float32 engine_pump_voltage
-uint8 engine_turbine_state
-uint8 engine_off_condition
-uint8 engine_throttle_percent
+uint32 engine_turbine_state
+uint32 engine_off_condition
+uint32 engine_throttle_percent
 float32 engine_current_a
 
 # Altitude
-int16 altitude
+int32 altitude
 
 # System Status
-uint8 heartbeat_counter
-uint8 guidance_internal
+uint32 heartbeat_counter
+bool guidance_internal
 bool enable_acs
 bool enable_tvc
 #bool enable_gps
 bool enable_engine
+bool imu_calibration_status
 
 uint8 imu_calibration_status
 #uint8 tvc_calibration
 #uint8 gps_calibration
+
+# Additional fields for compatibility
+float32 tvc_angle1
+float32 tvc_angle2
+float32 engine_hover_height
+bool safe_engine
+bool power_engine
