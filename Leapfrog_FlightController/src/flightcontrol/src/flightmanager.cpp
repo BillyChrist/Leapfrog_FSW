@@ -302,7 +302,7 @@ string FlightManager::acs_enable(int value) {
 	return "OK";
 }
 
-string FlightManager::imu_calibrate() {
+string FlightManager::imu_calibration() {
     imu_calibration_flag = true;
     imu_calibration_counter = 0;
     RCLCPP_INFO(rclcpp::get_logger("rcltelemcpp"), "t=%.4fs: Recalibrating IMU", getTimeSinceEpoch());

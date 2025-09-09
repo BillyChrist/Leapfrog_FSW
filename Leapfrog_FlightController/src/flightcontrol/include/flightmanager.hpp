@@ -150,5 +150,5 @@ public:
     void telemetry_callback(const flightcontrol::msg::Heartbeat::SharedPtr msg);
     
     // Calibration methods
-    string imu_calibrate();
+    virtual string imu_calibration() override;
 };
