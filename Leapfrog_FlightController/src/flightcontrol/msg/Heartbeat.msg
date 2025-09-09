@@ -37,8 +37,6 @@ bool enable_tvc
 #bool enable_gps
 bool enable_engine
 bool imu_calibration_status
-
-uint8 imu_calibration_status
 #uint8 tvc_calibration
 #uint8 gps_calibration
 
