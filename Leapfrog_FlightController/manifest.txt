@@ -1,37 +1,43 @@
-vehicle/
+Leapfrog_FlightController/
 ├── run_leapos.sh               # Launches ROS2 system
 ├── flush_serial.py             # Pre-launch serial/GPIO reset
 ├── copylogs.sh                 # Optional script for saving logs
-├── build_workspace.sh          # Optional script to build full workspace in dependency order
+├── build_workspace.sh          # Builds full workspace in dependency order
 ├── vehicle.service             # systemd unit for auto-start (optional)
 ├── 10-leapfrog.rules           # udev rules for serial port naming
+├── HEARTBEAT_UPDATE_GUIDE.md   # Guide for updating heartbeat telemetry
+├── heartbeat.proto             # Protobuf definition for external communication
+├── heartbeat.pb.h              # Generated protobuf header
 ├── src/
-│   ├── communication/
+│   ├── communication/          # Serial communication utilities
 │   │   ├── CMakeLists.txt
 │   │   ├── package.xml
 │   │   ├── include/
 │   │   │   ├── Communication.hpp
 │   │   │   └── Serial.hpp
 │   │   └── src/
-│   │       ├── CommandParser.cpp
+│   │       ├── Communication.cpp
 │   │       └── Serial.cpp
-│   ├── flightcontrol/
+│   ├── flightcontrol/          # Main flight control package
 │   │   ├── CMakeLists.txt
 │   │   ├── package.xml
+│   │   ├── heartbeat.proto     # Protobuf definition (local copy)
+│   │   ├── heartbeat.pb.h      # Generated protobuf header
 │   │   ├── msg/
-│   │   │   └── Heartbeat.msg
+│   │   │   └── Heartbeat.msg   # ROS2 message definition
 │   │   ├── include/
-│   │   │   └── flightcontrol/
-│   │   │       ├── CommandParser.hpp
-│   │   │       └── flightmanager.hpp
+│   │   │   ├── CommandParser.hpp
+│   │   │   └── flightmanager.hpp
 │   │   └── src/
 │   │       ├── CommandParser.cpp
 │   │       └── flightmanager.cpp
-│   ├── stm32_bridge/
+│   ├── stm32_bridge/           # STM32 communication bridge
 │   │   ├── CMakeLists.txt
 │   │   ├── package.xml
+│   │   ├── include/
+│   │   │   └── stm32_bridge.hpp
 │   │   └── src/
-│   │       ├── stm32_bridge.cpp
-│   │       └── stm32_bridge.hpp
-│   ├── launch/
-│   │   └── vehicle.launch.py          # Top-level launch file
+│   │       └── stm32_bridge.cpp
+│   └── launch/
+│       ├── flightcontrol.launch.py
+│       └── vehicle.launch.py   # Top-level launch file

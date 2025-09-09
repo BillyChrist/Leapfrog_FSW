@@ -86,8 +86,12 @@ target_link_libraries(flightmanager
   leapfrog_proto
 )
 
-rosidl_target_interfaces(flightmanager
+# Replace the deprecated rosidl_target_interfaces with modern approach
+rosidl_get_typesupport_target(flightcontrol_typesupport_target
   ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_link_libraries(flightmanager
+  ${flightcontrol_typesupport_target}
+)
 
 install(TARGETS flightmanager
   DESTINATION lib/${PROJECT_NAME})
