@@ -23,7 +23,7 @@
 #include <string.h>
 #include <stdio.h>
 
-// TODO Consider converting to arrays
+// Consider converting to arrays
 // ex: PID[] = {1.200, 0.000, 0.050}
 // current[P, R, Y] = {.f, .f, .f}
 // ... etc
