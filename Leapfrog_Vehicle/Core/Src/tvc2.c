@@ -46,7 +46,7 @@ TVC_State tvcState = SystemTVC_Enable;  // TVC system state
 #define TVC_FILTER_TAPS 2
 #define TVC_AUTO_DEADBAND_DEG 1
 
-// Actuator position limits (ADC values from potentiometers)
+// Actuator position limits (ADC values from potentiometers) // TODO add calibration step - limit switch?
 #define TVC_AXIS1_MAX_POSITION 3100    // Maximum extension position for axis 1
 #define TVC_AXIS1_MIN_POSITION 1600    // Minimum retraction position for axis 1
 #define TVC_AXIS2_MAX_POSITION 3000    // Maximum extension position for axis 2
@@ -61,8 +61,8 @@ TVC_State tvcState = SystemTVC_Enable;  // TVC system state
 #define TVC_AXIS2_DEG_TO_ADC 123.0     // ADC units per degree for axis 2
 
 //Variable declarations
-TVC_Data latestTVC_Data; 		      	  // TODO Store current dataset in this packet
-uint32_t adcValues[4]; 				        // Stores ADC values for up to 4 channels
+TVC_Data latestTVC_Data; 		       // TODO Store current dataset in this packet
+uint32_t adcValues[4]; 				   // Stores ADC values for up to 4 channels
 uint32_t sum_axis1 = 0;
 uint32_t sum_axis2 = 0;
 float filter_count = 0;
@@ -118,6 +118,7 @@ float jetThrottle_offset;             // Throttle offset for navigation commands
 
 // Thrust-to-angle conversion (based on vehicle dynamics)
 #define TVC_THRUST_TO_ANGLE_FACTOR 0.1f // Conversion factor (deg per N of thrust)
+float thrust_offset = 0.0f;
 
 // Gimbal IMU sensor integration (placeholder for future implementation)
 #define GIMBAL_IMU_ENABLED 0          // Set to 1 when gimbal IMU sensors are installed
@@ -288,35 +289,6 @@ void TVC_Controller(void *argument) {
 /* Helper Functions --------------------------------------------------------------- */
 
 // TODO Startup TVC calibration 
-
-// Function for Manual control, currently a placeholder that sets the gimbal to <0,0>
-// Replace with the auto TVC code in main control command
-void TVC_Manual(void) {
-  const TickType_t xFrequency = pdMS_TO_TICKS(10); // Need 100Hz or faster to read IMU
-  TickType_t xLastWakeTime = xTaskGetTickCount();
-
-  while (tvcState == SystemTVC_Enable) { // Loop only while TVC is enabled
-	  // Wait for the next cycle
-      vTaskDelayUntil(&xLastWakeTime, xFrequency);
-
-      if (tvcState == SystemTVC_Enable) {
-          // Maintain the home position by setting setpoints to zero
-          set_pos1 = AngularToLinear(1, 0);  // Defines the gimbal's target position as <0°, 0°>
-          set_pos2 = AngularToLinear(2, 0);
-
-//          // Correct positions to match setpoints
-//          HomePosition(1);
-//          HomePosition(2);
-      }
-
-      else {
-    	  Hold(1);
-    	  Hold(2);
-
-          }
-      }
-  }
-
 
 
 
@@ -579,6 +551,7 @@ void GetTVC_IMU_Data(float *roll, float *pitch, float *yaw) {
  * @param pitch_rate: Pointer to store pitch rate (deg/s)
  * @param yaw_rate: Pointer to store yaw rate (deg/s)
  */
+// TODO check that this is redundant with GetTVC_IMU_Data... don't need 2 separate functions
 void GetTVC_AngularVelocity(float *roll_rate, float *pitch_rate, float *yaw_rate) {
     if (roll_rate != NULL) *roll_rate = tvc_angvel_x_degs;
     if (pitch_rate != NULL) *pitch_rate = tvc_angvel_y_degs;
@@ -591,6 +564,7 @@ void GetTVC_AngularVelocity(float *roll_rate, float *pitch_rate, float *yaw_rate
  * @param acc_y: Pointer to store Y acceleration (g)
  * @param acc_z: Pointer to store Z acceleration (g)
  */
+// TODO check that this is redundant with GetTVC_IMU_Data... don't need 3 separate functions
 void GetTVC_Acceleration(float *acc_x, float *acc_y, float *acc_z) {
     if (acc_x != NULL) *acc_x = tvc_acc_x_g;
     if (acc_y != NULL) *acc_y = tvc_acc_y_g;
@@ -699,6 +673,9 @@ float CalculateThrottleOffset(float velocity_ms, float distance_m) {
  * This function implements sensor fusion between IMU and GPS data to detect
  * and compensate for drift using physics-based calculations.
  */
+// TODO Don't implicitly declare variables within a function. all floats should be declared at the top of the script if possible.
+// TODO also there should be no hard-coded values like: float imu_weight = 0.7f;  // Higher weight for IMU (more responsive)
+float gps_weight = 0.3f;  // Lower weight for GPS (more stable)
 void ApplyGPSDriftCompensation(float *target_pitch, float *target_roll) {
     // Get current IMU velocity data (high frequency, short-term accurate)
     float imu_velocity_north_ms = tvc_velocity_north_ms;
@@ -792,6 +769,7 @@ void CalculateDesiredVelocity(float gimbal_pitch, float gimbal_roll, float throt
     float max_thrust_n = 1000.0f; // Maximum thrust in Newtons (adjust based on engine)
     float thrust_n = (throttle_percent / 100.0f) * max_thrust_n;
     
+    // TODO All measurements and constants or configurable parameters should be listed at the top of the script, and not hidden within functions. (i.e. vehicle mass, velocity gain,
     // Vehicle mass (adjust based on actual vehicle)
     float vehicle_mass_kg = 50.0f; // kg
     
@@ -824,6 +802,7 @@ void CalculateDesiredVelocity(float gimbal_pitch, float gimbal_roll, float throt
  */
 void UpdateTVCVelocity(void) {
     // Static variables to maintain state between calls
+	// TODO All these variable terms should be declared at the top of the script, not within a function, even gravity can be defined g = 9.81...
     static float prev_velocity_north = 0.0f;
     static float prev_velocity_east = 0.0f;
     static float prev_velocity_up = 0.0f;
@@ -938,8 +917,8 @@ float CalculateThrustOffset(float velocity_ms, float acceleration_ms2, float mas
     // 3. Drag force calculations
     // 4. Altitude compensation
     
-    float thrust_offset = 0.0f;
     
+
     // Basic physics: F = ma
     // But we need to account for:
     // - Current thrust level
@@ -1049,7 +1028,7 @@ void UpdateGimbalIMUData(void) {
         // Check if data is valid
         gimbal_imu_data_valid = isGimbalIMUDataValid();
     } else {
-        // Fallback: Use actuator position as gimbal angle estimate
+        // Fallback: Use actuator position as gimbal angle estimate // TODO This position data should be cross-checked with the IMU data... compensate for lost steps in actuator or drift in IMU
         gimbal_imu_pitch_deg = tvcVal1_angular;
         gimbal_imu_roll_deg = tvcVal2_angular;
         gimbal_imu_pitch_velocity_degs = 0.0f; // TODO: Calculate from angle changes
