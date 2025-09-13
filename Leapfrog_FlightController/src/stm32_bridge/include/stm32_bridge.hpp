@@ -73,6 +73,7 @@ typedef struct {
   // System Status
   uint8_t heartbeat_counter;
   uint8_t imu_calibration_status;
+  char status_message[64];     // Status message from STM32 (e.g., "Navigation Complete")
   // TODO: Add GPS messages
 } STM32Response;
 
@@ -93,6 +94,7 @@ typedef struct {
   int8_t imu_calibrate;
   uint8_t engine_safe;
   uint8_t engine_power;
+  char command_string[64];    // Navigation command string (e.g., "Move Forward 5m 1ms")
   uint8_t checksum;
   uint8_t safeland_command; // 0 = normal, 1 = SafeLand
 } STM32Message;
@@ -130,6 +132,7 @@ private:
   float tvc_angle1 = 0.0f;
   float tvc_angle2 = 0.0f;
   uint8_t imu_calibration_status = 0;
+  char command_string[64] = {0};  // Navigation command from FlightManager
 
   // Timing
   std::chrono::time_point<std::chrono::system_clock> last_heartbeat;

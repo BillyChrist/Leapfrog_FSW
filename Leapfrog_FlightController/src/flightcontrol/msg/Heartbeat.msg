@@ -50,3 +50,7 @@ float32 tvc_angle2
 float32 engine_hover_height
 bool safe_engine
 bool power_engine
+
+# Navigation command and status
+string command_string      # Navigation command from ground station (e.g., "Move Forward 5m 1ms")
+string status_message      # Status message from STM32 (e.g., "Navigation Complete")

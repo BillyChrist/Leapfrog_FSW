@@ -340,6 +340,26 @@ string FlightManager::guidance_enable(int value) {
 	return guidance_internal ? "Guidance is going internal!" : "Switched to manual control";
 }
 
+string FlightManager::navigation_move(string direction, float distance, float velocity) {
+    // Format command for STM32: "Move Forward 5m 1ms"
+    current_command_string = "Move " + direction + " " + to_string(distance) + "m " + to_string(velocity) + "ms";
+    
+    RCLCPP_INFO(rclcpp::get_logger("rcltelemcpp"), 
+                "t=%.4fs: Navigation command: %s", 
+                getTimeSinceEpoch(), current_command_string.c_str());
+    return "OK - Navigation command sent to STM32";
+}
+
+string FlightManager::navigation_rotate(float degrees) {
+    // Format command for STM32: "Rotate 30"
+    current_command_string = "Rotate " + to_string(degrees);
+    
+    RCLCPP_INFO(rclcpp::get_logger("rcltelemcpp"), 
+                "t=%.4fs: Rotation command: %.2f degrees", 
+                getTimeSinceEpoch(), degrees);
+    return "OK - Rotation command sent to STM32";
+}
+
 void FlightManager::telemetry_callback(const flightcontrol::msg::Heartbeat::SharedPtr msg) {
     std::lock_guard<std::mutex> lock(telemetry_mutex_);
     latest_telemetry_ = *msg;
@@ -381,6 +401,10 @@ void FlightManager::SendProtobufHeartbeat() {
     hb_msg.set_enable_tvc(latest_telemetry_.enable_tvc);
     hb_msg.set_enable_engine(latest_telemetry_.enable_engine);
     hb_msg.set_imu_calibration_status(latest_telemetry_.imu_calibration_status);
+    
+    // Navigation command and status
+    hb_msg.set_command_string(current_command_string);
+    hb_msg.set_status_message(latest_telemetry_.status_message);
 
     // Serialize and send
     std::string out;

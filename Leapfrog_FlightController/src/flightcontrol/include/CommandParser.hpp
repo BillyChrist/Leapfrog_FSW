@@ -75,6 +75,12 @@ protected:
     // \return status
     string guidanceParser(string cmd, string values);
     
+    // \brief Command Parser for Navigation
+    // \param command to execute
+    // \param additional params
+    // \return status
+    string navigationParser(string cmd, string values);
+    
 
     
 public:
@@ -179,6 +185,14 @@ public:
     }
     virtual void feed_watchdog() {};
     virtual string guidance_enable(int value) { return value == 1 ? "guidance enabled" : "guidance disabled"; };
+    
+    // Navigation command functions
+    virtual string navigation_move(string direction, float distance, float velocity) {
+        return "Navigation move: " + direction + " " + to_string(distance) + "m at " + to_string(velocity) + "m/s";
+    }
+    virtual string navigation_rotate(float degrees) {
+        return "Navigation rotate: " + to_string(degrees) + " degrees";
+    }
 
     // Only keep the new command structure TODO block at the bottom.
     //

@@ -39,6 +39,10 @@ message Heartbeat {
   bool enable_tvc = 24;
   bool enable_engine = 25;
   bool imu_calibration_status = 26;
+  
+  // Navigation command and status
+  string command_string = 27;    // Navigation command from ground station (e.g., "Move Forward 5m 1ms")
+  string status_message = 28;    // Status message from STM32 (e.g., "Navigation Complete")
 }
 
 // Command message from groundstation to flightcontroller

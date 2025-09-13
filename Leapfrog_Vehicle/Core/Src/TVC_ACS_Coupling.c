@@ -13,7 +13,7 @@
 
 
 // Reconcile altitude (thrust) vs tvc angle (navigation commands) vs IMU (attitude status)
-
+// Calculate thrust offset based on tvc angle and IMU attitude
 
 
 

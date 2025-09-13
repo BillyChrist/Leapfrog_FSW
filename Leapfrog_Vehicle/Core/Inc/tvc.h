@@ -14,8 +14,6 @@ extern "C" {
 
 #include "main.h"
 
-
-
 extern void Extend(int axis);
 extern void Retract(int axis);
 extern void Hold(int axis);

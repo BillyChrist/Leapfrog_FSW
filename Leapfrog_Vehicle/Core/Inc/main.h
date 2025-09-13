@@ -41,12 +41,21 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
 
-// Global system state for ACS / TVC / Engine
+// Individual subsystem states
 typedef enum {
-  SystemDisabled = 0,
-  SystemManual,
-  SystemAutomatic
-} SubsystemState;
+  SystemTVC_Disable = 0,
+  SystemTVC_Enable
+} TVC_State;
+
+typedef enum {
+  SystemACS_Disable = 0,
+  SystemACS_Enable
+} ACS_State;
+
+typedef enum {
+  SystemJet_Disable = 0,
+  SystemJet_Enable
+} Jet_State;
 
 typedef float float32_t;
 

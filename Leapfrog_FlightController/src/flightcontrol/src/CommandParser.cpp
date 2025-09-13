@@ -42,11 +42,11 @@
 //   Engine Kill
 //
 // ******* Navigation Commands ****************
-//   Go Forward
-//   Go Backward
-//   Strafe Left
-//   Strafe Right
-//   Rotate "Degrees" (e.g. Rotate 30, or Rotate -30)
+//   Move Forward <distance>m <velocity>ms
+//   Move Backward <distance>m <velocity>ms
+//   Move Left <distance>m <velocity>ms
+//   Move Right <distance>m <velocity>ms
+//   Rotate <degrees> (e.g. Rotate 30, or Rotate -30)
 //
 // Only ACS System Enable/Disable is currently implemented.
 
@@ -174,6 +174,36 @@ string CommandParser::guidanceParser(string cmd, string values) {
         // software flag update
         int value = atoi(values.c_str());
         return this->guidance_enable(value);
+    }
+    else {
+        return INVALID_COMMAND;
+    }
+}
+
+string CommandParser::navigationParser(string cmd, string values) {
+    if (cmd == "move") {
+        // Parse navigation command: "Move Forward 5m 1ms"
+        vector<string> tokens = this->split(values, ' ');
+        if (tokens.size() >= 3) {
+            string direction = tokens[0];
+            string distance_str = tokens[1];
+            string velocity_str = tokens[2];
+            
+            // Remove 'm' from distance and 'ms' from velocity
+            if (distance_str.back() == 'm') distance_str.pop_back();
+            if (velocity_str.back() == 's') velocity_str.pop_back();
+            if (velocity_str.back() == 'm') velocity_str.pop_back();
+            
+            float distance = atof(distance_str.c_str());
+            float velocity = atof(velocity_str.c_str());
+            
+            return this->navigation_move(direction, distance, velocity);
+        }
+        return INVALID_COMMAND;
+    }
+    else if (cmd == "rotate") {
+        float degrees = atof(values.c_str());
+        return this->navigation_rotate(degrees);
     }
     else {
         return INVALID_COMMAND;

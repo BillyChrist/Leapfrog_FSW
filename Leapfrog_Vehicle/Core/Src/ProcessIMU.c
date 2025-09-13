@@ -56,6 +56,22 @@ float processed_acc_x_g;
 float processed_acc_y_g;
 float processed_acc_z_g;
 
+// TVC-specific IMU data (dedicated copies to avoid race conditions)
+float tvc_roll_deg;
+float tvc_pitch_deg;
+float tvc_yaw_deg;
+float tvc_angvel_x_degs;
+float tvc_angvel_y_degs;
+float tvc_angvel_z_degs;
+float tvc_acc_x_g;
+float tvc_acc_y_g;
+float tvc_acc_z_g;
+
+// TVC-specific velocity data (calculated from IMU acceleration)
+float tvc_velocity_north_ms;
+float tvc_velocity_east_ms;
+float tvc_velocity_up_ms;
+
 float imu_roll[NUM_IMUS];
 float imu_pitch[NUM_IMUS];
 float imu_yaw[NUM_IMUS];
@@ -304,6 +320,22 @@ void IMUCrossCheck(void) {
     processed_acc_x_g = *accel_outputs[0];
     processed_acc_y_g = *accel_outputs[1];
     processed_acc_z_g = *accel_outputs[2];
+
+    /* -------------------- Store TVC-specific IMU data ------------------------ */
+    // TVC gets dedicated copies to avoid race conditions with other tasks
+    tvc_roll_deg = processed_roll_deg;
+    tvc_pitch_deg = processed_pitch_deg;
+    tvc_yaw_deg = processed_yaw_deg;
+    
+    // TVC angular velocity data
+    tvc_angvel_x_degs = processed_angvel_x_degs;
+    tvc_angvel_y_degs = processed_angvel_y_degs;
+    tvc_angvel_z_degs = processed_angvel_z_degs;
+    
+    // TVC acceleration data
+    tvc_acc_x_g = processed_acc_x_g;
+    tvc_acc_y_g = processed_acc_y_g;
+    tvc_acc_z_g = processed_acc_z_g;
 }
 
 

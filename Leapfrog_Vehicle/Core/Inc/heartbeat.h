@@ -46,9 +46,24 @@ typedef struct {
     int16_t altitude;
     uint8_t heartbeat_counter;
     uint8_t imu_calibration_status;
+    char status_message[64];     // Status message for ground station
+    
+    // GPS data
+    float gps_latitude;          // GPS latitude in degrees
+    float gps_longitude;         // GPS longitude in degrees
+    float gps_altitude;          // GPS altitude in meters
+    float gps_speed_ms;          // GPS ground speed in m/s
+    float gps_heading_deg;       // GPS heading in degrees
+    uint8_t gps_fix_status;      // GPS fix status (0=no fix, 1=GPS fix, 2=DGPS fix)
+    bool gps_data_valid;         // GPS data validity flag
+    float gps_position_error_north_m;  // North position error in meters
+    float gps_position_error_east_m;   // East position error in meters
+    float gps_velocity_north_ms;       // North velocity in m/s
+    float gps_velocity_east_ms;        // East velocity in m/s
+    
 	// altimeter calibration
     // TVC calibration
-	// GPS calibration
+    // GPS calibration
 } STM32Response;
 
 
@@ -64,6 +79,7 @@ typedef struct {
   int8_t calibrateIMU;
   uint8_t engine_safe;
   uint8_t engine_power;
+  char command_string[64];    // Navigation command string from ground station
   uint8_t checksum;
 } STM32Message;
 /* NOTE:
@@ -71,6 +87,27 @@ typedef struct {
  * tvc_angle1, tvc_angle2, and engine_hover_m (all float32_t) are sent from the Pi as tvc_angle1_mdeg, tvc_angle2_mdeg,
  * and engine_hover_mm (all int32_t), but are processed before being put in the STM32Message structure
 */
+
+// Command parser structure for ground station communication
+typedef struct {
+  char raw_command[64];      // Raw command string from ground station (e.g., "Move Forward 5m 1ms")
+  char direction[16];        // Parsed direction: "forward", "backward", "left", "right"
+  float distance_m;          // Parsed distance in meters
+  float velocity_ms;         // Parsed velocity in m/s
+  float gimbal_angle_deg;    // Calculated gimbal angle for this command
+  float duration_s;          // Calculated duration based on distance/velocity
+  float jetThrottle_offset;  // Calculated throttle offset for this command
+  bool new_command;          // Flag for new command received
+  bool executing;            // Flag for command currently executing
+  uint32_t start_time_ms;    // Start time of command execution
+} CommandParser;
+
+// Status message structure for ground station communication
+typedef struct {
+  char status_message[64];   // Status message (e.g., "Navigation Complete", "Command Executing")
+  bool status_updated;       // Flag for new status message
+  uint32_t status_time_ms;   // Timestamp of status message
+} StatusMessage;
 
 
 //#define STM32_RESPONSE_SIZE 89 // Bytes = (4*9)+(4*2)+(4*5)+(4*4)+(1*3)+(4*1)+(2*1) = 89
@@ -90,6 +127,20 @@ void heartbeatDebugOutput(UART_HandleTypeDef *huart, STM32Response *resp_pkt);
 //void updateIMUResponse(STM32Response *response);
 void buildHeartbeatPacket(STM32Response *response);
 void sendHeartbeatPacket(UART_HandleTypeDef *huart, STM32Response *response);
+
+// Command parsing and status functions
+void ProcessIncomingCommand(const char* command_string);
+void ParseSystemCommand(const char* cmd);
+void ParseNavigationCommand(const char* cmd);
+void SetStatusMessage(const char* message);
+void ClearStatusMessage(void);
+bool HasNewCommand(void);
+bool HasStatusUpdate(void);
+
+// Pi UART communication functions
+void InitPiUARTReception(UART_HandleTypeDef *huart);
+void ProcessPiByte(uint8_t received_byte);
+
 
 
 #endif /* INC_HEARTBEAT_H_ */

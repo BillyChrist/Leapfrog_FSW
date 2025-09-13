@@ -98,6 +98,9 @@ private:
     const string path_to_files = "/usr/local/share/script/";
     const string custom_script_file = "custom_scripts.list";
     vector<string> script_map;
+    
+    // Navigation command storage
+    string current_command_string = "";
 
 
 public:
@@ -142,6 +145,10 @@ public:
     virtual string tvc_move(float angles[2]);
 
     virtual string guidance_enable(int value) override;
+    
+    // Navigation command functions
+    virtual string navigation_move(string direction, float distance, float velocity) override;
+    virtual string navigation_rotate(float degrees) override;
 
     virtual void feed_watchdog() override;
 

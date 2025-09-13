@@ -88,6 +88,22 @@ extern float processed_acc_x_g;
 extern float processed_acc_y_g;
 extern float processed_acc_z_g;
 
+// TVC-specific IMU data (dedicated copies to avoid race conditions)
+extern float tvc_roll_deg;
+extern float tvc_pitch_deg;
+extern float tvc_yaw_deg;
+extern float tvc_angvel_x_degs;
+extern float tvc_angvel_y_degs;
+extern float tvc_angvel_z_degs;
+extern float tvc_acc_x_g;
+extern float tvc_acc_y_g;
+extern float tvc_acc_z_g;
+
+// TVC-specific velocity data (calculated from IMU acceleration)
+extern float tvc_velocity_north_ms;
+extern float tvc_velocity_east_ms;
+extern float tvc_velocity_up_ms;
+
 // Raw Roll, Pitch, Yaw from each IMU
 extern float imu_roll[NUM_IMUS];
 extern float imu_pitch[NUM_IMUS];

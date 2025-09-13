@@ -264,6 +264,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		// Restart UART reception
 		HAL_UART_Receive_IT(&huart3, imu3RxBuf, IMU_PACKET_LEN);
 	}
+	if (huart->Instance == USART2) {
+		// Handle Pi communication - process received byte
+		extern void ProcessPiByte(uint8_t received_byte);
+		ProcessPiByte(huart->pRxBuffPtr[0]);
+		
+		// Restart UART reception for next byte
+		HAL_UART_Receive_IT(&huart2, huart->pRxBuffPtr, 1);
+	}
 
 
 }
@@ -412,7 +420,12 @@ int main(void)
 
   HAL_Delay(200);
 
+  /* PI COMMUNICATION HANDLING ------------------------------------------------- */
+  printf("Starting Pi UART communication...\r\n");
+  extern void InitPiUARTReception(UART_HandleTypeDef *huart);
+  InitPiUARTReception(&huart2);
 
+  HAL_Delay(100);
 
   /* ALTIMITER HANDLING -------------------------------------------------------- */
   printf("\rStarting I2C check... \r\n");
@@ -1303,6 +1316,12 @@ void StartDefaultTask(void *argument)
 	      tvcManualSetpoint1 = heartbeat.tvcVal1_angular;
 	      tvcManualSetpoint2 = heartbeat.tvcVal2_angular;
 
+	      // Process navigation command if present
+	      if (strlen(heartbeat.command_string) > 0) {
+	        extern void ProcessIncomingCommand(const char* command_string);
+	        ProcessIncomingCommand(heartbeat.command_string);
+	      }
+
 	      // Optional IMU recalibration trigger
 	      if (heartbeat.calibrateIMU > 0) {
 	        imuCalibrate_Sticky = 1;
@@ -1318,6 +1337,7 @@ void StartDefaultTask(void *argument)
 	      acsState = SystemAutomatic;
 	      tvcState = SystemDisabled;
 	      engineState = SystemDisabled;
+        // TODO add safeland logic here on heartbeat timeout
 	    }
 
 	    // Build heartbeat response

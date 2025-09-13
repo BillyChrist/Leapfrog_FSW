@@ -27,6 +27,7 @@
 
 #include <chrono>
 #include <memory>
+#include <cstring>
 
 #include "stm32_bridge.hpp"
 #include "rclcpp/rclcpp.hpp"
@@ -96,7 +97,7 @@ void STM32Bridge::timer_callback() {
     safeland_active = false;
   }
 
-  // Build STM32Message buffer (add safeland_command field)
+  // Build STM32Message buffer (original working method)
   uint8_t acs_state = enable_acs ? 2 : 0; 
   uint8_t tvc_state = enable_tvc ? (guidance_internal ? 2 : 1) : 0; 
   uint8_t engine_state = enable_engine ? (guidance_internal ? 2 : 1) : 0; 
@@ -111,7 +112,8 @@ void STM32Bridge::timer_callback() {
   int32_t engine_hover_mm = engine_hover * 1000.0; // Originally uint32_t, but we may need to input a negative height for a landing procedure
   uint8_t engine_thrust_p = engine_thrust; 
   
-  auto buffer = std::vector<uint8_t>(STM32_MESSAGE_SIZE); 
+  // Original buffer size was 20 bytes, adding 64 bytes for command_string = 84 bytes total
+  auto buffer = std::vector<uint8_t>(84); 
   buffer[0] = engine_state; 
   buffer[1] = tvc_state; 
   buffer[2] = acs_state; 
@@ -123,13 +125,19 @@ void STM32Bridge::timer_callback() {
   buffer[17] = engine_safe; 
   buffer[18] = engine_power; 
   buffer[19] = safeland_active ? 1 : 0; // safeland_command field
-
+  
+  // Add command_string at the correct byte position (after safeland_command)
+  // Copy command string to buffer starting at byte 20
+  size_t cmd_offset = 20;
+  strncpy(reinterpret_cast<char*>(buffer.data() + cmd_offset), command_string, 63);
+  buffer[cmd_offset + 63] = '\0'; // Ensure null termination
+  
   // Calculate checksum
   uint8_t checksum = 0;     // Initialized to zero to avoid undefined values
-  for (unsigned int i = 0; i < STM32_MESSAGE_SIZE-1; ++i) {
+  for (unsigned int i = 0; i < 83; ++i) {  // 84 bytes total, checksum is last byte
     checksum += buffer[i];
   }
-  buffer[STM32_MESSAGE_SIZE-1] = checksum;
+  buffer[83] = checksum;  // Set checksum as last byte
 
   // Send sync bytes and message
   auto sync_buffer = std::vector<uint8_t>(STM32_SYNC_BYTE_COUNT);
@@ -210,6 +218,12 @@ void STM32Bridge::timer_callback() {
 
         // Parse Calibration Status
         access_buffer(packet_bytes.data(), &offset, &packet.imu_calibration_status, sizeof(uint8_t));
+        
+        // Parse Status Message
+        access_buffer(packet_bytes.data(), &offset, &packet.status_message, sizeof(packet.status_message));
+        // Ensure null termination
+        packet.status_message[sizeof(packet.status_message) - 1] = '\0';
+        
         // TODO TVC & GPS calibration
         
         packet_bytes.clear();
@@ -260,6 +274,11 @@ void STM32Bridge::timer_callback() {
         telemetry_msg.safe_engine = safe_engine;
         telemetry_msg.power_engine = power_engine;
         telemetry_msg.engine_thrust = engine_thrust;
+        
+        // Navigation command and status
+        telemetry_msg.command_string = command_string;
+        telemetry_msg.status_message = packet.status_message;
+        
         // When publishing telemetry, add error flags to the message
         telemetry_msg.error_flags = 0;
         if (heartbeat_timeout_flag) telemetry_msg.error_flags |= 0x01;
@@ -376,6 +395,11 @@ void STM32Bridge::heartbeat_callback(const flightcontrol::msg::Heartbeat::Shared
   tvc_angle2 = heartbeat->tvc_angle2;
   last_heartbeat = std::chrono::system_clock::now();
   imu_calibration_status = heartbeat->imu_calibration_status;
+  
+  // Copy command string from FlightManager
+  strncpy(command_string, heartbeat->command_string.c_str(), sizeof(command_string) - 1);
+  command_string[sizeof(command_string) - 1] = '\0';
+  
   // add TVC calibration
   // add GPS calibration
 }

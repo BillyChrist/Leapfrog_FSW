@@ -23,6 +23,17 @@ uint8_t timeout_counter;
 STM32Response resp_pkt;
 STM32Message heartbeat;
 
+// Command parser and status message instances
+CommandParser command_parser;
+StatusMessage status_message;
+
+// UART2 reception variables for Pi communication
+static uint8_t pi_rx_buffer[84]; // 84 bytes: 5 sync + 79 message bytes
+static uint8_t sync_byte_count = 0;
+static uint8_t message_bytes_received = 0;
+static bool receiving_message = false;
+static uint8_t current_byte_index = 0;
+
 
 void emplace_buffer(uint8_t* buf, size_t* offset, void* data, size_t sz) {
 	memcpy(buf + (*offset), data, sz);
@@ -115,12 +126,37 @@ void buildHeartbeatPacket(STM32Response *resp_pkt){
 
 	// Load calibration status (0 = CALIBRATING, 1 = CALIBRATION_COMPLETE)
 	resp_pkt->imu_calibration_status = (imu_ready) ? CALIBRATION_COMPLETE : CALIBRATING;
+	
+	// Load status message
+	if (status_message.status_updated) {
+		strncpy(resp_pkt->status_message, status_message.status_message, sizeof(resp_pkt->status_message) - 1);
+		resp_pkt->status_message[sizeof(resp_pkt->status_message) - 1] = '\0';
+		status_message.status_updated = false;  // Clear flag after sending
+	} else {
+		strcpy(resp_pkt->status_message, "System Ready");
+	}
+	
+	// Load GPS data
+	extern GPS_Data latestGPSdata;
+	resp_pkt->gps_latitude = latestGPSdata.latitude;
+	resp_pkt->gps_longitude = latestGPSdata.longitude;
+	resp_pkt->gps_altitude = latestGPSdata.altitude;
+	resp_pkt->gps_speed_ms = latestGPSdata.speed_ms;
+	resp_pkt->gps_heading_deg = latestGPSdata.heading_deg;
+	resp_pkt->gps_fix_status = latestGPSdata.fix_status;
+	resp_pkt->gps_data_valid = gpsIsDataValid(&latestGPSdata);
+	resp_pkt->gps_position_error_north_m = latestGPSdata.position_error_north_m;
+	resp_pkt->gps_position_error_east_m = latestGPSdata.position_error_east_m;
+	resp_pkt->gps_velocity_north_ms = latestGPSdata.velocity_north_ms;
+	resp_pkt->gps_velocity_east_ms = latestGPSdata.velocity_east_ms;
+	
+	// Cross-check GPS altitude with altimeter
+	float altimeter_altitude_m = adjusted_altitude_cm / 100.0f; // Convert cm to meters
+	gpsCrossCheckAltitude(&latestGPSdata, altimeter_altitude_m);
+	
 	// ALT calibration
 	// TVC calibration
 	// GPS calibration
-
-
-
 }
 
 
@@ -178,6 +214,252 @@ void sendHeartbeatPacket(UART_HandleTypeDef *huart, STM32Response *resp_pkt){
 //	sendHeartbeatPacket(&huart2, &resp_pkt);
 //#endif
 //
+
+/**
+ * @brief Process incoming command from ground station
+ * @param command_string: Raw command string (e.g., "Move Forward 5m 1ms")
+ * 
+ * This function parses commands and sets up the command parser for execution.
+ */
+void ProcessIncomingCommand(const char* command_string) {
+    // Clear previous command data
+    memset(&command_parser, 0, sizeof(CommandParser));
+    
+    // Copy raw command
+    strncpy(command_parser.raw_command, command_string, sizeof(command_parser.raw_command) - 1);
+    command_parser.raw_command[sizeof(command_parser.raw_command) - 1] = '\0';
+    
+    // Parse command type
+    if (strncmp(command_string, "system ", 7) == 0) {
+        // System state command
+        ParseSystemCommand(command_string + 7);
+    } else if (strncmp(command_string, "Move ", 5) == 0) {
+        // Navigation command
+        ParseNavigationCommand(command_string);
+    } else {
+        // Unknown command format
+        SetStatusMessage("Invalid Command Format");
+    }
+}
+
+/**
+ * @brief Parse system state commands
+ * @param cmd: Command string after "system " prefix
+ */
+void ParseSystemCommand(const char* cmd) {
+    if (strcmp(cmd, "hover") == 0) {
+        // Enter hover mode - handled by TVC system
+        SetStatusMessage("System Hover Mode");
+    } else if (strncmp(cmd, "rotate ", 7) == 0) {
+        // Rotation command
+        float degrees = atof(cmd + 7);
+        extern float yaw_pointing;
+        yaw_pointing += degrees;
+        SetStatusMessage("Rotation Command Received");
+    } else if (strncmp(cmd, "tvc ", 4) == 0) {
+        // TVC control
+        if (strcmp(cmd + 4, "enable") == 0) {
+            extern TVC_State tvcState;
+            tvcState = SystemTVC_Enable;
+            SetStatusMessage("TVC Enabled");
+        } else if (strcmp(cmd + 4, "disable") == 0) {
+            extern TVC_State tvcState;
+            tvcState = SystemTVC_Disable;
+            SetStatusMessage("TVC Disabled");
+        }
+    } else if (strncmp(cmd, "acs ", 4) == 0) {
+        // ACS control
+        if (strcmp(cmd + 4, "enable") == 0) {
+            extern ACS_State acsState;
+            acsState = SystemACS_Enable;
+            SetStatusMessage("ACS Enabled");
+        } else if (strcmp(cmd + 4, "disable") == 0) {
+            extern ACS_State acsState;
+            acsState = SystemACS_Disable;
+            SetStatusMessage("ACS Disabled");
+        }
+    } else if (strncmp(cmd, "engine ", 7) == 0) {
+        // Engine control
+        if (strcmp(cmd + 7, "enable") == 0) {
+            extern Jet_State engineState;
+            engineState = SystemJet_Enable;
+            SetStatusMessage("Engine Enabled");
+        } else if (strcmp(cmd + 7, "disable") == 0) {
+            extern Jet_State engineState;
+            engineState = SystemJet_Disable;
+            SetStatusMessage("Engine Disabled");
+        }
+    } else {
+        SetStatusMessage("Invalid System Command");
+    }
+}
+
+/**
+ * @brief Parse navigation commands
+ * @param cmd: Full navigation command string
+ */
+void ParseNavigationCommand(const char* cmd) {
+    // Expected format: "Move [Direction] [Distance]m [Velocity]ms"
+    // Example: "Move Forward 5m 1ms"
+    
+    char* token = strtok((char*)cmd, " ");
+    if (token && strcmp(token, "Move") == 0) {
+        // Get direction
+        token = strtok(NULL, " ");
+        if (token) {
+            strncpy(command_parser.direction, token, sizeof(command_parser.direction) - 1);
+            command_parser.direction[sizeof(command_parser.direction) - 1] = '\0';
+        }
+        
+        // Get distance
+        token = strtok(NULL, " ");
+        if (token) {
+            command_parser.distance_m = atof(token);
+        }
+        
+        // Get velocity
+        token = strtok(NULL, " ");
+        if (token) {
+            command_parser.velocity_ms = atof(token);
+        }
+        
+        // Mark as new command
+        command_parser.new_command = true;
+        
+        // Set status message
+        SetStatusMessage("Command Received");
+    } else {
+        SetStatusMessage("Invalid Navigation Command");
+    }
+}
+
+/**
+ * @brief Set status message for ground station
+ * @param message: Status message string
+ */
+void SetStatusMessage(const char* message) {
+    strncpy(status_message.status_message, message, sizeof(status_message.status_message) - 1);
+    status_message.status_message[sizeof(status_message.status_message) - 1] = '\0';
+    status_message.status_updated = true;
+    status_message.status_time_ms = HAL_GetTick();
+}
+
+/**
+ * @brief Clear status message
+ */
+void ClearStatusMessage(void) {
+    status_message.status_updated = false;
+    memset(status_message.status_message, 0, sizeof(status_message.status_message));
+}
+
+/**
+ * @brief Check if there's a new command to process
+ * @return true if new command available
+ */
+bool HasNewCommand(void) {
+    return command_parser.new_command;
+}
+
+/**
+ * @brief Check if there's a status update to send
+ * @return true if status update available
+ */
+bool HasStatusUpdate(void) {
+    return status_message.status_updated;
+}
+
+/**
+ * @brief Initialize UART2 reception for Pi communication
+ * @param huart: UART handle for UART2
+ */
+void InitPiUARTReception(UART_HandleTypeDef *huart) {
+    // Start UART reception in interrupt mode
+    if (HAL_UART_Receive_IT(huart, pi_rx_buffer, 1) != HAL_OK) {
+        printf("Pi UART2 Reception Initialization Failed!\r\n");
+    } else {
+        printf("Pi UART2 Reception Initialized!\r\n");
+    }
+}
+
+/**
+ * @brief Process received byte from Pi via UART2
+ * @param received_byte: Single byte received from Pi
+ */
+void ProcessPiByte(uint8_t received_byte) {
+    if (!receiving_message) {
+        // Looking for sync bytes
+        if (received_byte == STM32_SYNC_BYTE) {
+            sync_byte_count++;
+            if (sync_byte_count >= STM32_SYNC_BYTE_COUNT) {
+                receiving_message = true;
+                message_bytes_received = 0;
+                current_byte_index = 0;
+                sync_byte_count = 0;
+            }
+        } else {
+            sync_byte_count = 0; // Reset if not sync byte
+        }
+    } else {
+        // Receiving message data
+        pi_rx_buffer[current_byte_index] = received_byte;
+        current_byte_index++;
+        message_bytes_received++;
+        
+        if (message_bytes_received >= 79) { // 84 total - 5 sync = 79 message bytes
+            // Complete message received, unpack it
+            STM32Message received_message;
+            size_t offset = 0;
+            
+            // Unpack message (skip sync bytes, start from message data)
+            received_message.engine_state = pi_rx_buffer[offset++];
+            received_message.tvc_state = pi_rx_buffer[offset++];
+            received_message.acs_state = pi_rx_buffer[offset++];
+            
+            // Unpack TVC angles (sent as int32_t, convert to float)
+            int32_t tvc_angle1_mdeg = *((int32_t*)(pi_rx_buffer + offset));
+            received_message.tvcVal1_angular = tvc_angle1_mdeg / 1000.0f;
+            offset += 4;
+            
+            int32_t tvc_angle2_mdeg = *((int32_t*)(pi_rx_buffer + offset));
+            received_message.tvcVal2_angular = tvc_angle2_mdeg / 1000.0f;
+            offset += 4;
+            
+            // Unpack engine hover (sent as int32_t, convert to float)
+            int32_t engine_hover_mm = *((int32_t*)(pi_rx_buffer + offset));
+            received_message.engine_hover_m = engine_hover_mm / 1000.0f;
+            offset += 4;
+            
+            received_message.engine_thrust_p = pi_rx_buffer[offset++];
+            received_message.calibrateIMU = pi_rx_buffer[offset++];
+            received_message.engine_safe = pi_rx_buffer[offset++];
+            received_message.engine_power = pi_rx_buffer[offset++];
+            
+            // Unpack command string (64 bytes)
+            strncpy(received_message.command_string, (char*)(pi_rx_buffer + offset), 63);
+            received_message.command_string[63] = '\0';
+            offset += 64;
+            
+            // Verify checksum
+            uint8_t calculated_checksum = 0;
+            for (int i = 0; i < 78; i++) { // 79 bytes - 1 checksum byte
+                calculated_checksum += pi_rx_buffer[i];
+            }
+            uint8_t received_checksum = pi_rx_buffer[78];
+            
+            if (calculated_checksum == received_checksum) {
+                // Valid message, put it in the queue
+                extern QueueHandle_t piMessageQueueHandle;
+                xQueueSend(piMessageQueueHandle, &received_message, 0);
+            }
+            
+            // Reset for next message
+            receiving_message = false;
+            message_bytes_received = 0;
+            current_byte_index = 0;
+            sync_byte_count = 0;
+        }
+    }
+}
 
 
 
