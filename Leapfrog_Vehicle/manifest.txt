@@ -1,0 +1,311 @@
+===============================================================================
+LEAPFROG VEHICLE SOFTWARE PACKAGE MANIFEST
+===============================================================================
+
+Project: Leapfrog VTOL Flight Control System
+Version: 0.0 (as of August 22, 2024)
+Target: STM32F446RET6 Microcontroller
+RTOS: FreeRTOS v10.3.1 with CMSIS-RTOS V2
+Build System: STM32CubeIDE with GNU Tools for STM32 (13.3.rel1)
+
+===============================================================================
+PROJECT OVERVIEW
+===============================================================================
+
+The Leapfrog_Vehicle is a sophisticated flight control system for a VTOL 
+(Vertical Take-Off and Landing) aircraft. It implements autonomous flight 
+control with multiple redundant sensor systems, real-time control loops, 
+and comprehensive safety mechanisms.
+
+Key Features:
+- Real-time attitude control using 6 EDFs (Electric Ducted Fans)
+- Thrust vector control with 2-axis gimbal system
+- Engine control with altitude-based PID
+- Triple-redundant IMU sensor fusion
+- LIDAR-based altimeter with IMU tilt compensation
+- Ground station communication via heartbeat protocol
+- Comprehensive safety systems and kill switches
+
+===============================================================================
+DIRECTORY STRUCTURE
+===============================================================================
+
+Leapfrog_Vehicle/
+├── Core/                           # Core application code
+│   ├── Inc/                        # Header files (.h)
+│   │   ├── main.h                  # Main system definitions and GPIO pins
+│   │   ├── FreeRTOSConfig.h        # FreeRTOS configuration
+│   │   ├── ProcessIMU.h            # IMU processing and sensor fusion
+│   │   ├── ACS_PID.h               # Attitude Control System PID
+│   │   ├── engine.h                # Engine control interface
+│   │   ├── engine_PID.h            # Engine PID controller
+│   │   ├── tvc.h                   # Thrust Vector Control
+│   │   ├── altimeter.h             # LIDAR altimeter interface
+│   │   ├── alt_imu_coupling.h      # Sensor fusion for altitude
+│   │   ├── heartbeat.h             # Ground station communication
+│   │   ├── gps.h                   # GPS interface (incomplete)
+│   │   └── [other HAL headers]     # STM32 HAL configuration
+│   ├── Src/                        # Source files (.c)
+│   │   ├── main.c                  # Main application and task creation
+│   │   ├── freertos.c              # FreeRTOS configuration
+│   │   ├── ProcessIMU.c            # IMU data processing and fusion
+│   │   ├── ACS_PID.c               # Attitude control PID implementation
+│   │   ├── engine.c                # Engine control and telemetry
+│   │   ├── engine_PID.c            # Engine PID controller implementation
+│   │   ├── tvc.c                   # Thrust vector control implementation
+│   │   ├── altimeter.c             # LIDAR altimeter driver
+│   │   ├── alt_imu_coupling.c      # IMU-altimeter sensor fusion
+│   │   ├── heartbeat.c             # Ground station communication
+│   │   ├── gps.c                   # GPS driver (incomplete)
+│   │   └── [other HAL sources]     # STM32 HAL implementations
+│   └── Startup/                    # Boot and startup code
+│       └── startup_stm32f446retx.s # ARM assembly startup code
+├── Drivers/                        # STM32 Hardware Abstraction Layer
+│   ├── CMSIS/                      # ARM Cortex-M4 core support
+│   │   ├── Device/ST/STM32F4xx/    # STM32F4xx device definitions
+│   │   └── Include/                # ARM CMSIS core headers
+│   └── STM32F4xx_HAL_Driver/       # STM32 HAL drivers
+│       ├── Inc/                    # HAL header files
+│       └── Src/                    # HAL source implementations
+├── Middlewares/                    # Third-party middleware
+│   └── Third_Party/FreeRTOS/       # FreeRTOS real-time operating system
+│       ├── Source/                 # FreeRTOS kernel source
+│       ├── Source/CMSIS_RTOS_V2/   # CMSIS-RTOS V2 wrapper
+│       └── Source/portable/        # Port-specific implementations
+├── Debug/                          # Build artifacts and generated files
+│   ├── Core/Src/                   # Object files and dependencies
+│   ├── Leapfrog_Vehicle.elf        # Executable binary
+│   ├── Leapfrog_Vehicle.map        # Memory map
+│   ├── Leapfrog_Vehicle.list       # Disassembly listing
+│   ├── makefile                    # Generated makefile
+│   ├── sources.mk                  # Source file list
+│   └── objects.mk                  # Object file list
+├── document/                       # Documentation
+│   └── docs/                       # Doxygen-generated documentation
+│       ├── html/                   # HTML documentation
+│       └── latex/                  # LaTeX documentation
+├── Leapfrog_Vehicle.ioc            # STM32CubeMX configuration file
+├── STM32F446RETX_FLASH.ld          # Linker script for Flash memory
+├── STM32F446RETX_RAM.ld            # Linker script for RAM
+├── Leapfrog_Vehicle Debug.launch   # Debug configuration
+└── README.md                       # Project documentation
+
+===============================================================================
+SYSTEM ARCHITECTURE
+===============================================================================
+
+HARDWARE PLATFORM:
+- Microcontroller: STM32F446RET6 (ARM Cortex-M4F, 84MHz)
+- Memory: 512KB Flash, 128KB RAM
+- Peripherals: UART, I2C, ADC, PWM, GPIO, DMA
+
+REAL-TIME OPERATING SYSTEM:
+- FreeRTOS v10.3.1 with CMSIS-RTOS V2 wrapper
+- Preemptive multitasking with priority-based scheduling
+- Inter-task communication via queues and mutexes
+
+TASK STRUCTURE:
+1. DefaultTask (1Hz)     - Heartbeat communication with ground station
+2. ACSTask (10Hz)        - Attitude Control System (IMU processing, PID)
+3. DebugTask (5Hz)       - Debug output and telemetry
+4. TVCTask (Continuous)  - Thrust Vector Control
+5. KillSwitchPin (Continuous) - Safety monitoring
+6. EngineTask (1Hz)      - Engine control and altitude management
+
+===============================================================================
+SUBSYSTEM DESCRIPTIONS
+===============================================================================
+
+1. ATTITUDE CONTROL SYSTEM (ACS)
+   Files: ProcessIMU.c/h, ACS_PID.c/h
+   Purpose: Maintain vehicle attitude using 6 EDFs
+   Features:
+   - Triple-redundant IMU sensor fusion
+   - Cross-checking and fault detection
+   - PID control for roll, pitch, and yaw
+   - Integral windup protection
+   - Output limiting and safety checks
+
+2. THRUST VECTOR CONTROL (TVC)
+   Files: tvc.c/h
+   Purpose: Control engine gimbal for thrust vectoring
+   Features:
+   - 2-axis linear actuator control
+   - ADC-based position feedback
+   - Bang-bang control with deadband
+   - Manual and automatic modes
+
+3. ENGINE CONTROL
+   Files: engine.c/h, engine_PID.c/h
+   Purpose: Control main engine and maintain altitude
+   Features:
+   - UART communication with engine controller
+   - Altitude-based PID control
+   - Comprehensive telemetry monitoring
+   - Safety interlocks and kill switches
+
+4. SENSOR SYSTEMS
+   Files: altimeter.c/h, alt_imu_coupling.c/h, gps.h
+   Purpose: Provide accurate vehicle state information
+   Features:
+   - LIDAR altimeter with tilt compensation
+   - IMU-altimeter sensor fusion
+   - GPS interface (incomplete)
+   - Redundant sensor cross-checking
+
+5. COMMUNICATION
+   Files: heartbeat.c/h
+   Purpose: Ground station communication and telemetry
+   Features:
+   - Bidirectional command/telemetry protocol
+   - Timeout-based safety fallback
+   - Comprehensive system status reporting
+
+6. SAFETY SYSTEMS
+   Files: main.c (KillSwitchPin task)
+   Purpose: Ensure safe operation and emergency procedures
+   Features:
+   - Hardware kill switch monitoring
+   - Software timeout protection
+   - Automatic safe landing sequences
+   - Multiple safety interlocks
+
+===============================================================================
+COMMUNICATION INTERFACES
+===============================================================================
+
+UART1 (9600 baud):  Ground station heartbeat communication
+UART2 (115200 baud): Debug output and telemetry
+UART3 (115200 baud): IMU3 data
+UART4 (115200 baud): IMU2 data
+UART5 (115200 baud): Engine controller communication
+USART6 (115200 baud): IMU1 data
+
+I2C1 (400kHz): LIDAR altimeter communication
+
+PWM Channels:
+- TIM3_CH1-4: EDF control (pitch/roll)
+- TIM4_CH1-2: EDF control (yaw)
+- TIM8_CH1N: Engine throttle control
+
+ADC Channels:
+- PA4: TVC axis 1 position feedback
+- PA6: TVC axis 2 position feedback
+
+===============================================================================
+BUILD SYSTEM
+===============================================================================
+
+Toolchain: GNU Tools for STM32 (13.3.rel1)
+IDE: STM32CubeIDE
+Configuration: STM32CubeMX (.ioc file)
+
+Build Process:
+1. STM32CubeMX generates HAL configuration
+2. GNU Make builds the project
+3. ARM GCC compiles and links
+4. Output: Leapfrog_Vehicle.elf
+
+Memory Layout:
+- Flash: 0x08000000 (512KB)
+- RAM: 0x20000000 (128KB)
+- Stack: 0x400 bytes
+- Heap: 0x200 bytes
+
+===============================================================================
+DEVELOPMENT STATUS
+===============================================================================
+
+COMPLETED:
+✓ Core flight control system
+✓ IMU sensor fusion and redundancy
+✓ Attitude control with PID
+✓ Engine control and telemetry
+✓ Thrust vector control
+✓ Altimeter with tilt compensation
+✓ Ground station communication
+✓ Safety systems and kill switches
+✓ Debug and telemetry output
+
+IN PROGRESS:
+⚠ GPS integration (header defined, implementation incomplete)
+⚠ Some test functions and debug modes
+
+TODO:
+- Complete GPS driver implementation
+- Add additional safety features
+- Optimize control loop performance
+- Add more comprehensive error handling
+
+===============================================================================
+SAFETY CONSIDERATIONS
+===============================================================================
+
+This is a safety-critical flight control system. Key safety features:
+
+1. HARDWARE SAFETY:
+   - Hardware kill switch (blue button)
+   - Multiple safety interlocks
+   - Redundant sensor systems
+
+2. SOFTWARE SAFETY:
+   - Timeout-based fallback modes
+   - Sensor cross-checking and validation
+   - Integral windup protection
+   - Output limiting and saturation
+
+3. OPERATIONAL SAFETY:
+   - IMU calibration only at low altitude
+   - Automatic safe landing sequences
+   - Comprehensive error detection
+   - Ground station communication monitoring
+
+===============================================================================
+USAGE INSTRUCTIONS
+===============================================================================
+
+1. DEVELOPMENT:
+   - Use STM32CubeIDE for development
+   - Configure hardware via STM32CubeMX
+   - Build using the generated makefile
+   - Debug using ST-Link or compatible debugger
+
+2. DEPLOYMENT:
+   - Flash the .elf file to STM32F446RET6
+   - Ensure proper hardware connections
+   - Verify sensor calibration
+   - Test safety systems before flight
+
+3. MONITORING:
+   - Connect to UART2 for debug output
+   - Monitor ground station communication on UART1
+   - Check system status via heartbeat protocol
+
+===============================================================================
+AUTHORS AND CONTRIBUTORS
+===============================================================================
+
+Primary Authors:
+- Billy Christ (William Christian) - Main system architecture
+- Viserion - TVC system and various components
+- Julia Schatz - Engine control system
+- Brad Barakat & Matthew Basha - Altitude-IMU coupling
+- William Henrie - IMU processing contributions
+
+Team Members:
+- Will Christian (william.christian@usc.edu)
+- Varick John (vjohn@usc.edu)
+- Howard Hall (hahall@usc.edu)
+- Briana Zeggane (zeggane@usc.edu)
+- Trevor Gross (trevorg@usc.edu)
+
+===============================================================================
+LICENSE AND COPYRIGHT
+===============================================================================
+
+This software is part of the Leapfrog project developed by the USC team.
+Please refer to the LICENSE file for usage terms and conditions.
+
+===============================================================================
+END OF MANIFEST
+===============================================================================
