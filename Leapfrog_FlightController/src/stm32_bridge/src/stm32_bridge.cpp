@@ -97,10 +97,10 @@ void STM32Bridge::timer_callback() {
     safeland_active = false;
   }
 
-  // Build STM32Message buffer (original working method)
-  uint8_t acs_state = enable_acs ? 2 : 0; 
-  uint8_t tvc_state = enable_tvc ? (guidance_internal ? 2 : 1) : 0; 
-  uint8_t engine_state = enable_engine ? (guidance_internal ? 2 : 1) : 0; 
+  // Build STM32Message buffer
+  uint8_t acs_state = enable_acs ? 1 : 0;  // SystemACS_Disable=0, SystemACS_Enable=1
+  uint8_t tvc_state = enable_tvc ? (guidance_internal ? 2 : 1) : 0;  // SystemTVC_Disable=0, SystemTVC_Manual=1, SystemTVC_Automatic=2
+  uint8_t engine_state = enable_engine ? (guidance_internal ? 2 : 1) : 0;  // SystemJet_Disable=0, SystemJet_Manual=1, SystemJet_Automatic=2 
   uint8_t engine_safe = safe_engine ? 1 : 0; 
   uint8_t engine_power = power_engine ? 1 : 0; 
 

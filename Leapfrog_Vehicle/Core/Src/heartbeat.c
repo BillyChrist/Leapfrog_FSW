@@ -10,13 +10,17 @@
 
 #include "cmsis_os.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "main.h"
+#include "FreeRTOS.h"
+#include "queue.h"
 #include "heartbeat.h"
 #include "altimeter.h"
 #include "alt_imu_coupling.h"
 #include "processIMU.h"
 #include "engine.h"
 #include "tvc.h"
+#include "gps.h"
 
 // Define variables
 uint8_t timeout_counter;
@@ -230,11 +234,20 @@ void ProcessIncomingCommand(const char* command_string) {
     command_parser.raw_command[sizeof(command_parser.raw_command) - 1] = '\0';
     
     // Parse command type
-    if (strncmp(command_string, "system ", 7) == 0) {
-        // System state command
-        ParseSystemCommand(command_string + 7);
+    if (strncmp(command_string, "navigation ", 11) == 0) {
+        // Navigation commands: "navigation hover", "navigation move Forward 5m 1ms", "navigation rotate 30"
+        ParseNavigationCommand(command_string + 11);
+    } else if (strncmp(command_string, "tvc ", 4) == 0) {
+        // Direct TVC commands: "tvc enable", "tvc disable"
+        ParseTVCCommand(command_string + 4);
+    } else if (strncmp(command_string, "acs ", 4) == 0) {
+        // Direct ACS commands: "acs enable", "acs disable"
+        ParseACSCommand(command_string + 4);
+    } else if (strncmp(command_string, "engine ", 7) == 0) {
+        // Direct engine commands: "engine enable", "engine disable"
+        ParseEngineCommand(command_string + 7);
     } else if (strncmp(command_string, "Move ", 5) == 0) {
-        // Navigation command
+        // Direct navigation command: "Move Forward 5m 1ms"
         ParseNavigationCommand(command_string);
     } else {
         // Unknown command format
@@ -242,55 +255,66 @@ void ProcessIncomingCommand(const char* command_string) {
     }
 }
 
+
 /**
- * @brief Parse system state commands
- * @param cmd: Command string after "system " prefix
+ * @brief Parse direct TVC commands
+ * @param cmd: Command string after "tvc " prefix
  */
-void ParseSystemCommand(const char* cmd) {
-    if (strcmp(cmd, "hover") == 0) {
-        // Enter hover mode - handled by TVC system
-        SetStatusMessage("System Hover Mode");
-    } else if (strncmp(cmd, "rotate ", 7) == 0) {
-        // Rotation command
-        float degrees = atof(cmd + 7);
-        extern float yaw_pointing;
-        yaw_pointing += degrees;
-        SetStatusMessage("Rotation Command Received");
-    } else if (strncmp(cmd, "tvc ", 4) == 0) {
-        // TVC control
-        if (strcmp(cmd + 4, "enable") == 0) {
-            extern TVC_State tvcState;
-            tvcState = SystemTVC_Enable;
-            SetStatusMessage("TVC Enabled");
-        } else if (strcmp(cmd + 4, "disable") == 0) {
-            extern TVC_State tvcState;
-            tvcState = SystemTVC_Disable;
-            SetStatusMessage("TVC Disabled");
-        }
-    } else if (strncmp(cmd, "acs ", 4) == 0) {
-        // ACS control
-        if (strcmp(cmd + 4, "enable") == 0) {
-            extern ACS_State acsState;
-            acsState = SystemACS_Enable;
-            SetStatusMessage("ACS Enabled");
-        } else if (strcmp(cmd + 4, "disable") == 0) {
-            extern ACS_State acsState;
-            acsState = SystemACS_Disable;
-            SetStatusMessage("ACS Disabled");
-        }
-    } else if (strncmp(cmd, "engine ", 7) == 0) {
-        // Engine control
-        if (strcmp(cmd + 7, "enable") == 0) {
-            extern Jet_State engineState;
-            engineState = SystemJet_Enable;
-            SetStatusMessage("Engine Enabled");
-        } else if (strcmp(cmd + 7, "disable") == 0) {
-            extern Jet_State engineState;
-            engineState = SystemJet_Disable;
-            SetStatusMessage("Engine Disabled");
-        }
+void ParseTVCCommand(const char* cmd) {
+    if (strcmp(cmd, "enable") == 0) {
+        extern TVC_State tvcState;
+        tvcState = SystemTVC_Automatic;
+        SetStatusMessage("TVC (Auto Mode) Enabled");
+    } else if (strcmp(cmd, "disable") == 0) {
+        extern TVC_State tvcState;
+        tvcState = SystemTVC_Disable;
+        SetStatusMessage("TVC Disabled");
+    } else if (strcmp(cmd, "manual") == 0) {
+        extern TVC_State tvcState;
+        tvcState = SystemTVC_Manual;
+        SetStatusMessage("TVC (Manual Mode) Enabled");
+    } else if (strcmp(cmd, "automatic") == 0) {
+        extern TVC_State tvcState;
+        tvcState = SystemTVC_Automatic;
+        SetStatusMessage("TVC (Auto Mode) Enabled");
     } else {
-        SetStatusMessage("Invalid System Command");
+        SetStatusMessage("Invalid TVC Command");
+    }
+}
+
+/**
+ * @brief Parse direct ACS commands
+ * @param cmd: Command string after "acs " prefix
+ */
+void ParseACSCommand(const char* cmd) {
+    if (strcmp(cmd, "enable") == 0) {
+        extern ACS_State acsState;
+        acsState = SystemACS_Enable;
+        SetStatusMessage("ACS Enabled");
+    } else if (strcmp(cmd, "disable") == 0) {
+        extern ACS_State acsState;
+        acsState = SystemACS_Disable;
+        SetStatusMessage("ACS Disabled");
+    } else {
+        SetStatusMessage("Invalid ACS Command");
+    }
+}
+
+/**
+ * @brief Parse direct engine commands
+ * @param cmd: Command string after "engine " prefix
+ */
+void ParseEngineCommand(const char* cmd) {
+    if (strcmp(cmd, "enable") == 0) {
+        extern Jet_State engineState;
+        engineState = SystemJet_Automatic;
+        SetStatusMessage("Engine (Auto Mode)Enabled");
+    } else if (strcmp(cmd, "disable") == 0) {
+        extern Jet_State engineState;
+        engineState = SystemJet_Disable;
+        SetStatusMessage("Engine Disabled");
+    } else {
+        SetStatusMessage("Invalid Engine Command");
     }
 }
 
@@ -299,11 +323,21 @@ void ParseSystemCommand(const char* cmd) {
  * @param cmd: Full navigation command string
  */
 void ParseNavigationCommand(const char* cmd) {
-    // Expected format: "Move [Direction] [Distance]m [Velocity]ms"
-    // Example: "Move Forward 5m 1ms"
+    // Expected formats:
+    // 1. "hover", "move [Direction] [Distance]m [Velocity]ms", "rotate [degrees]" (from "navigation" prefix)
+    // 2. "Move [Direction] [Distance]m [Velocity]ms" (direct format)
+    // Examples: "hover", "move Forward 5m 1ms", "rotate 30", "Move Forward 5m 1ms"
     
     char* token = strtok((char*)cmd, " ");
-    if (token && strcmp(token, "Move") == 0) {
+    if (token && strcmp(token, "hover") == 0) {
+        // Enter hover mode
+        extern void Hover(void);
+        Hover();
+        SetStatusMessage("Navigation Hover Mode");
+        command_parser.new_command = true;
+        command_parser.executing = true;
+        command_parser.start_time_ms = HAL_GetTick();
+    } else if (token && (strcmp(token, "move") == 0 || strcmp(token, "Move") == 0)) {
         // Get direction
         token = strtok(NULL, " ");
         if (token) {

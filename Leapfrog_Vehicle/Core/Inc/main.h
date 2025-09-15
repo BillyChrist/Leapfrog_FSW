@@ -44,7 +44,8 @@ extern "C" {
 // Individual subsystem states
 typedef enum {
   SystemTVC_Disable = 0,
-  SystemTVC_Enable
+  SystemTVC_Manual,
+  SystemTVC_Automatic
 } TVC_State;
 
 typedef enum {
@@ -54,7 +55,8 @@ typedef enum {
 
 typedef enum {
   SystemJet_Disable = 0,
-  SystemJet_Enable
+  SystemJet_Manual,
+  SystemJet_Automatic
 } Jet_State;
 
 typedef float float32_t;

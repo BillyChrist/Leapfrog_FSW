@@ -6,35 +6,46 @@ The TVC system provides precise thrust vector control for the Leapfrog vehicle t
 ## System Architecture
 
 ### Core Components
-- **TVC Controller** (`tvc2.c`): Main control loop running at 100Hz
+- **TVC Controller** (`tvc.c`): Main control loop running at 100Hz
 - **IMU Integration** (`ProcessIMU.c`): Provides acceleration and attitude data
+- **Gimbal IMU Integration** (`ProcessGimbalIMU.c`): Direct gimbal angle measurement
 - **GPS Integration** (`gps.c`): Provides position, velocity, and drift compensation
 - **Heartbeat Communication** (`heartbeat.c`): Command reception and status reporting
 - **Actuator Control**: Direct GPIO control of linear actuators
 
 ### Hardware Interface
 - **Actuators**: 2-axis linear actuators (Pitch/Roll)
-- **Position Feedback**: Potentiometers via ADC (PA4, PA6)
+- **Position Feedback**: Potentiometers via ADC (PA4, PA6) for linear position
 - **Control Pins**: GPIO PB12-PB15 for actuator control
-- **IMU Data**: 3-axis accelerometer and gyroscope data
+- **Vehicle IMU**: 3-axis accelerometer and gyroscope data
+- **Gimbal IMUs**: Two 3-axis IMUs (one on X-axis gimbal stage, one on Y-axis gimbal stage)
 - **GPS Module**: UART-based position and velocity data
+
+### Sensor Architecture
+- **ADC Position Feedback**: Potentiometers on linear actuators provide position feedback
+- **Gimbal IMU Feedback**: Direct angle measurement from IMUs mounted on gimbal stages
+- **Sensor Fusion**: Redundant closed-loop control using both position sources
+- **Fault Detection**: Cross-validation between ADC and IMU readings for reliability
 
 ## Control Modes
 
-### 1. System States
-- **SystemTVC_Enable**: Active control with attitude compensation and drift correction
-- **SystemTVC_Disable**: Hold current position, no active control
+### System States
+| State | Description | Effect |
+|-------|-------------|---------|
+| `SystemTVC_Disable` | TVC system disabled | Actuators hold current position |
+| `SystemTVC_Manual` | Manual gimbal control | Direct gimbal angle control |
+| `SystemTVC_Automatic` | Automatic control | Attitude compensation + navigation |
 
-### 2. Operational Modes
+### Operational Modes
 - **Hover Mode**: Maintain level position with attitude compensation
 - **Navigation Mode**: Execute ground station commands
 - **Manual Mode**: Direct gimbal control (placeholder)
 
 ## Core Functionality
 
-### 1. Actuator Control
+### Actuator Control
+**Position Control with Deadband:**
 ```c
-// Position control with deadband
 if (fabs(axis1_error) > TVC_DEADBAND) {
     if (axis1_error > 0.0) {
         Extend(1);  // Move actuator forward
@@ -46,31 +57,22 @@ if (fabs(axis1_error) > TVC_DEADBAND) {
 }
 ```
 
-**Key Parameters:**
-- `TVC_DEADBAND = 25.0` ADC units
-- `TVC_AXIS1_CENTER = 2300` ADC units (pitch center)
-- `TVC_AXIS2_CENTER = 2300` ADC units (roll center)
-- `TVC_MAX_ANGLE_DEG = ±5.5°` (physical gimbal limits)
+### Angle Conversion
+**Linear to Angular:** `angular = (ADC_value - center_position) / conversion_factor`
+**Angular to Linear:** `ADC_value = (angle * conversion_factor) + center_position`
 
-### 2. Angle Conversion
-**Linear to Angular:**
-```c
-angular = (ADC_value - center_position) / conversion_factor
-```
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `TVC_DEADBAND` | 25.0 ADC units | Position control deadband |
+| `TVC_AXIS1_CENTER` | 2300 ADC units | Pitch center position |
+| `TVC_AXIS2_CENTER` | 2300 ADC units | Roll center position |
+| `TVC_MAX_ANGLE_DEG` | ±5.5° | Physical gimbal limits |
+| Axis 1 (Pitch) | 136.96 ADC/deg | Conversion factor |
+| Axis 2 (Roll) | 123.0 ADC/deg | Conversion factor |
 
-**Angular to Linear:**
-```c
-ADC_value = (angle * conversion_factor) + center_position
-```
-
-**Conversion Factors:**
-- Axis 1 (Pitch): 136.96 ADC units per degree
-- Axis 2 (Roll): 123.0 ADC units per degree
-
-### 3. Attitude Compensation
+### Attitude Compensation
 **Purpose**: Counteract vehicle pitch/roll to maintain stable gimbal pointing
 
-**Algorithm:**
 ```c
 // Calculate deviation from level
 float roll_deviation = tvc_roll_deg - 0.0f;    // Target: 0° roll
@@ -80,24 +82,19 @@ float pitch_deviation = tvc_pitch_deg - 0.0f;  // Target: 0° pitch
 if (fabs(roll_deviation) > TVC_DEADBAND_DEG) {
     attitude_compensation_roll = -roll_deviation * TVC_COMPENSATION_GAIN;
 }
-
-// Limit compensation to prevent excessive gimbal movement
-if (attitude_compensation_roll > TVC_MAX_COMPENSATION_DEG) {
-    attitude_compensation_roll = TVC_MAX_COMPENSATION_DEG;
-}
 ```
 
-**Parameters:**
-- `TVC_COMPENSATION_GAIN = 1.0f` (adjustable)
-- `TVC_DEADBAND_DEG = 0.5°` (prevents jitter)
-- `TVC_MAX_COMPENSATION_DEG = 3.0°` (safety limit)
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `TVC_COMPENSATION_GAIN` | 1.0f | Attitude compensation gain |
+| `TVC_DEADBAND_DEG` | 0.5° | Attitude deadband |
+| `TVC_MAX_COMPENSATION_DEG` | 3.0° | Maximum compensation angle |
 
-### 4. GPS Drift Compensation
+### GPS Drift Compensation
 **Purpose**: Detect and correct for unwanted vehicle drift using sensor fusion
 
-**Sensor Fusion:**
 ```c
-// Prioritize IMU for short-term, GPS for long-term
+// Sensor fusion with weighted average
 float imu_weight = 0.7f;  // Higher weight for IMU (more responsive)
 float gps_weight = 0.3f;  // Lower weight for GPS (more stable)
 
@@ -108,208 +105,161 @@ if (gps_valid) {
 }
 ```
 
-**Physics-Based Compensation:**
+### Sensor Fusion (ADC + Gimbal IMU)
+**Purpose**: Redundant closed-loop control using both position feedback sources
+
 ```c
-// Calculate desired velocity from gimbal angle and throttle
-CalculateDesiredVelocity(gimbal_pitch, gimbal_roll, throttle_percent, 
-                        &desired_velocity_north, &desired_velocity_east);
-
-// Calculate velocity error (drift)
-velocity_error = fused_velocity - desired_velocity;
-
-// Apply compensation to gimbal angles
-pitch_compensation = -velocity_error_north * compensation_gain;
-roll_compensation = -velocity_error_east * compensation_gain;
+// Fuse position feedback from ADC and gimbal IMU sensors
+void FusePositionFeedback(void) {
+    float adc_weight = 0.6f;        // Weight for ADC position feedback
+    float imu_weight = 0.4f;        // Weight for gimbal IMU data
+    
+    if (gimbal_imu_data_valid) {
+        // Both sensors available - use weighted fusion
+        fused_pitch_deg = (adc_weight * tvcVal1_angular) + (imu_weight * gimbal_imu_pitch_deg);
+        fused_roll_deg = (adc_weight * tvcVal2_angular) + (imu_weight * gimbal_imu_roll_deg);
+        
+        // IMU provides direct velocity measurement
+        fused_pitch_velocity_degs = gimbal_imu_pitch_velocity_degs;
+        fused_roll_velocity_degs = gimbal_imu_roll_velocity_degs;
+    } else {
+        // Fallback: Use ADC position feedback only
+        fused_pitch_deg = tvcVal1_angular;
+        fused_roll_deg = tvcVal2_angular;
+    }
+}
 ```
 
-### 5. Velocity Calculation
-**IMU Integration**: Calculate velocity from acceleration data
-```c
-// Simple integration: v = v0 + a*dt
-tvc_velocity_north_ms = prev_velocity + acc_north_ms2 * dt;
-
-// Apply damping to prevent drift
-tvc_velocity_north_ms *= damping_factor;  // 0.95f
-```
-
-**GPS Velocity**: Calculate from position changes using Haversine formula
-```c
-// Calculate distance and bearing between GPS positions
-float distance_m = EARTH_RADIUS_M * c;
-float bearing_rad = atan2f(y, x);
-
-// Convert to velocity components
-velocity_north = velocity_ms * cosf(bearing_rad);
-velocity_east = velocity_ms * sinf(bearing_rad);
-```
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `adc_weight` | 0.6f | Weight for ADC position feedback |
+| `imu_weight` | 0.4f | Weight for gimbal IMU data |
+| `fused_pitch_deg` | Calculated | Fused gimbal pitch angle |
+| `fused_roll_deg` | Calculated | Fused gimbal roll angle |
 
 ## Command System
 
-### 1. Navigation Commands
-**Format**: `"Move [Direction] [Distance]m [Velocity]ms"`
-**Example**: `"Move Forward 5m 1ms"`
+### TVC Commands
+| Command | Description | Effect |
+|---------|-------------|---------|
+| `tvc enable` | Enable TVC (automatic mode) | Allows automatic gimbal control and navigation |
+| `tvc disable` | Disable TVC system | Actuators hold current position |
+| `tvc manual` | Enable TVC (manual mode) | Allows manual gimbal control |
+| `tvc automatic` | Enable TVC (automatic mode) | Enables automatic gimbal control |
 
-**Processing:**
-```c
-// Parse command components
-strncpy(command_parser.direction, "Forward", sizeof(command_parser.direction));
-command_parser.distance_m = 5.0f;
-command_parser.velocity_ms = 1.0f;
+### Navigation Commands
+| Command | Description | Effect |
+|---------|-------------|---------|
+| `navigation hover` | Enter hover mode | Maintain current position with attitude compensation |
+| `navigation move <direction> <distance>m <velocity>ms` | Execute movement | Move in specified direction |
+| `navigation rotate <degrees>` | Rotate vehicle | Change vehicle heading by specified degrees |
 
-// Calculate gimbal angle and duration
-float gimbal_angle = CalculateGimbalAngle(velocity_ms, thrust_n);
-float duration_s = distance_m / velocity_ms;
-```
+**Movement Examples:**
+- `navigation move Forward 5m 1ms` - Move forward 5 meters at 1 m/s
+- `navigation move Backward 3m 0.5ms` - Move backward 3 meters at 0.5 m/s
+- `navigation move Left 2m 1.5ms` - Strafe left 2 meters at 1.5 m/s
+- `navigation move Right 1m 2ms` - Strafe right 1 meter at 2 m/s
 
-### 2. System State Commands
-- `"system tvc enable"` - Enable TVC system
-- `"system tvc disable"` - Disable TVC system
-- `"system hover"` - Enter hover mode
-- `"system rotate 30"` - Rotate yaw by 30 degrees
-
-### 3. Physics-Based Navigation
-**Gimbal Angle Calculation:**
-```c
-// Calculate required gimbal angle for desired velocity
-float gimbal_angle = CalculateGimbalAngleFromVelocity(velocity_ms, direction_deg, thrust_n);
-```
-
-**Duration Calculation:**
-```c
-// Calculate movement duration based on distance and velocity
-float duration_s = distance_m / velocity_ms;
-```
-
-**Thrust Offset Calculation:**
-```c
-// Calculate thrust offset for velocity control
-float thrust_offset = CalculateThrustOffset(velocity_ms, acceleration_ms2, mass_kg);
-```
+**Alternative Direct Format:**
+- `Move Forward 5m 1ms` - Direct movement command (no "navigation" prefix)
 
 ## Data Flow
 
-### 1. Input Data Sources
-- **IMU**: `tvc_acc_x_g`, `tvc_acc_y_g`, `tvc_acc_z_g` (acceleration)
-- **IMU**: `tvc_roll_deg`, `tvc_pitch_deg`, `tvc_yaw_deg` (attitude)
-- **GPS**: `gps_latitude`, `gps_longitude`, `gps_velocity_*` (position/velocity)
-- **Commands**: `command_string` from ground station
+### Input Data Sources
+| Source | Variables | Description |
+|--------|-----------|-------------|
+| **Vehicle IMU** | `tvc_acc_x_g`, `tvc_acc_y_g`, `tvc_acc_z_g` | Acceleration data |
+| **Vehicle IMU** | `tvc_roll_deg`, `tvc_pitch_deg`, `tvc_yaw_deg` | Attitude data |
+| **ADC Position** | `tvcVal1_angular`, `tvcVal2_angular` | Linear actuator position feedback |
+| **Gimbal IMUs** | `gimbal_pitch_deg`, `gimbal_roll_deg` | Direct gimbal angles |
+| **Gimbal IMUs** | `gimbal_pitch_velocity_degs`, `gimbal_roll_velocity_degs` | Gimbal angular velocities |
+| **Fused Data** | `fused_pitch_deg`, `fused_roll_deg` | Sensor-fused position feedback |
+| **GPS** | `gps_latitude`, `gps_longitude`, `gps_velocity_*` | Position/velocity |
+| **Commands** | `command_string` | Ground station commands |
 
-### 2. Processing Pipeline
+### Processing Pipeline
 1. **Filter ADC values** (low-pass filter, 2 taps)
-2. **Update velocity** from IMU acceleration
-3. **Check for commands** from ground station
-4. **Calculate compensation** (attitude + GPS drift)
-5. **Apply to gimbal angles** (pitch/roll)
-6. **Convert to linear positions** (ADC values)
-7. **Control actuators** (extend/retract/hold)
+2. **Update gimbal IMU data** (direct angle measurement)
+3. **Fuse position feedback** (ADC + gimbal IMU sensor fusion)
+4. **Update velocity** from IMU acceleration
+5. **Check for commands** from ground station
+6. **Calculate compensation** (attitude + GPS drift)
+7. **Apply to gimbal angles** (pitch/roll using fused data)
+8. **Convert to linear positions** (ADC values)
+9. **Control actuators** (extend/retract/hold with fused feedback)
 
-### 3. Output Control
+### Output Control
 - **Actuator Control**: GPIO pins PB12-PB15
 - **Status Messages**: "Navigation Complete", "TVC Enabled", etc.
 - **Telemetry**: Position, velocity, compensation angles
 
 ## Configuration Parameters
 
-### Actuator Limits (update when system is rebuilt / calibrated)
-```c
-#define TVC_AXIS1_MIN_POSITION 1800    // Minimum ADC value
-#define TVC_AXIS1_MAX_POSITION 2800    // Maximum ADC value
-#define TVC_AXIS2_MIN_POSITION 1800    // Minimum ADC value
-#define TVC_AXIS2_MAX_POSITION 2800    // Maximum ADC value
-```
+### Actuator Limits
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `TVC_AXIS1_MIN_POSITION` | 1800 ADC units | Minimum pitch position |
+| `TVC_AXIS1_MAX_POSITION` | 2800 ADC units | Maximum pitch position |
+| `TVC_AXIS2_MIN_POSITION` | 1800 ADC units | Minimum roll position |
+| `TVC_AXIS2_MAX_POSITION` | 2800 ADC units | Maximum roll position |
 
 ### Control Gains
-```c
-#define TVC_COMPENSATION_GAIN 1.0f     // Attitude compensation gain
-#define TVC_DEADBAND_DEG 0.5f          // Attitude deadband
-#define TVC_MAX_COMPENSATION_DEG 3.0f  // Maximum compensation angle
-```
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `TVC_COMPENSATION_GAIN` | 1.0f | Attitude compensation gain |
+| `TVC_DEADBAND_DEG` | 0.5° | Attitude deadband |
+| `TVC_MAX_COMPENSATION_DEG` | 3.0° | Maximum compensation angle |
 
 ### Physics Parameters
-```c
-#define TVC_THRUST_TO_ANGLE_FACTOR 0.1f  // Thrust to angle conversion
-#define MAX_THRUST_N 1000.0f             // Maximum thrust (Newtons)
-#define VEHICLE_MASS_KG 50.0f            // Vehicle mass (kg)
-```
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `TVC_THRUST_TO_ANGLE_FACTOR` | 0.1f | Thrust to angle conversion |
+| `MAX_THRUST_N` | 1000.0f | Maximum thrust (Newtons) |
+| `VEHICLE_MASS_KG` | 50.0f | Vehicle mass (kg) |
 
 ## Safety Features
 
-### 1. Angle Limits
-- Physical gimbal limits: ±5.5°
-- Software limits prevent excessive movement
-- Clamping to actuator position limits
+### Angle Limits
+- **Physical gimbal limits**: ±5.5°
+- **Software limits**: Prevent excessive movement
+- **Actuator clamping**: Enforce position limits
 
-### 2. Data Validation
-- GPS data timeout (5 seconds)
-- IMU data validity checks
-- Altitude cross-check with altimeter
+### Data Validation
+- **GPS timeout**: 5 seconds
+- **IMU validity checks**: Data quality validation
+- **Altitude cross-check**: Altimeter validation
 
-### 3. Fallback Modes
-- IMU-only operation if GPS fails
-- Hold position if system disabled
-- Command timeout and clearing
+### Fallback Modes
+- **IMU-only operation**: If GPS fails
+- **Hold position**: If system disabled
+- **Command timeout**: Automatic command clearing
 
 ## Integration Points
 
-### 1. Heartbeat System
-- Receives commands via `command_string`
-- Sends status messages via `status_message`
-- Includes GPS data in telemetry
+### Heartbeat System
+- **Command reception**: Via `command_string`
+- **Status reporting**: Via `status_message`
+- **Telemetry**: GPS data included
 
-### 2. IMU System
-- Thread-safe data access via dedicated TVC variables
-- Real-time acceleration and attitude data
-- Velocity calculation from acceleration integration
+### IMU System
+- **Thread-safe access**: Dedicated TVC variables
+- **Real-time data**: Acceleration and attitude
+- **Velocity calculation**: From acceleration integration
 
-### 3. GPS System
-- Position and velocity data for drift compensation
-- Target position setting for navigation
-- Cross-check with altimeter for altitude validation
+### GPS System
+- **Drift compensation**: Position and velocity data
+- **Navigation targets**: Position setting
+- **Altitude validation**: Cross-check with altimeter
 
-## Control Algorithms (Placeholder Implementation)
+## Gimbal IMU Integration
 
-### 1. Gimbal Angle Calculation
-**Function**: `CalculateGimbalAngleFromVelocity()`
-**Purpose**: Convert desired velocity to required gimbal angle
-**Status**: **PLACEHOLDER** - Requires physical system measurements
-
-**Dependencies for Implementation:**
-- Thrust-to-velocity relationship
-- Gimbal angle effectiveness
-- Vehicle mass and drag characteristics
-- Engine response characteristics
-
-### 2. Thrust Offset Calculation
-**Function**: `CalculateThrustOffset()`
-**Purpose**: Calculate thrust adjustment for velocity control
-**Status**: **PLACEHOLDER** - Requires physical system measurements
-
-**Dependencies for Implementation:**
-- Engine throttle response
-- Thrust vs throttle relationship
-- Vehicle drag characteristics
-- Altitude and atmospheric conditions
-
-### 3. Main Control Algorithm
-**Function**: `ApplyControlAlgorithm()`
-**Purpose**: Core TVC control logic
-**Status**: **PLACEHOLDER** - Requires control system design
-
-**Implementation Options:**
-- PID control
-- LQR (Linear Quadratic Regulator)
-- Model Predictive Control (MPC)
-- Adaptive control
-
-## Gimbal IMU Integration (Implemented)
-
-### 1. Hardware Requirements
+### Hardware Requirements
 - **X-axis IMU**: Measure gimbal pitch rotation
 - **Y-axis IMU**: Measure gimbal roll rotation
 - **Installation**: Mounted on gimbal inner stage
 - **Purpose**: Direct measurement of actual thrust vector direction
 
-### 2. Software Integration
+### Software Integration
 **Module**: `ProcessGimbalIMU.c/h`
 **Functions**: `updateGimbalIMUData()`, `getGimbalAngles()`, `getGimbalVelocities()`, `getGimbalAccelerations()`
 **Status**: **IMPLEMENTED** - Ready for hardware installation
@@ -321,49 +271,50 @@ float thrust_offset = CalculateThrustOffset(velocity_ms, acceleration_ms2, mass_
 - Angle wrapping and data validation
 - Real-time data processing and filtering
 
-### 3. Benefits
+### Benefits
 - **Direct measurement** of actual gimbal angles
 - **Improved accuracy** over actuator position estimation
 - **Real-time feedback** for control algorithms
 - **Fault detection** for gimbal mechanism issues
 - **Simplified architecture** compared to vehicle IMU system
 
-## Future Enhancements
+## Control Algorithms (Placeholder Implementation)
 
-### 1. Advanced Control
-- PID control for smoother actuator movement
-- Kalman filtering for better sensor fusion
-- Adaptive gain scheduling
+### Gimbal Angle Calculation
+**Function**: `CalculateGimbalAngleFromVelocity()`
+**Purpose**: Convert desired velocity to required gimbal angle
+**Status**: **PLACEHOLDER** - Requires physical system measurements
 
-### 2. Navigation Features
-- Waypoint following
-- Obstacle avoidance
-- Return-to-home functionality
+**Dependencies:**
+- Thrust-to-velocity relationship
+- Gimbal angle effectiveness
+- Vehicle mass and drag characteristics
+- Engine response characteristics
 
-### 3. Safety Systems
-- Emergency stop commands
-- Fault detection and recovery
-- Redundant sensor validation
+### Thrust Offset Calculation
+**Function**: `CalculateThrustOffset()`
+**Purpose**: Calculate thrust adjustment for velocity control
+**Status**: **PLACEHOLDER** - Requires physical system measurements
 
-## Testing and Validation
+**Dependencies:**
+- Engine throttle response
+- Thrust vs throttle relationship
+- Vehicle drag characteristics
+- Altitude and atmospheric conditions
 
-### 1. Unit Tests
-- Angle conversion accuracy
-- Actuator control response
-- Command parsing validation
+### Main Control Algorithm
+**Function**: `ApplyControlAlgorithm()`
+**Purpose**: Core TVC control logic
+**Status**: **PLACEHOLDER** - Requires control system design
 
-### 2. Integration Tests
-- IMU data flow verification
-- GPS drift compensation testing
-- End-to-end command execution
-
-### 3. Flight Tests
-- Hover stability validation
-- Navigation command accuracy
-- Drift compensation effectiveness
+**Implementation Options:**
+- PID control
+- LQR (Linear Quadratic Regulator)
+- Model Predictive Control (MPC)
+- Adaptive control
 
 ---
 
 **Last Updated**: January 2025  
 **Version**: 1.0  
-**Author**: Leapfrog Development Team
+**Author**: BillyChrist

@@ -25,8 +25,6 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "main.h"
-#include "cmsis_os.h"
 #include <math.h>
 #include <errno.h>
 #include <stdarg.h>
@@ -50,7 +48,7 @@
 #include "alt_imu_coupling.h"
 #include "gps.h"
 //#include "printf.h"
-//#include "Test_Operations.h"
+
 
 
 
@@ -150,9 +148,9 @@ const osMutexAttr_t lidarMutex_attributes = {
 STM32Response stm32Response;
 
 // Define system state variables
-SubsystemState acsState;
-SubsystemState tvcState;
-SubsystemState engineState;
+ACS_State acsState;
+TVC_State tvcState;
+Jet_State engineState;
 
 // Heartbeat Variables
 QueueHandle_t piMessageQueueHandle;
@@ -1306,9 +1304,9 @@ void StartDefaultTask(void *argument)
 	      engine_hover_m = heartbeat.engine_hover_m;
 
 	      // Update states from heartbeat
-	      acsState     = (SubsystemState) heartbeat.acs_state;
-	      tvcState     = (SubsystemState) heartbeat.tvc_state;
-	      engineState  = (SubsystemState) heartbeat.engine_state;
+	      acsState     = (ACS_State) heartbeat.acs_state;
+	      tvcState     = (TVC_State) heartbeat.tvc_state;
+	      engineState  = (Jet_State) heartbeat.engine_state;
 	      engineSafe   = heartbeat.engine_safe;
 	      enginePwr    = heartbeat.engine_power;
 
@@ -1334,9 +1332,9 @@ void StartDefaultTask(void *argument)
 
 	    // Safety fallback: disable if timeout reached
 	    if (timeout_counter == 0) {
-	      acsState = SystemAutomatic;
-	      tvcState = SystemDisabled;
-	      engineState = SystemDisabled;
+	      acsState = SystemACS_Enable;
+	      tvcState = SystemTVC_Disable;
+	      engineState = SystemJet_Disable;
         // TODO add safeland logic here on heartbeat timeout
 	    }
 
@@ -1440,23 +1438,23 @@ void StartACSTask(void *argument)
     		uint32_t currentTime = HAL_GetTick();
 
     		// Enable or Disable ACS using button
-    		if (modeButton == 0 && acsState != SystemDisabled) {
-    		    acsState = SystemDisabled;
+    		if (modeButton == 0 && acsState != SystemACS_Disable) {
+    		    acsState = SystemACS_Disable;
     		}
-    		else if (modeButton == 1 && acsState != SystemAutomatic) {
-    		    acsState = SystemAutomatic;
+    		else if (modeButton == 1 && acsState != SystemACS_Enable) {
+    		    acsState = SystemACS_Enable;
     		}
 
 
-    		// Run ACS system if heartbeat command sets "SystemAutomatic" mode
-    		if (acsState == SystemAutomatic && (currentTime - lastUpdate >= 100)) {
+    		// Run ACS system if heartbeat command sets "SystemACS_Enable" mode
+    		if (acsState == SystemACS_Enable && (currentTime - lastUpdate >= 100)) {
 
     		    ACS_PID_Control(); 			// Enable ACS system
 
     		    lastUpdate = currentTime;
     		}
 
-    		else if (acsState == SystemDisabled) {
+    		else if (acsState == SystemACS_Disable) {
     		    // Stop the control loop — put ACS into "idle" state
 				TIM3->CCR1 = EDFReadyState;
 				TIM3->CCR2 = EDFReadyState;
@@ -1613,7 +1611,8 @@ void StartEngineTask(void *argument)
     TickType_t xLastWakeTime = xTaskGetTickCount();    // Get the current tick count
 
 
-    engineState = SystemAutomatic;   // Manual engine state set for testing! //TODO Remove before flight
+    engineState = SystemJet_Automatic;   // Manual engine state set for testing! 
+    //TODO Remove hard coded auto state
   /* Infinite loop */
   for(;;)
   {
@@ -1643,8 +1642,8 @@ void StartEngineTask(void *argument)
              }
          }
 
-         if (engineState == SystemDisabled) { // TODO remove before flight
-             engineState = SystemAutomatic;  // Force auto mode for PID testing
+         if (engineState == SystemJet_Disable) { // TODO remove before flight - update with actual logic
+             engineState = SystemJet_Automatic;  // Force auto mode for PID testing
          }
          runEngineControl_Test();
 

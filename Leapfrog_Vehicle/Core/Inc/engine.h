@@ -9,7 +9,7 @@ extern "C" {
 #include "heartbeat.h"
 #include "engine_PID.h"
 
-
+ 
 //#define ENGINE_TRANSMIT_STR(str_) HAL_UART_Transmit(&huart1, str_, strlen(str_), 10)
 #define ENGINE_TRANSMIT_STR(str_) HAL_UART_Transmit(&huart1, (const uint8_t*)(str_), strlen((const char*)(str_)), 10)
 
@@ -53,7 +53,7 @@ extern uint8_t enginePwr;
 
 extern PID_TypeDef altPID;
 extern uint8_t throttle_percent;
-extern SubsystemState lastState;
+extern Jet_State lastState;
 
 
 extern double altitude;

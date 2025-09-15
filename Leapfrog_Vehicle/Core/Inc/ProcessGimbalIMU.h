@@ -20,12 +20,12 @@
 #define IMU_PACKET_LEN 11
 #define GIMBAL_PITCH_IMU 1  // X-axis IMU for pitch measurement
 #define GIMBAL_ROLL_IMU 2   // Y-axis IMU for roll measurement
-
+ 
 /* Enums ---------------------------------------------------------------------*/
 typedef enum {
-    CALIBRATING = 0,
-    CALIBRATION_COMPLETE = 1
-} CalibrationStatus;
+    TVC_CALIBRATING = 0,
+    TVC_CALIBRATION_COMPLETE = 1
+} TVC_CalibrationStatus;
 
 /* Structs -------------------------------------------------------------------*/
 typedef struct {
@@ -39,26 +39,26 @@ typedef struct {
     float acc_y_g;
     float acc_z_g;
     float temp_degc;
-} IMUPacket;
+} TVC_IMUPacket;
 
 /* Global Variables ----------------------------------------------------------*/
-// Gimbal IMU data - single IMU per axis
-extern float gimbal_pitch_deg;        // Gimbal pitch angle from X-axis IMU
-extern float gimbal_roll_deg;         // Gimbal roll angle from Y-axis IMU
-extern float gimbal_pitch_velocity_degs;  // Gimbal pitch angular velocity
-extern float gimbal_roll_velocity_degs;   // Gimbal roll angular velocity
-extern float gimbal_pitch_accel_g;    // Gimbal pitch acceleration
-extern float gimbal_roll_accel_g;     // Gimbal roll acceleration
+// Gimbal IMU data
+extern float gimbal_pitch_deg;
+extern float gimbal_roll_deg;
+extern float gimbal_pitch_velocity_degs;
+extern float gimbal_roll_velocity_degs;
+extern float gimbal_pitch_accel_g;
+extern float gimbal_roll_accel_g;
 
 // IMU readiness flag
 extern bool gimbal_imu_ready;
 
 // Calibration status
-extern CalibrationStatus gimbal_imu_calibration_status;
+extern TVC_CalibrationStatus gimbal_imu_calibration_status;
 
 /* Function Declarations -----------------------------------------------------*/
 // Calibration functions
-CalibrationStatus calibrateGimbalIMU_RTOS(void);
+TVC_CalibrationStatus calibrateGimbalIMU(void);
 void resetGimbalIMU(void);
 
 // Data processing functions

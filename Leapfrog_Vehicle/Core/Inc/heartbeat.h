@@ -130,7 +130,9 @@ void sendHeartbeatPacket(UART_HandleTypeDef *huart, STM32Response *response);
 
 // Command parsing and status functions
 void ProcessIncomingCommand(const char* command_string);
-void ParseSystemCommand(const char* cmd);
+void ParseTVCCommand(const char* cmd);
+void ParseACSCommand(const char* cmd);
+void ParseEngineCommand(const char* cmd);
 void ParseNavigationCommand(const char* cmd);
 void SetStatusMessage(const char* message);
 void ClearStatusMessage(void);

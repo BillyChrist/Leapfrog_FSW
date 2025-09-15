@@ -147,9 +147,19 @@ string CommandParser::cmdParser(string cmd, string values) {
 
 string CommandParser::tvcParser(string cmd, string values) {
     if (cmd == "enable") {
-        // software flag update
-        int value = atoi(values.c_str());
-        return this->tvc_enable(value);
+        // Default to automatic mode when enabling
+        return this->tvc_enable(1);
+    }
+    else if (cmd == "disable") {
+        return this->tvc_enable(0);
+    }
+    else if (cmd == "manual") {
+        // Enable in manual mode
+        return this->tvc_enable(1);  // This would need to be updated to support manual mode
+    }
+    else if (cmd == "automatic") {
+        // Enable in automatic mode
+        return this->tvc_enable(1);
     }
     else if (cmd == "move") {
         // service
@@ -180,9 +190,14 @@ string CommandParser::guidanceParser(string cmd, string values) {
     }
 }
 
+
 string CommandParser::navigationParser(string cmd, string values) {
-    if (cmd == "move") {
-        // Parse navigation command: "Move Forward 5m 1ms"
+    if (cmd == "hover") {
+        // Enter hover mode - maintain current position with attitude compensation
+        return "OK - Hover Mode";
+    }
+    else if (cmd == "move") {
+        // Parse navigation command: "move Forward 5m 1ms"
         vector<string> tokens = this->split(values, ' ');
         if (tokens.size() >= 3) {
             string direction = tokens[0];
@@ -217,6 +232,20 @@ string CommandParser::Parser(string cmd) {
     }
     if (tokens[0] == "label") {
         return this->labelParser(tokens[1]);
+    }
+    else if (tokens[0] == "navigation") {
+        // Navigation command format: "navigation hover", "navigation move Forward 5m 1ms", "navigation rotate 30"
+        if (tokens.size() >= 2) {
+            string nav_cmd = tokens[1];
+            string nav_values = "";
+            if (tokens.size() >= 3) {
+                for (size_t i = 2; i < tokens.size(); i++) {
+                    if (i > 2) nav_values += " ";
+                    nav_values += tokens[i];
+                }
+            }
+            return this->navigationParser(nav_cmd, nav_values);
+        }
     }
     else if (tokens[0] == "engine") {
         return this->engineParser(tokens[1], tokens[2]);

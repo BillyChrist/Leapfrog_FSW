@@ -129,5 +129,8 @@ extern bool imu_ready;
 void processIMUData(uint8_t *buffer, int IMUid);
 void IMUCrossCheck(void);
 
+// Utility functions
+float wrapAngle(float angle);
+
 
 #endif /* PROCESSIMU_H */

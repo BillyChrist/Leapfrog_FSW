@@ -35,7 +35,7 @@ float engine_KI = 00.10;
 float engine_KD = 00.10;
 
 extern UART_HandleTypeDef huart1, huart2;
-extern SubsystemState engineState;
+extern Jet_State engineState;
 extern float engine_thrust_p;
 extern float engine_hover_m;
 extern uint16_t engine_pwm_scale;
@@ -55,7 +55,7 @@ extern float current_yaw_deg;
 static TickType_t engineLastWakeTime;
 
 // Define global state variable for "lastState"
-SubsystemState lastState = SystemDisabled;  // Initialize to a default state
+Jet_State lastState = SystemJet_Disable;  // Initialize to a default state
 
 // Define local variables
 osMessageQueueId_t engineRxQueueHandle = NULL;
@@ -134,18 +134,18 @@ void runEngineControl_Test(void) {
     // Fetch latest altitude reading and compute throttle via PID
     switch (engineState) {
 
-        case SystemAutomatic:
+        case SystemJet_Automatic:
             engine_setpoint = engine_hover_m;
             altitude = altimeterGetAdjustedData(&altimeterData, current_roll_deg, current_pitch_deg, current_yaw_deg) / 100.0f; // convert cm to meters
             PID_Compute(&altPID);
             throttle = altPIDOut;
             break;
 
-        case SystemManual:
+        case SystemJet_Manual:
             throttle = engine_thrust_p;
             break;
 
-        case SystemDisabled:
+        case SystemJet_Disable:
         	//TODO Ensure "disabled mode" triggers auto cooldown
             throttle = 0;
             break;
@@ -301,7 +301,7 @@ void runEngineControl(void) {
 
         switch(engineState){
 
-          case SystemAutomatic:
+          case SystemJet_Automatic:
 
             engine_setpoint = engine_hover_m;
             altitude = altimeterGetAdjustedData(&altimeterData, current_roll_deg, current_pitch_deg, current_yaw_deg)/100; // the "/100" converts to m from cm
@@ -312,13 +312,13 @@ void runEngineControl(void) {
 
           break;
 
-          case SystemManual:
+          case SystemJet_Manual:
 
             throttle = engine_thrust_p;
 
           break;
 
-          case SystemDisabled:
+          case SystemJet_Disable:
 
             throttle = 0;
 
@@ -338,7 +338,7 @@ void runEngineControl(void) {
           if (needToSendTCO) {
             // 0 = disable, 1 = enable with RS232
     //        uint8_t turbine_state = (engineState != DISABLE) ? 1 : 0;
-            uint8_t turbine_state = (engineState != SystemDisabled) ? 1 : 0;
+            uint8_t turbine_state = (engineState != SystemJet_Disable) ? 1 : 0;
 
             sendTCO(turbine_state);
             needToSendTCO = false;
@@ -358,7 +358,7 @@ void runEngineControl(void) {
           else if (msgState == 3) {
             // Only send a throttle command if the engine should be enabled
             // if (engineState != DISABLE) {
-            if (engineState != SystemDisabled) {
+            if (engineState != SystemJet_Disable) {
 
               sendWPE(throttle);
             }
