@@ -43,12 +43,12 @@ typedef struct {
 
 /* Global Variables ----------------------------------------------------------*/
 // Gimbal IMU data
-extern float gimbal_pitch_deg;
-extern float gimbal_roll_deg;
-extern float gimbal_pitch_velocity_degs;
-extern float gimbal_roll_velocity_degs;
-extern float gimbal_pitch_accel_g;
-extern float gimbal_roll_accel_g;
+extern float gimbal_x_axis_deg;
+extern float gimbal_y_axis_deg;
+extern float gimbal_x_axis_velocity_degs;
+extern float gimbal_y_axis_velocity_degs;
+extern float gimbal_x_axis_accel_g;
+extern float gimbal_y_axis_accel_g;
 
 // IMU readiness flag
 extern bool gimbal_imu_ready;
@@ -65,10 +65,7 @@ void resetGimbalIMU(void);
 void processGimbalIMUData(uint8_t *buffer, int imu_type);
 void updateGimbalIMUData(void);
 
-// Data access functions
-void getGimbalAngles(float *pitch_deg, float *roll_deg);
-void getGimbalVelocities(float *pitch_velocity_degs, float *roll_velocity_degs);
-void getGimbalAccelerations(float *pitch_accel_g, float *roll_accel_g);
+// Data access functions - Use GetGimbalIMU_Data() in tvc.c instead
 bool isGimbalIMUDataValid(void);
 
 // Utility functions

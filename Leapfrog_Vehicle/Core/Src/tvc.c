@@ -37,8 +37,6 @@
 // PA4 & PA6 are used to determine the position (based on potentiometer) of the actuators
 // thus they are using the ADC to convert voltage to binary information
 
-// tvcState is declared in tvc.h
-
 // Variable Definitions
 #define TVC_DEADBAND 25.0
 #define TVC_AXIS1_CENTER 2300
@@ -78,12 +76,12 @@ float set_pos1 = TVC_AXIS1_CENTER;    // Axis_1 (pitch) center
 float set_pos2 = TVC_AXIS2_CENTER;    // Axis_2 (roll) center
 
 // Gimbal IMU data - Direct gimbal angle measurement
-float gimbal_imu_pitch_deg;           // Direct gimbal pitch from X-axis IMU (degrees)
-float gimbal_imu_roll_deg;            // Direct gimbal roll from Y-axis IMU (degrees)
-float gimbal_imu_pitch_velocity_degs; // Gimbal pitch velocity from X-axis IMU (deg/s)
-float gimbal_imu_roll_velocity_degs;  // Gimbal roll velocity from Y-axis IMU (deg/s)
-float gimbal_imu_pitch_accel_g;       // Gimbal pitch acceleration from X-axis IMU (g)
-float gimbal_imu_roll_accel_g;        // Gimbal roll acceleration from Y-axis IMU (g)
+float gimbal_x_axis_deg;              // X-axis gimbal rotation angle (degrees)
+float gimbal_y_axis_deg;              // Y-axis gimbal rotation angle (degrees)
+float gimbal_x_axis_velocity_degs;    // X-axis gimbal angular velocity (deg/s)
+float gimbal_y_axis_velocity_degs;    // Y-axis gimbal angular velocity (deg/s)
+float gimbal_x_axis_accel_g;          // X-axis gimbal acceleration (g)
+float gimbal_y_axis_accel_g;          // Y-axis gimbal acceleration (g)
 bool gimbal_imu_data_valid = false;   // Gimbal IMU data validity flag
 
 // Fused position feedback (ADC + Gimbal IMU)
@@ -140,16 +138,15 @@ void CalculateDesiredVelocity(float gimbal_pitch, float gimbal_roll, float throt
                              float *desired_velocity_north, float *desired_velocity_east);
 void UpdateTVCVelocity(void);
 
-// Control algorithm functions (placeholder for physical system measurements)
-float CalculateGimbalAngleFromVelocity(float velocity_ms, float direction_deg, float thrust_n);
+// Control algorithm functions
 float CalculateThrustOffset(float velocity_ms, float acceleration_ms2, float mass_kg);
 void ApplyControlAlgorithm(float *target_pitch, float *target_roll, float *thrust_offset);
 
 // Gimbal IMU integration functions (now implemented)
 void updateGimbalIMUData(void);
-void getGimbalAngles(float *pitch_deg, float *roll_deg);
-void getGimbalVelocities(float *pitch_velocity_degs, float *roll_velocity_degs);
-void getGimbalAccelerations(float *pitch_accel_g, float *roll_accel_g);
+void GetGimbalIMU_Data(float *x_axis_deg, float *y_axis_deg, 
+                       float *x_axis_velocity_degs, float *y_axis_velocity_degs,
+                       float *x_axis_accel_g, float *y_axis_accel_g);
 
 // Sensor fusion functions
 void FusePositionFeedback(void);
@@ -162,10 +159,10 @@ void ClearCommand(void);
 float CalculateGimbalAngle(float velocity_ms, float thrust_n);
 float CalculateThrottleOffset(float velocity_ms, float distance_m);
 
-// IMU data access functions
-void GetTVC_IMU_Data(float *roll, float *pitch, float *yaw);
-void GetTVC_AngularVelocity(float *roll_rate, float *pitch_rate, float *yaw_rate);
-void GetTVC_Acceleration(float *acc_x, float *acc_y, float *acc_z);
+// IMU data access functions (vehicle reference frame)
+void GetTVC_IMU_Data(float *roll, float *pitch, float *yaw, 
+                     float *roll_rate, float *pitch_rate, float *yaw_rate,
+                     float *acc_x, float *acc_y, float *acc_z);
 
 
 
@@ -292,9 +289,9 @@ void TVC_Controller(void *argument) {
   }
 }
 
-/* Helper Functions --------------------------------------------------------------- */
 
-// TODO Startup TVC calibration 
+
+
 
 
 
@@ -323,38 +320,6 @@ void Retract(int axis) {
     }
 }
 
-void Hover(void) {
-    // This function should call the compensation functions to get the vehicle to hover at the current position.
-    // attitude compensation, and IMU/GPS drift compensation.
-    // This function should be also called in the main control loop when given navigation commands.
-    // This should be the default mode while waiting for a navigation command... after nav is complete > go to hover.
-}
-
-
-
-void HomePosition(int axis) {
-    // This function sets the gimbal to center and holds position.
-
-    // Determine current position and center for the axis called from control function
-    float current_pos = (axis == 1) ? adcValues[0] : adcValues[1];
-    float center_pos  = (axis == 1) ? TVC_AXIS1_CENTER : TVC_AXIS2_CENTER;
-
-    // Calculate error
-    float error = center_pos - current_pos;
-
-    // Correct position based on error
-    if (fabs(error) > TVC_DEADBAND) {
-        if (error > 0.0) {
-            Extend(axis);
-        } else {
-            Retract(axis);
-        }
-    } else {
-        Hold(axis);
-    }
-}
-
-
 void Hold(int axis){
     // This command halts actuator movement
 	if(axis == 1)
@@ -380,6 +345,107 @@ void Hold(int axis){
 	        HAL_GPIO_WritePin(GPIOB, TVC2_REV_PIN, GPIO_PIN_SET);
 	    }
 }
+
+/* Helper Functions --------------------------------------------------------------- */
+
+
+/**
+ * @brief Execute parsed command
+ * 
+ * This function executes the parsed command by calculating gimbal angles
+ * and throttle offset, then starts command execution.
+ */
+void ExecuteCommand(void) {
+    // Calculate gimbal angle and throttle offset
+    command_parser.gimbal_angle_deg = CalculateGimbalAngle(command_parser.velocity_ms, current_thrust_n);
+    command_parser.jetThrottle_offset = CalculateThrottleOffset(command_parser.velocity_ms, command_parser.distance_m);
+    command_parser.duration_s = command_parser.distance_m / command_parser.velocity_ms;
+    
+    // Set gimbal angles based on direction
+    if (strcmp(command_parser.direction, "forward") == 0) {
+        compensated_pitch = command_parser.gimbal_angle_deg;
+        compensated_roll = 0.0f;
+    } else if (strcmp(command_parser.direction, "backward") == 0) {
+        compensated_pitch = -command_parser.gimbal_angle_deg;
+        compensated_roll = 0.0f;
+    } else if (strcmp(command_parser.direction, "left") == 0) {
+        compensated_pitch = 0.0f;
+        compensated_roll = command_parser.gimbal_angle_deg;
+    } else if (strcmp(command_parser.direction, "right") == 0) {
+        compensated_pitch = 0.0f;
+        compensated_roll = -command_parser.gimbal_angle_deg;
+    }
+    
+    // Apply attitude compensation
+    UpdateAttitudeCompensation();
+    CompensateGimbalAngles(&compensated_pitch, &compensated_roll);
+    
+    // Start command execution
+    command_parser.executing = true;
+    command_parser.new_command = false;
+    command_parser.start_time_ms = HAL_GetTick();
+    
+    // Set throttle offset (dummy for now)
+    jetThrottle_offset = command_parser.jetThrottle_offset;
+    
+    // Set status message for ground station
+    extern void SetStatusMessage(const char* message);
+    SetStatusMessage("Command Executing");
+}
+
+
+/**
+ * @brief Clear command and return to hover
+ */
+void ClearCommand(void) {
+    command_parser.executing = false;
+    command_parser.new_command = false;
+    jetThrottle_offset = 0.0f;  // Reset throttle offset
+}
+
+
+
+void TVC_Calibration(void) {
+    // TODO: Implement TVC calibration logic
+    // This could include:
+    // - find min/max positions for actuators
+    // - use IMU angles to find center position
+    // - calibrate IMUs to find offsets
+}
+
+
+    
+void Hover(void) {
+    // This function should call the compensation functions to get the vehicle to hover at the current position.
+    // attitude compensation, and IMU/GPS drift compensation.
+    // This function should be also called in the main control loop when given navigation commands.
+    // This should be the default mode while waiting for a navigation command... after nav is complete > go to hover.
+}
+
+
+void HomePosition(int axis) {
+    // This function sets the gimbal to center and holds position.
+    // get the updated max/min positions
+    // Determine current position and center for the axis (thrust vector pointing down) called from control function
+    float current_pos = (axis == 1) ? adcValues[0] : adcValues[1];
+    float center_pos  = (axis == 1) ? TVC_AXIS1_CENTER : TVC_AXIS2_CENTER;
+
+    // Calculate error
+    float error = center_pos - current_pos;
+
+    // Correct position based on error
+    if (fabs(error) > TVC_DEADBAND) {
+        if (error > 0.0) {
+            Extend(axis);
+        } else {
+            Retract(axis);
+        }
+    } else {
+        Hold(axis);
+    }
+}
+
+
 
 /**
  * @brief Convert angular gimbal position to linear actuator ADC value
@@ -550,96 +616,38 @@ void CompensateGimbalAngles(float *target_pitch, float *target_roll) {
 }
 
 /**
- * @brief Get current TVC attitude data
- * @param roll: Pointer to store roll angle (degrees)
- * @param pitch: Pointer to store pitch angle (degrees) 
- * @param yaw: Pointer to store yaw angle (degrees)
+ * @brief Get comprehensive TVC IMU data (angles, velocities, accelerations)
+ * @param roll: Pointer to store roll angle (degrees) - can be NULL
+ * @param pitch: Pointer to store pitch angle (degrees) - can be NULL
+ * @param yaw: Pointer to store yaw angle (degrees) - can be NULL
+ * @param roll_rate: Pointer to store roll rate (deg/s) - can be NULL
+ * @param pitch_rate: Pointer to store pitch rate (deg/s) - can be NULL
+ * @param yaw_rate: Pointer to store yaw rate (deg/s) - can be NULL
+ * @param acc_x: Pointer to store X acceleration (g) - can be NULL
+ * @param acc_y: Pointer to store Y acceleration (g) - can be NULL
+ * @param acc_z: Pointer to store Z acceleration (g) - can be NULL
+ * 
+ * Pass NULL for any parameters you don't need to improve performance.
  */
-void GetTVC_IMU_Data(float *roll, float *pitch, float *yaw) {
+void GetTVC_IMU_Data(float *roll, float *pitch, float *yaw, 
+                     float *roll_rate, float *pitch_rate, float *yaw_rate,
+                     float *acc_x, float *acc_y, float *acc_z) {
+    // Attitude data
     if (roll != NULL) *roll = tvc_roll_deg;
     if (pitch != NULL) *pitch = tvc_pitch_deg;
     if (yaw != NULL) *yaw = tvc_yaw_deg;
-}
-
-/**
- * @brief Get current TVC angular velocity data
- * @param roll_rate: Pointer to store roll rate (deg/s)
- * @param pitch_rate: Pointer to store pitch rate (deg/s)
- * @param yaw_rate: Pointer to store yaw rate (deg/s)
- */
-// TODO check that this is redundant with GetTVC_IMU_Data... don't need 2 separate functions
-void GetTVC_AngularVelocity(float *roll_rate, float *pitch_rate, float *yaw_rate) {
+    
+    // Angular velocity data
     if (roll_rate != NULL) *roll_rate = tvc_angvel_x_degs;
     if (pitch_rate != NULL) *pitch_rate = tvc_angvel_y_degs;
     if (yaw_rate != NULL) *yaw_rate = tvc_angvel_z_degs;
-}
-
-/**
- * @brief Get current TVC acceleration data
- * @param acc_x: Pointer to store X acceleration (g)
- * @param acc_y: Pointer to store Y acceleration (g)
- * @param acc_z: Pointer to store Z acceleration (g)
- */
-// TODO check that this is redundant with GetTVC_IMU_Data... don't need 3 separate functions
-void GetTVC_Acceleration(float *acc_x, float *acc_y, float *acc_z) {
+    
+    // Acceleration data
     if (acc_x != NULL) *acc_x = tvc_acc_x_g;
     if (acc_y != NULL) *acc_y = tvc_acc_y_g;
     if (acc_z != NULL) *acc_z = tvc_acc_z_g;
 }
 
-
-/**
- * @brief Execute parsed command
- * 
- * This function executes the parsed command by calculating gimbal angles
- * and throttle offset, then starts command execution.
- */
-void ExecuteCommand(void) {
-    // Calculate gimbal angle and throttle offset
-    command_parser.gimbal_angle_deg = CalculateGimbalAngle(command_parser.velocity_ms, current_thrust_n);
-    command_parser.jetThrottle_offset = CalculateThrottleOffset(command_parser.velocity_ms, command_parser.distance_m);
-    command_parser.duration_s = command_parser.distance_m / command_parser.velocity_ms;
-    
-    // Set gimbal angles based on direction
-    if (strcmp(command_parser.direction, "forward") == 0) {
-        compensated_pitch = command_parser.gimbal_angle_deg;
-        compensated_roll = 0.0f;
-    } else if (strcmp(command_parser.direction, "backward") == 0) {
-        compensated_pitch = -command_parser.gimbal_angle_deg;
-        compensated_roll = 0.0f;
-    } else if (strcmp(command_parser.direction, "left") == 0) {
-        compensated_pitch = 0.0f;
-        compensated_roll = command_parser.gimbal_angle_deg;
-    } else if (strcmp(command_parser.direction, "right") == 0) {
-        compensated_pitch = 0.0f;
-        compensated_roll = -command_parser.gimbal_angle_deg;
-    }
-    
-    // Apply attitude compensation
-    UpdateAttitudeCompensation();
-    CompensateGimbalAngles(&compensated_pitch, &compensated_roll);
-    
-    // Start command execution
-    command_parser.executing = true;
-    command_parser.new_command = false;
-    command_parser.start_time_ms = HAL_GetTick();
-    
-    // Set throttle offset (dummy for now)
-    jetThrottle_offset = command_parser.jetThrottle_offset;
-    
-    // Set status message for ground station
-    extern void SetStatusMessage(const char* message);
-    SetStatusMessage("Command Executing");
-}
-
-/**
- * @brief Clear command and return to hover
- */
-void ClearCommand(void) {
-    command_parser.executing = false;
-    command_parser.new_command = false;
-    jetThrottle_offset = 0.0f;  // Reset throttle offset
-}
 
 /**
  * @brief Calculate required gimbal angle for desired velocity
@@ -678,6 +686,7 @@ float CalculateThrottleOffset(float velocity_ms, float distance_m) {
     // Dummy calculation for now
     // In reality, this would calculate required thrust increase
     // based on velocity and distance requirements
+    // TODO Check hardcoded values, is this a tunable parameter? 
     return velocity_ms * 10.0f;  // Simple linear relationship
 }
 
@@ -852,60 +861,6 @@ void UpdateTVCVelocity(void) {
     prev_time_ms = current_time_ms;
 }
 
-/**
- * @brief Calculate gimbal angle from desired velocity (placeholder for physical measurements)
- * @param velocity_ms: Desired velocity in m/s
- * @param direction_deg: Direction of movement in degrees (0=North, 90=East)
- * @param thrust_n: Available thrust force in Newtons
- * @return Required gimbal angle in degrees
- * 
- * TODO: This function needs to be calibrated based on physical system measurements.
- * The current implementation is a simplified placeholder.
- */
-float CalculateGimbalAngleFromVelocity(float velocity_ms, float direction_deg, float thrust_n) {
-    // PLACEHOLDER: Insert control algorithm here
-    // This will depend on physical measurements of the system including:
-    // - Thrust-to-velocity relationship
-    // - Gimbal angle effectiveness
-    // - Vehicle mass and drag characteristics
-    // - Engine response characteristics
-    
-    // Simplified placeholder calculation
-    // In reality, this would be based on:
-    // 1. Thrust vector analysis
-    // 2. Vehicle dynamics modeling
-    // 3. Wind resistance calculations
-    // 4. Engine performance curves
-    
-    float base_angle = 0.0f;
-    
-    if (thrust_n > 0.0f) {
-        // Basic physics: F = ma, but we need to account for:
-        // - Thrust vector direction
-        // - Vehicle mass
-        // - Drag forces
-        // - Gimbal effectiveness
-        
-        // PLACEHOLDER: Simple proportional relationship
-        // This should be replaced with actual system measurements
-        base_angle = (velocity_ms * TVC_VEHICLE_MASS_KG) / (thrust_n * TVC_THRUST_TO_ANGLE_FACTOR);
-        
-        // Apply direction (convert to pitch/roll components)
-        // This is a simplified 2D calculation
-        // In reality, would need 3D vector math
-        // TODO: Implement proper 3D vector math based on vehicle orientation
-        // For now, assume direction_deg = 0 means pitch, 90 means roll
-    }
-    
-    // Limit to physical gimbal constraints
-    if (base_angle > TVC_MAX_ANGLE_DEG) {
-        base_angle = TVC_MAX_ANGLE_DEG;
-    } else if (base_angle < -TVC_MAX_ANGLE_DEG) {
-        base_angle = -TVC_MAX_ANGLE_DEG;
-    }
-    
-    return base_angle;
-}
 
 /**
  * @brief Calculate thrust offset for velocity control (placeholder for physical measurements)
@@ -918,6 +873,7 @@ float CalculateGimbalAngleFromVelocity(float velocity_ms, float direction_deg, f
  * The current implementation is a simplified placeholder.
  */
 float CalculateThrustOffset(float velocity_ms, float acceleration_ms2, float mass_kg) {
+    // TODO import JetCatPRO documentation... 
     // PLACEHOLDER: Insert thrust control algorithm here
     // This will depend on physical measurements of the system including:
     // - Engine throttle response
@@ -933,7 +889,6 @@ float CalculateThrustOffset(float velocity_ms, float acceleration_ms2, float mas
     // 4. Altitude compensation
     
     
-
     // Basic physics: F = ma
     // But we need to account for:
     // - Current thrust level
@@ -1047,18 +1002,18 @@ void UpdateGimbalIMUData(void) {
         updateGimbalIMUData();
         
         // Get actual gimbal angles from IMU sensors
-        getGimbalAngles(&gimbal_imu_pitch_deg, &gimbal_imu_roll_deg);
-        getGimbalVelocities(&gimbal_imu_pitch_velocity_degs, &gimbal_imu_roll_velocity_degs);
-        getGimbalAccelerations(&gimbal_imu_pitch_accel_g, &gimbal_imu_roll_accel_g);
+        GetGimbalIMU_Data(&gimbal_x_axis_deg, &gimbal_y_axis_deg,
+                          &gimbal_x_axis_velocity_degs, &gimbal_y_axis_velocity_degs,
+                          &gimbal_x_axis_accel_g, &gimbal_y_axis_accel_g);
         
         // Check if data is valid
         gimbal_imu_data_valid = isGimbalIMUDataValid();
     } else {
         // Fallback: Use actuator position as gimbal angle estimate
-        gimbal_imu_pitch_deg = tvcVal1_angular;
-        gimbal_imu_roll_deg = tvcVal2_angular;
-        gimbal_imu_pitch_velocity_degs = 0.0f; // TODO: Calculate from angle changes
-        gimbal_imu_roll_velocity_degs = 0.0f;  // TODO: Calculate from angle changes
+        gimbal_x_axis_deg = tvcVal1_angular;  // X-axis gimbal = pitch actuator
+        gimbal_y_axis_deg = tvcVal2_angular;  // Y-axis gimbal = roll actuator
+        gimbal_x_axis_velocity_degs = 0.0f;   // TODO: Calculate from angle changes
+        gimbal_y_axis_velocity_degs = 0.0f;   // TODO: Calculate from angle changes
         gimbal_imu_data_valid = true;
     }
 }
@@ -1081,12 +1036,12 @@ void FusePositionFeedback(void) {
     // Check if gimbal IMU data is valid
     if (gimbal_imu_data_valid && isGimbalIMUDataValid()) {
         // Both sensors available - use weighted fusion
-        fused_pitch_deg = (adc_weight * tvcVal1_angular) + (imu_weight * gimbal_imu_pitch_deg);
-        fused_roll_deg = (adc_weight * tvcVal2_angular) + (imu_weight * gimbal_imu_roll_deg);
+        fused_pitch_deg = (adc_weight * tvcVal1_angular) + (imu_weight * gimbal_x_axis_deg);
+        fused_roll_deg = (adc_weight * tvcVal2_angular) + (imu_weight * gimbal_y_axis_deg);
         
         // Fuse velocities (IMU provides direct measurement, ADC requires differentiation)
-        fused_pitch_velocity_degs = gimbal_imu_pitch_velocity_degs;  // IMU is more accurate for velocity
-        fused_roll_velocity_degs = gimbal_imu_roll_velocity_degs;
+        fused_pitch_velocity_degs = gimbal_x_axis_velocity_degs;  // IMU is more accurate for velocity
+        fused_roll_velocity_degs = gimbal_y_axis_velocity_degs;
         
         // TODO: Add fault detection - compare ADC and IMU readings for consistency
         // If difference exceeds threshold, flag sensor fault and adjust weights
@@ -1115,26 +1070,48 @@ void UpdateFusedPosition(void) {
 }
 
 /**
- * @brief Get current gimbal angles from IMU sensors
- * @param pitch_deg: Current gimbal pitch angle (output)
- * @param roll_deg: Current gimbal roll angle (output)
+ * @brief Get comprehensive gimbal IMU data (angles, velocities, accelerations)
+ * @param x_axis_deg: X-axis gimbal rotation angle (degrees) - can be NULL
+ * @param y_axis_deg: Y-axis gimbal rotation angle (degrees) - can be NULL
+ * @param x_axis_velocity_degs: X-axis gimbal angular velocity (deg/s) - can be NULL
+ * @param y_axis_velocity_degs: Y-axis gimbal angular velocity (deg/s) - can be NULL
+ * @param x_axis_accel_g: X-axis gimbal acceleration (g) - can be NULL
+ * @param y_axis_accel_g: Y-axis gimbal acceleration (g) - can be NULL
+ * Pass NULL for any parameters you don't need to improve performance.
  */
-void GetGimbalAngles(float *pitch_deg, float *roll_deg) {
-    *pitch_deg = gimbal_imu_pitch_deg;
-    *roll_deg = gimbal_imu_roll_deg;
+void GetGimbalIMU_Data(float *x_axis_deg, float *y_axis_deg, 
+                       float *x_axis_velocity_degs, float *y_axis_velocity_degs,
+                       float *x_axis_accel_g, float *y_axis_accel_g) {
+    // Gimbal angle data
+    if (x_axis_deg != NULL) *x_axis_deg = gimbal_x_axis_deg;
+    if (y_axis_deg != NULL) *y_axis_deg = gimbal_y_axis_deg;
+    
+    // Gimbal velocity data
+    if (x_axis_velocity_degs != NULL) *x_axis_velocity_degs = gimbal_x_axis_velocity_degs;
+    if (y_axis_velocity_degs != NULL) *y_axis_velocity_degs = gimbal_y_axis_velocity_degs;
+    
+    // Gimbal acceleration data
+    if (x_axis_accel_g != NULL) *x_axis_accel_g = gimbal_x_axis_accel_g;
+    if (y_axis_accel_g != NULL) *y_axis_accel_g = gimbal_y_axis_accel_g;
 }
 
-/**
- * @brief Get current gimbal angular velocities from IMU sensors
- * @param pitch_velocity_degs: Current gimbal pitch angular velocity (output)
- * @param roll_velocity_degs: Current gimbal roll angular velocity (output)
- */
-void GetGimbalVelocities(float *pitch_velocity_degs, float *roll_velocity_degs) {
-    *pitch_velocity_degs = gimbal_imu_pitch_velocity_degs;
-    *roll_velocity_degs = gimbal_imu_roll_velocity_degs;
+
+void TVC_Manual(void) {
+    // Manual TVC control mode
+    // This function handles manual gimbal control when TVC is in manual mode
+    // It should read manual inputs and control the gimbal accordingly
+    
+    // TODO: Implement manual control logic
+    // This could include:
+    // - Reading manual control inputs (joystick, etc.)
+    // - Converting inputs to gimbal angles
+    // - Applying manual gimbal control
+    // - Safety checks and limits
+    
+    // Placeholder implementation
+    // In manual mode, the gimbal should respond to manual inputs
+    // For now, this is a placeholder that does nothing
 }
-
-
 
 
 
@@ -1169,19 +1146,3 @@ void Test_TVC(int axis){
     }
 }
 
-void TVC_Manual(void) {
-    // Manual TVC control mode
-    // This function handles manual gimbal control when TVC is in manual mode
-    // It should read manual inputs and control the gimbal accordingly
-    
-    // TODO: Implement manual control logic
-    // This could include:
-    // - Reading manual control inputs (joystick, etc.)
-    // - Converting inputs to gimbal angles
-    // - Applying manual gimbal control
-    // - Safety checks and limits
-    
-    // Placeholder implementation
-    // In manual mode, the gimbal should respond to manual inputs
-    // For now, this is a placeholder that does nothing
-}

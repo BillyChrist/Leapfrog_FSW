@@ -21,12 +21,12 @@
 
 /* Global Variables ----------------------------------------------------------*/
 // Gimbal IMU data - single IMU per axis
-float gimbal_pitch_deg = 0.0f;        // Gimbal pitch angle from X-axis IMU
-float gimbal_roll_deg = 0.0f;         // Gimbal roll angle from Y-axis IMU
-float gimbal_pitch_velocity_degs = 0.0f;  // Gimbal pitch angular velocity
-float gimbal_roll_velocity_degs = 0.0f;   // Gimbal roll angular velocity
-float gimbal_pitch_accel_g = 0.0f;    // Gimbal pitch acceleration
-float gimbal_roll_accel_g = 0.0f;     // Gimbal roll acceleration
+float gimbal_x_axis_deg = 0.0f;            // X-axis gimbal rotation angle (degrees
+float gimbal_y_axis_deg = 0.0f;            // Y-axis gimbal rotation angle (degrees)
+float gimbal_x_axis_velocity_degs = 0.0f;  // X-axis gimbal angular velocity (deg/s)
+float gimbal_y_axis_velocity_degs = 0.0f;  // Y-axis gimbal angular velocity (deg/s)
+float gimbal_x_axis_accel_g = 0.0f;        // X-axis gimbal acceleration (g)
+float gimbal_y_axis_accel_g = 0.0f;        // Y-axis gimbal acceleration (g) 
 
 // IMU readiness flag
 bool gimbal_imu_ready = false;
@@ -36,12 +36,12 @@ uint8_t gimbal_pitch_imu_rx_buf[IMU_PACKET_LEN];  // X-axis IMU (pitch)
 uint8_t gimbal_roll_imu_rx_buf[IMU_PACKET_LEN];   // Y-axis IMU (roll)
 
 // Calibration storage for gimbal IMUs
-float gimbal_pitch_offset = 0.0f;     // Pitch IMU offset
-float gimbal_roll_offset = 0.0f;      // Roll IMU offset
-float gimbal_pitch_vel_offset = 0.0f; // Pitch velocity offset
-float gimbal_roll_vel_offset = 0.0f;  // Roll velocity offset
-float gimbal_pitch_accel_offset = 0.0f; // Pitch acceleration offset
-float gimbal_roll_accel_offset = 0.0f;  // Roll acceleration offset
+float gimbal_x_axis_offset = 0.0f;       // X-axis gimbal IMU offset
+float gimbal_y_axis_offset = 0.0f;       // Y-axis gimbal IMU offset
+float gimbal_x_axis_vel_offset = 0.0f;   // X-axis velocity offset
+float gimbal_y_axis_vel_offset = 0.0f;   // Y-axis velocity offset
+float gimbal_x_axis_accel_offset = 0.0f; // X-axis acceleration offset
+float gimbal_y_axis_accel_offset = 0.0f; // Y-axis acceleration offset
 
 // Calibration status
 TVC_CalibrationStatus gimbal_imu_calibration_status = TVC_CALIBRATING;
@@ -89,28 +89,28 @@ TVC_CalibrationStatus calibrateGimbalIMU(void) {
     processGimbalIMUData(gimbal_roll_imu_rx_buf, GIMBAL_ROLL_IMU);
 
     // Sum up the data for averaging (using global variables directly)
-    pitch_angle_sum += gimbal_pitch_deg;
-    roll_angle_sum += gimbal_roll_deg;
-    pitch_vel_sum += gimbal_pitch_velocity_degs;
-    roll_vel_sum += gimbal_roll_velocity_degs;
-    pitch_accel_sum += gimbal_pitch_accel_g;
-    roll_accel_sum += gimbal_roll_accel_g;
+    pitch_angle_sum += gimbal_x_axis_deg;
+    roll_angle_sum += gimbal_y_axis_deg;
+    pitch_vel_sum += gimbal_x_axis_velocity_degs;
+    roll_vel_sum += gimbal_y_axis_velocity_degs;
+    pitch_accel_sum += gimbal_x_axis_accel_g;
+    roll_accel_sum += gimbal_y_axis_accel_g;
 
     sampleCount++;
 
     if (sampleCount >= GIMBAL_CALIBRATION_SAMPLES) {
         // Calculate offsets
-        gimbal_pitch_offset = pitch_angle_sum / GIMBAL_CALIBRATION_SAMPLES;
-        gimbal_roll_offset = roll_angle_sum / GIMBAL_CALIBRATION_SAMPLES;
-        gimbal_pitch_vel_offset = pitch_vel_sum / GIMBAL_CALIBRATION_SAMPLES;
-        gimbal_roll_vel_offset = roll_vel_sum / GIMBAL_CALIBRATION_SAMPLES;
-        gimbal_pitch_accel_offset = pitch_accel_sum / GIMBAL_CALIBRATION_SAMPLES;
-        gimbal_roll_accel_offset = roll_accel_sum / GIMBAL_CALIBRATION_SAMPLES;
+        gimbal_x_axis_offset = pitch_angle_sum / GIMBAL_CALIBRATION_SAMPLES;
+        gimbal_y_axis_offset = roll_angle_sum / GIMBAL_CALIBRATION_SAMPLES;
+        gimbal_x_axis_vel_offset = pitch_vel_sum / GIMBAL_CALIBRATION_SAMPLES;
+        gimbal_y_axis_vel_offset = roll_vel_sum / GIMBAL_CALIBRATION_SAMPLES;
+        gimbal_x_axis_accel_offset = pitch_accel_sum / GIMBAL_CALIBRATION_SAMPLES;
+        gimbal_y_axis_accel_offset = roll_accel_sum / GIMBAL_CALIBRATION_SAMPLES;
 
         printf("\r\n----- Gimbal IMU Offsets -----\r\n");
-        printf("Pitch Angle: %.4f   Roll Angle: %.4f\r\n", gimbal_pitch_offset, gimbal_roll_offset);
-        printf("Pitch Vel:   %.4f   Roll Vel:   %.4f\r\n", gimbal_pitch_vel_offset, gimbal_roll_vel_offset);
-        printf("Pitch Accel: %.4f   Roll Accel: %.4f\r\n", gimbal_pitch_accel_offset, gimbal_roll_accel_offset);
+        printf("X-Axis Angle: %.4f   Y-Axis Angle: %.4f\r\n", gimbal_x_axis_offset, gimbal_y_axis_offset);
+        printf("X-Axis Vel:   %.4f   Y-Axis Vel:   %.4f\r\n", gimbal_x_axis_vel_offset, gimbal_y_axis_vel_offset);
+        printf("X-Axis Accel: %.4f   Y-Axis Accel: %.4f\r\n", gimbal_x_axis_accel_offset, gimbal_y_axis_accel_offset);
 
         printf("\r\n[TVC] Gimbal IMU Calibration Complete. System entering normal operation...\r\n");
 
@@ -151,43 +151,43 @@ void processGimbalIMUData(uint8_t *buffer, int imu_type) {
     switch (buffer[1]) {
         case 0x51:  // Acceleration Packet
             if (imu_type == GIMBAL_PITCH_IMU) {
-                // X-axis IMU for pitch - store Y-axis acceleration for pitch
-                gimbal_pitch_accel_g = ((buffer[5] << 8) | buffer[4]) / 32768.0f * 16;
+                // X-axis IMU - store Y-axis acceleration for X-axis gimbal
+                gimbal_x_axis_accel_g = ((buffer[5] << 8) | buffer[4]) / 32768.0f * 16;
                 // Apply acceleration corrections
-                gimbal_pitch_accel_g = (gimbal_pitch_accel_g > 10) ? (gimbal_pitch_accel_g - 20) : gimbal_pitch_accel_g;
+                gimbal_x_axis_accel_g = (gimbal_x_axis_accel_g > 10) ? (gimbal_x_axis_accel_g - 20) : gimbal_x_axis_accel_g;
             } else if (imu_type == GIMBAL_ROLL_IMU) {
-                // Y-axis IMU for roll - store X-axis acceleration for roll
-                gimbal_roll_accel_g = ((buffer[3] << 8) | buffer[2]) / 32768.0f * 16;
+                // Y-axis IMU - store X-axis acceleration for Y-axis gimbal
+                gimbal_y_axis_accel_g = ((buffer[3] << 8) | buffer[2]) / 32768.0f * 16;
                 // Apply acceleration corrections
-                gimbal_roll_accel_g = (gimbal_roll_accel_g > 10) ? (gimbal_roll_accel_g - 20) : gimbal_roll_accel_g;
+                gimbal_y_axis_accel_g = (gimbal_y_axis_accel_g > 10) ? (gimbal_y_axis_accel_g - 20) : gimbal_y_axis_accel_g;
             }
             break;
 
         case 0x52:  // Angular Velocity Packet
             if (imu_type == GIMBAL_PITCH_IMU) {
-                // X-axis IMU for pitch - store Y-axis angular velocity for pitch
-                gimbal_pitch_velocity_degs = ((buffer[5] << 8) | buffer[4]) / 32768.0f * 2000;
+                // X-axis IMU - store Y-axis angular velocity for X-axis gimbal
+                gimbal_x_axis_velocity_degs = ((buffer[5] << 8) | buffer[4]) / 32768.0f * 2000;
                 // Apply angular velocity corrections
-                gimbal_pitch_velocity_degs = (gimbal_pitch_velocity_degs > 1000) ? (gimbal_pitch_velocity_degs - 4000) : gimbal_pitch_velocity_degs;
+                gimbal_x_axis_velocity_degs = (gimbal_x_axis_velocity_degs > 1000) ? (gimbal_x_axis_velocity_degs - 4000) : gimbal_x_axis_velocity_degs;
             } else if (imu_type == GIMBAL_ROLL_IMU) {
-                // Y-axis IMU for roll - store X-axis angular velocity for roll
-                gimbal_roll_velocity_degs = ((buffer[3] << 8) | buffer[2]) / 32768.0f * 2000;
+                // Y-axis IMU - store X-axis angular velocity for Y-axis gimbal
+                gimbal_y_axis_velocity_degs = ((buffer[3] << 8) | buffer[2]) / 32768.0f * 2000;
                 // Apply angular velocity corrections
-                gimbal_roll_velocity_degs = (gimbal_roll_velocity_degs > 1000) ? (gimbal_roll_velocity_degs - 4000) : gimbal_roll_velocity_degs;
+                gimbal_y_axis_velocity_degs = (gimbal_y_axis_velocity_degs > 1000) ? (gimbal_y_axis_velocity_degs - 4000) : gimbal_y_axis_velocity_degs;
             }
             break;
 
         case 0x53:  // Angle Packet
             if (imu_type == GIMBAL_PITCH_IMU) {
-                // X-axis IMU for pitch - store pitch angle
-                gimbal_pitch_deg = ((buffer[5] << 8) | buffer[4]) / 32768.0f * 180;
+                // X-axis IMU - store pitch angle for X-axis gimbal
+                gimbal_x_axis_deg = ((buffer[5] << 8) | buffer[4]) / 32768.0f * 180;
                 // Apply angle wrapping
-                gimbal_pitch_deg = wrapAngle(gimbal_pitch_deg);
+                gimbal_x_axis_deg = wrapAngle(gimbal_x_axis_deg);
             } else if (imu_type == GIMBAL_ROLL_IMU) {
-                // Y-axis IMU for roll - store roll angle
-                gimbal_roll_deg = ((buffer[3] << 8) | buffer[2]) / 32768.0f * 180;
+                // Y-axis IMU - store pitch angle for Y-axis gimbal
+                gimbal_y_axis_deg = ((buffer[3] << 8) | buffer[2]) / 32768.0f * 180;
                 // Apply angle wrapping
-                gimbal_roll_deg = wrapAngle(gimbal_roll_deg);
+                gimbal_y_axis_deg = wrapAngle(gimbal_y_axis_deg);
             }
             break;
     }
@@ -199,47 +199,18 @@ void processGimbalIMUData(uint8_t *buffer, int imu_type) {
  */
 void updateGimbalIMUData(void) {
     // Apply calibration offsets to the global gimbal data
-    gimbal_pitch_deg -= gimbal_pitch_offset;
-    gimbal_roll_deg -= gimbal_roll_offset;
+    gimbal_x_axis_deg -= gimbal_x_axis_offset;
+    gimbal_y_axis_deg -= gimbal_y_axis_offset;
     
     // Apply velocity offsets
-    gimbal_pitch_velocity_degs -= gimbal_pitch_vel_offset;
-    gimbal_roll_velocity_degs -= gimbal_roll_vel_offset;
+    gimbal_x_axis_velocity_degs -= gimbal_x_axis_vel_offset;
+    gimbal_y_axis_velocity_degs -= gimbal_y_axis_vel_offset;
     
     // Apply acceleration offsets
-    gimbal_pitch_accel_g -= gimbal_pitch_accel_offset;
-    gimbal_roll_accel_g -= gimbal_roll_accel_offset;
+    gimbal_x_axis_accel_g -= gimbal_x_axis_accel_offset;
+    gimbal_y_axis_accel_g -= gimbal_y_axis_accel_offset;
 }
 
-/**
- * @brief Get current gimbal angles
- * @param pitch_deg: Current gimbal pitch angle (output)
- * @param roll_deg: Current gimbal roll angle (output)
- */
-void getGimbalAngles(float *pitch_deg, float *roll_deg) {
-    *pitch_deg = gimbal_pitch_deg;
-    *roll_deg = gimbal_roll_deg;
-}
-
-/**
- * @brief Get current gimbal angular velocities
- * @param pitch_velocity_degs: Current gimbal pitch angular velocity (output)
- * @param roll_velocity_degs: Current gimbal roll angular velocity (output)
- */
-void getGimbalVelocities(float *pitch_velocity_degs, float *roll_velocity_degs) {
-    *pitch_velocity_degs = gimbal_pitch_velocity_degs;
-    *roll_velocity_degs = gimbal_roll_velocity_degs;
-}
-
-/**
- * @brief Get current gimbal accelerations
- * @param pitch_accel_g: Current gimbal pitch acceleration (output)
- * @param roll_accel_g: Current gimbal roll acceleration (output)
- */
-void getGimbalAccelerations(float *pitch_accel_g, float *roll_accel_g) {
-    *pitch_accel_g = gimbal_pitch_accel_g;
-    *roll_accel_g = gimbal_roll_accel_g;
-}
 
 /**
  * @brief Check if gimbal IMU data is valid
