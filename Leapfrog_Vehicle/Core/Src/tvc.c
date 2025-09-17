@@ -10,8 +10,10 @@
  *  ******************************************************************************
  */
 
-/* Includes ------------------------------------------------------------------*/
 
+// TODO: add calculation to compensate for actuator connection tracing out a circle as it pushes (length of actuation vs gimbal angle will not be linear, since it will have to push longer as angle increases)
+
+/* Includes ------------------------------------------------------------------*/
 #include "tvc.h"
 #include "main.h"
 #include "heartbeat.h"
@@ -346,6 +348,7 @@ void Hold(int axis){
 	    }
 }
 
+
 /* Helper Functions --------------------------------------------------------------- */
 
 
@@ -536,6 +539,40 @@ float LinearToAngular(int axis, float linear)
 
 
 /**
+ * @brief Get comprehensive TVC IMU data (angles, velocities, accelerations)
+ * @param roll: Pointer to store roll angle (degrees) - can be NULL
+ * @param pitch: Pointer to store pitch angle (degrees) - can be NULL
+ * @param yaw: Pointer to store yaw angle (degrees) - can be NULL
+ * @param roll_rate: Pointer to store roll rate (deg/s) - can be NULL
+ * @param pitch_rate: Pointer to store pitch rate (deg/s) - can be NULL
+ * @param yaw_rate: Pointer to store yaw rate (deg/s) - can be NULL
+ * @param acc_x: Pointer to store X acceleration (g) - can be NULL
+ * @param acc_y: Pointer to store Y acceleration (g) - can be NULL
+ * @param acc_z: Pointer to store Z acceleration (g) - can be NULL
+ * 
+ * Pass NULL for any parameters you don't need to improve performance.
+ */
+void GetTVC_IMU_Data(float *roll, float *pitch, float *yaw, 
+    float *roll_rate, float *pitch_rate, float *yaw_rate,
+    float *acc_x, float *acc_y, float *acc_z) {
+// Attitude data
+if (roll != NULL) *roll = tvc_roll_deg;
+if (pitch != NULL) *pitch = tvc_pitch_deg;
+if (yaw != NULL) *yaw = tvc_yaw_deg;
+
+// Angular velocity data
+if (roll_rate != NULL) *roll_rate = tvc_angvel_x_degs;
+if (pitch_rate != NULL) *pitch_rate = tvc_angvel_y_degs;
+if (yaw_rate != NULL) *yaw_rate = tvc_angvel_z_degs;
+
+// Acceleration data
+if (acc_x != NULL) *acc_x = tvc_acc_x_g;
+if (acc_y != NULL) *acc_y = tvc_acc_y_g;
+if (acc_z != NULL) *acc_z = tvc_acc_z_g;
+}
+
+
+/**
  * @brief Update attitude compensation values from TVC IMU data
  * 
  * This function calculates the required gimbal compensation to maintain
@@ -553,8 +590,8 @@ float LinearToAngular(int axis, float linear)
  */
 void UpdateAttitudeCompensation(void) {
     // Calculate deviation from perfectly level (0° pitch, 0° roll)
-    float roll_deviation = tvc_roll_deg - 0.0f;    // How far from level roll
-    float pitch_deviation = tvc_pitch_deg - 0.0f;  // How far from level pitch
+    float roll_deviation  = tvc_roll_deg  - 0.0f;    // How far from level roll TODO Why - 0? why redefine a new term? This TVC_roll_deg is essentially already the deviation.
+    float pitch_deviation = tvc_pitch_deg - 0.0f;    // How far from level pitch
     
     // Apply deadband - ignore small attitude changes
     if (fabs(roll_deviation) < TVC_DEADBAND_DEG) {
@@ -565,7 +602,7 @@ void UpdateAttitudeCompensation(void) {
     }
     
     // Calculate compensation (gimbal moves opposite to vehicle deviation)
-    attitude_compensation_roll = -roll_deviation * TVC_COMPENSATION_GAIN;
+    attitude_compensation_roll  = -roll_deviation * TVC_COMPENSATION_GAIN;
     attitude_compensation_pitch = -pitch_deviation * TVC_COMPENSATION_GAIN;
     
     // Clamp compensation to maximum limits
@@ -581,6 +618,7 @@ void UpdateAttitudeCompensation(void) {
         attitude_compensation_pitch = -TVC_MAX_COMPENSATION_DEG;
     }
 }
+
 
 /**
  * @brief Compensate gimbal angles for vehicle attitude changes
@@ -613,39 +651,6 @@ void CompensateGimbalAngles(float *target_pitch, float *target_roll) {
             *target_roll = TVC_MIN_ANGLE_DEG;
         }
     }
-}
-
-/**
- * @brief Get comprehensive TVC IMU data (angles, velocities, accelerations)
- * @param roll: Pointer to store roll angle (degrees) - can be NULL
- * @param pitch: Pointer to store pitch angle (degrees) - can be NULL
- * @param yaw: Pointer to store yaw angle (degrees) - can be NULL
- * @param roll_rate: Pointer to store roll rate (deg/s) - can be NULL
- * @param pitch_rate: Pointer to store pitch rate (deg/s) - can be NULL
- * @param yaw_rate: Pointer to store yaw rate (deg/s) - can be NULL
- * @param acc_x: Pointer to store X acceleration (g) - can be NULL
- * @param acc_y: Pointer to store Y acceleration (g) - can be NULL
- * @param acc_z: Pointer to store Z acceleration (g) - can be NULL
- * 
- * Pass NULL for any parameters you don't need to improve performance.
- */
-void GetTVC_IMU_Data(float *roll, float *pitch, float *yaw, 
-                     float *roll_rate, float *pitch_rate, float *yaw_rate,
-                     float *acc_x, float *acc_y, float *acc_z) {
-    // Attitude data
-    if (roll != NULL) *roll = tvc_roll_deg;
-    if (pitch != NULL) *pitch = tvc_pitch_deg;
-    if (yaw != NULL) *yaw = tvc_yaw_deg;
-    
-    // Angular velocity data
-    if (roll_rate != NULL) *roll_rate = tvc_angvel_x_degs;
-    if (pitch_rate != NULL) *pitch_rate = tvc_angvel_y_degs;
-    if (yaw_rate != NULL) *yaw_rate = tvc_angvel_z_degs;
-    
-    // Acceleration data
-    if (acc_x != NULL) *acc_x = tvc_acc_x_g;
-    if (acc_y != NULL) *acc_y = tvc_acc_y_g;
-    if (acc_z != NULL) *acc_z = tvc_acc_z_g;
 }
 
 
