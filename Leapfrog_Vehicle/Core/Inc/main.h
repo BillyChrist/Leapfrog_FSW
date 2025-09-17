@@ -91,12 +91,12 @@ void Error_Handler(void);
 #define debug_TX_GPIO_Port GPIOA
 #define debug_RX_Pin GPIO_PIN_3
 #define debug_RX_GPIO_Port GPIOA
-#define ADC_1_VC_Position_1_Pin GPIO_PIN_4
-#define ADC_1_VC_Position_1_GPIO_Port GPIOA
+#define TVC_Position_1_Pin GPIO_PIN_4
+#define TVC_Position_1_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
-#define ADC_2_TVC_Position_2_Pin GPIO_PIN_6
-#define ADC_2_TVC_Position_2_GPIO_Port GPIOA
+#define TVC_Position_2_Pin GPIO_PIN_6
+#define TVC_Position_2_GPIO_Port GPIOA
 #define ENG_TIM8_CH1N_Pin GPIO_PIN_7
 #define ENG_TIM8_CH1N_GPIO_Port GPIOA
 #define IMU_Reset_Pin GPIO_PIN_4

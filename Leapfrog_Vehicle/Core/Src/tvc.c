@@ -78,12 +78,6 @@ float set_pos1 = TVC_AXIS1_CENTER;    // Axis_1 (pitch) center
 float set_pos2 = TVC_AXIS2_CENTER;    // Axis_2 (roll) center
 
 // Gimbal IMU data - Direct gimbal angle measurement
-float gimbal_x_axis_deg;              // X-axis gimbal rotation angle (degrees)
-float gimbal_y_axis_deg;              // Y-axis gimbal rotation angle (degrees)
-float gimbal_x_axis_velocity_degs;    // X-axis gimbal angular velocity (deg/s)
-float gimbal_y_axis_velocity_degs;    // Y-axis gimbal angular velocity (deg/s)
-float gimbal_x_axis_accel_g;          // X-axis gimbal acceleration (g)
-float gimbal_y_axis_accel_g;          // Y-axis gimbal acceleration (g)
 bool gimbal_imu_data_valid = false;   // Gimbal IMU data validity flag
 
 // Fused position feedback (ADC + Gimbal IMU)

@@ -51,6 +51,8 @@
 
 
 
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -295,7 +297,8 @@ void debugOutput(UART_HandleTypeDef *huart){ // Debug for code setup
 			"\rIntegral_pitch: %.2f, Integral_roll: %.2f, Integral_yaw: %.2f \r\n"
 			"\rPR1: %.2f, PR2: %.2f, PR3: %.2f, PR4: %.2f, Y1: %.2f, Y2: %.2f \r\n"
 			"\rAltitude: %d, Adjusted Altitude: %0.2f \r\n"
-    		"\rEngine PID Output: %.2f, Engine Throttle %%: %d\r\n"
+    		"\rlongitude: %.2f, latitude: %.2f, altitude: %.2f \r\n"
+    		"\rEngine PID Output: %.2f, Engine Throttle %%: %d \r\n"
 			"\r\n",
 //			imu_roll[0], imu_pitch[0], imu_yaw[0],
 //			imu_roll[1], imu_pitch[1], imu_yaw[1],
@@ -308,6 +311,7 @@ void debugOutput(UART_HandleTypeDef *huart){ // Debug for code setup
 			integral_pitch,	integral_roll, integral_yaw,
 			PR1_output, PR2_output, PR3_output, PR4_output, Y1_output, Y2_output,
 			(int16_t)latestData.altitude, adjusted_altitude_cm,
+			latestGPSdata.longitude, latestGPSdata.latitude, latestGPSdata.altitude,
 			altPIDOut, throttle_percent
     	);
 
@@ -1277,7 +1281,7 @@ void StartDefaultTask(void *argument)
 		const TickType_t xFrequency = pdMS_TO_TICKS(1000);
 		const uint8_t timeoutCycles = 10;
 		TickType_t xLastWakeTime = xTaskGetTickCount();
-	HAL_Delay(20);
+	HAL_Delay(20); // TODO large delay... check
 	printf("\r\nHeartbeat Initializing... \r\n\n");
 
 
@@ -1345,6 +1349,7 @@ void StartDefaultTask(void *argument)
 	    // TODO Enable heartbeat send once ready
 //	    sendHeartbeatPacket(&huart2, &stm32Response);  // encoded heartbeat message
 //	    heartbeatDebugOutput(&huart2, &stm32Response); // debug output text
+	    debugOutput(&huart2);
 
 	#endif
 
@@ -1688,8 +1693,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.

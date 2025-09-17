@@ -77,8 +77,8 @@ void heartbeatDebugOutput(UART_HandleTypeDef *huart, STM32Response *resp_pkt){
             resp_pkt->engine_pump_voltage, resp_pkt->engine_throttle_percent, resp_pkt->engine_current_a,
 			resp_pkt->altitude,
             resp_pkt->heartbeat_counter,
-			(resp_pkt->imu_calibration_status == CALIBRATION_COMPLETE) ? "COMPLETE" : "CALIBRATING"
-			// TVC calibration
+			(resp_pkt->imu_calibration_status == CALIBRATION_COMPLETE) ? "COMPLETE" : "CALIBRATING" // TODO: Can all the calibration messages come over the same packet here? or do we need one for each system? (GPS, ACS, TVC(actuators), TVCIMU)?
+			// TVC calibration (actuators + IMU)
 			// GPS calibration
     );
 
