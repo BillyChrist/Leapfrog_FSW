@@ -150,7 +150,7 @@ SUBSYSTEM DESCRIPTIONS
    Features:
    - LIDAR altimeter with tilt compensation
    - IMU-altimeter sensor fusion
-   - GPS interface (incomplete)
+   - GPS interface (active on UART1)
    - Redundant sensor cross-checking
 
 5. COMMUNICATION
@@ -174,7 +174,7 @@ SUBSYSTEM DESCRIPTIONS
 COMMUNICATION INTERFACES
 ===============================================================================
 
-UART1 (9600 baud):  Ground station heartbeat communication
+UART1 (9600 baud):  GPS communication
 UART2 (115200 baud): Debug output and telemetry
 UART3 (115200 baud): IMU3 data
 UART4 (115200 baud): IMU2 data

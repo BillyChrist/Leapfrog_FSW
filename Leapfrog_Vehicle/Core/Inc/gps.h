@@ -13,7 +13,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define GPS_PACKET_LEN 128  // Adjust based on GPS module output size
+#define GPS_PACKET_LEN 128  // NMEA sentence max length (typically 82 chars + null terminator)
 
 // Struct to store parsed GPS data
 typedef struct {
@@ -31,6 +31,7 @@ typedef struct {
     float heading_deg;          // Ground track heading in degrees
     
     // Position tracking for drift compensation
+    // TODO: Calculate drift velocity here. Extern for TVC
     float target_latitude;      // Target position for navigation
     float target_longitude;     // Target position for navigation
     float position_error_north_m;  // North position error in meters
@@ -54,8 +55,11 @@ extern GPS_Data latestGPSdata;
 
 // Function prototypes
 void gpsInit(UART_HandleTypeDef *huart);
+void gpsConfigureSAM_M8Q(void);
 void gpsUARTRXCallback(uint8_t *bufferGPS);
-void parseGPSData(uint8_t *buffer, GPS_Data *gpsData);
+void parseGPGGA(uint8_t *buffer, GPS_Data *gpsData);
+void parseGPRMC(uint8_t *buffer, GPS_Data *gpsData);
+void parseGPVTG(uint8_t *buffer, GPS_Data *gpsData);
 
 // Enhanced GPS functionality
 void gpsUpdateVelocity(GPS_Data *gpsData);

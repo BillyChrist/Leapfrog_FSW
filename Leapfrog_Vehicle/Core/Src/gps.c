@@ -19,11 +19,16 @@ static UART_HandleTypeDef *gpsUartHandle;
 static uint8_t gpsBuf[GPS_PACKET_LEN];
 GPS_Data latestGPSdata;
 
-// GPS configuration constants
+// GPS configuration constants for SAM-M8Q
 #define GPS_DATA_TIMEOUT_MS 5000        // GPS data timeout in milliseconds
 #define GPS_ALTITUDE_TOLERANCE_M 10.0   // Altitude cross-check tolerance in meters
 #define GPS_VELOCITY_SMOOTHING_FACTOR 0.1  // Velocity smoothing factor (0.0-1.0)
 #define GPS_POSITION_SMOOTHING_FACTOR 0.05 // Position smoothing factor (0.0-1.0)
+
+// SAM-M8Q specific constants
+#define GPS_BAUD_RATE 9600              // SAM-M8Q default baud rate
+#define GPS_UPDATE_RATE_HZ 1            // Default update rate (can be increased to 10Hz)
+#define GPS_MIN_SATELLITES 4            // Minimum satellites for valid fix
 
 // Earth radius constants for distance calculations
 #define EARTH_RADIUS_M 6371000.0        // Earth radius in meters
@@ -56,19 +61,71 @@ void gpsInit(UART_HandleTypeDef *huart) {
     HAL_UART_Receive_IT(gpsUartHandle, gpsBuf, GPS_PACKET_LEN);
 }
 
+// Helper function to convert NMEA coordinates to decimal degrees
+static void parseNMEACoordinates(char *lat_token, char *lat_dir, char *lon_token, char *lon_dir, GPS_Data *gpsData) {
+    // Parse latitude (DDMM.MMMM format)
+    if (lat_token && strlen(lat_token) > 0) {
+        float lat_ddmm = atof(lat_token);
+        int degrees = (int)(lat_ddmm / 100);
+        float minutes = lat_ddmm - (degrees * 100);
+        gpsData->latitude = degrees + (minutes / 60.0f);
+        
+        // Apply N/S indicator
+        if (lat_dir && lat_dir[0] == 'S') {
+            gpsData->latitude = -gpsData->latitude;
+        }
+    }
+    
+    // Parse longitude (DDDMM.MMMM format)
+    if (lon_token && strlen(lon_token) > 0) {
+        float lon_dddmm = atof(lon_token);
+        int degrees = (int)(lon_dddmm / 100);
+        float minutes = lon_dddmm - (degrees * 100);
+        gpsData->longitude = degrees + (minutes / 60.0f);
+        
+        // Apply E/W indicator
+        if (lon_dir && lon_dir[0] == 'W') {
+            gpsData->longitude = -gpsData->longitude;
+        }
+    }
+}
+
+// Configure SAM-M8Q for optimal performance
+void gpsConfigureSAM_M8Q(void) {
+    // Note: This function would send UBX commands to configure the SAM-M8Q
+    // For now, we'll use the default configuration
+    // In a full implementation, you would send commands like:
+    // - Set update rate to 10Hz
+    // - Enable only needed NMEA messages (GPGGA, GPRMC, GPVTG)
+    // - Set power management mode
+    // - Configure navigation settings
+    
+    // printf("\rGPS: Using SAM-M8Q default configuration\r\n");
+    // printf("GPS: Baud rate: %d, Update rate: %d Hz\r\n", GPS_BAUD_RATE, GPS_UPDATE_RATE_HZ);
+}
+
 // UART RX Callback
 void gpsUARTRXCallback(uint8_t *bufferGPS) {
     if (bufferGPS[0] == '$') {  // Check for NMEA start character
+        // Parse different NMEA message types from SAM-M8Q
         if (memcmp(bufferGPS + 1, "GPGGA", 5) == 0) {
-            parseGPSData(bufferGPS, &latestGPSdata);
+            parseGPGGA(bufferGPS, &latestGPSdata);
+        }
+        else if (memcmp(bufferGPS + 1, "GPRMC", 5) == 0) {
+            parseGPRMC(bufferGPS, &latestGPSdata);
+        }
+        else if (memcmp(bufferGPS + 1, "GPVTG", 5) == 0) {
+            parseGPVTG(bufferGPS, &latestGPSdata);
         }
     }
     // Restart UART reception
     HAL_UART_Receive_IT(gpsUartHandle, gpsBuf, GPS_PACKET_LEN);
 }
 
-// Parse NMEA GPGGA
-void parseGPSData(uint8_t *buffer, GPS_Data *gpsData) {
+/* Parse NMEA GPGGA (Global Positioning System Fix Data)
+* Format: $GPGGA,time,lat,lat_dir,lon,lon_dir,quality,num_sats,hdop,alt,alt_units,geoid,geoid_units,age,diff_station*checksum
+* Coordinates in DDMM.MMMM / DDDMM.MMMM format */
+void parseGPGGA(uint8_t *buffer, GPS_Data *gpsData) {
     char *token;
     char data[GPS_PACKET_LEN];
     strncpy(data, (char *)buffer, GPS_PACKET_LEN);
@@ -76,17 +133,13 @@ void parseGPSData(uint8_t *buffer, GPS_Data *gpsData) {
     token = strtok(data, ","); // Start of sentence
     token = strtok(NULL, ","); // Time (ignored)
 
-    token = strtok(NULL, ","); // Latitude
-    if (token) gpsData->latitude = atof(token);
-
-    token = strtok(NULL, ","); // N/S Indicator (adjust sign)
-    if (token && token[0] == 'S') gpsData->latitude = -gpsData->latitude;
-
-    token = strtok(NULL, ","); // Longitude
-    if (token) gpsData->longitude = atof(token);
-
-    token = strtok(NULL, ","); // E/W Indicator (adjust sign)
-    if (token && token[0] == 'W') gpsData->longitude = -gpsData->longitude;
+    // Parse coordinates using helper function
+    char *lat_token = strtok(NULL, ",");  // Latitude (DDMM.MMMM)
+    char *lat_dir = strtok(NULL, ",");    // N/S Indicator
+    char *lon_token = strtok(NULL, ",");  // Longitude (DDDMM.MMMM)
+    char *lon_dir = strtok(NULL, ",");    // E/W Indicator
+    
+    parseNMEACoordinates(lat_token, lat_dir, lon_token, lon_dir, gpsData);
 
     token = strtok(NULL, ","); // Fix Status
     if (token) gpsData->fix_status = atoi(token);
@@ -113,6 +166,76 @@ void parseGPSData(uint8_t *buffer, GPS_Data *gpsData) {
     
     // Update drift compensation
     gpsUpdateDriftCompensation(gpsData);
+}
+
+/* Parse NMEA GPRMC (Recommended Minimum Specific GPS/Transit Data)
+* Format: $GPRMC,time,status,lat,lat_dir,lon,lon_dir,speed,course,date,mag_var,mag_dir*checksum
+* Coordinates in DDMM.MMMM / DDDMM.MMMM format */
+void parseGPRMC(uint8_t *buffer, GPS_Data *gpsData) {
+    char *token;
+    char data[GPS_PACKET_LEN];
+    strncpy(data, (char *)buffer, GPS_PACKET_LEN);
+
+    token = strtok(data, ","); // Start of sentence
+    token = strtok(NULL, ","); // Time (ignored)
+    
+    token = strtok(NULL, ","); // Status (A=Valid, V=Invalid)
+    if (token && token[0] == 'A') {
+        gpsData->data_valid = true;
+    } else {
+        gpsData->data_valid = false;
+    }
+    
+    // Parse coordinates using helper function
+    char *lat_token = strtok(NULL, ",");  // Latitude (DDMM.MMMM)
+    char *lat_dir = strtok(NULL, ",");    // N/S Indicator
+    char *lon_token = strtok(NULL, ",");  // Longitude (DDDMM.MMMM)
+    char *lon_dir = strtok(NULL, ",");    // E/W Indicator
+    
+    parseNMEACoordinates(lat_token, lat_dir, lon_token, lon_dir, gpsData);
+
+    token = strtok(NULL, ","); // Speed over ground (knots)
+    if (token) {
+        float speed_knots = atof(token);
+        gpsData->speed_ms = speed_knots * 0.514444f; // Convert knots to m/s
+    }
+
+    token = strtok(NULL, ","); // Course over ground
+    if (token) gpsData->heading_deg = atof(token);
+
+    // Update timestamp
+    gpsData->last_update_ms = HAL_GetTick();
+    gpsData->position_valid = (gpsData->data_valid && 
+                              gpsData->latitude != 0.0 && 
+                              gpsData->longitude != 0.0);
+}
+
+// Parse NMEA GPVTG (Track Made Good and Ground Speed)
+void parseGPVTG(uint8_t *buffer, GPS_Data *gpsData) {
+    char *token;
+    char data[GPS_PACKET_LEN];
+    strncpy(data, (char *)buffer, GPS_PACKET_LEN);
+
+    token = strtok(data, ","); // Start of sentence
+    token = strtok(NULL, ","); // True track made good
+    if (token) gpsData->heading_deg = atof(token);
+    
+    token = strtok(NULL, ","); // T (True)
+    token = strtok(NULL, ","); // Magnetic track made good
+    token = strtok(NULL, ","); // M (Magnetic)
+    token = strtok(NULL, ","); // Speed in knots
+    if (token) {
+        float speed_knots = atof(token);
+        gpsData->speed_ms = speed_knots * 0.514444f; // Convert knots to m/s
+    }
+    
+    token = strtok(NULL, ","); // N (knots)
+    token = strtok(NULL, ","); // Speed in km/h
+    // We already have speed in m/s, so we can ignore km/h
+    
+    // Update timestamp
+    gpsData->last_update_ms = HAL_GetTick();
+    gpsData->velocity_valid = true;
 }
 
 /**

@@ -65,7 +65,6 @@ void resetGimbalIMU(void);
 void processGimbalIMUData(uint8_t *buffer, int imu_type);
 void updateGimbalIMUData(void);
 
-// Data access functions - Use GetGimbalIMU_Data() in tvc.c instead
 bool isGimbalIMUDataValid(void);
 
 // Utility functions

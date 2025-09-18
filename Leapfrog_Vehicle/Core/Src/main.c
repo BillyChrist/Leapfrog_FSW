@@ -270,6 +270,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		// Restart UART reception for next byte
 		HAL_UART_Receive_IT(&huart2, huart->pRxBuffPtr, 1);
 	}
+	if (huart->Instance == USART1) {
+		// Handle GPS data - process received packet
+		extern void gpsUARTRXCallback(uint8_t *bufferGPS);
+		gpsUARTRXCallback(huart->pRxBuffPtr);
+	}
 
 
 }
@@ -297,7 +302,8 @@ void debugOutput(UART_HandleTypeDef *huart){ // Debug for code setup
 			"\rIntegral_pitch: %.2f, Integral_roll: %.2f, Integral_yaw: %.2f \r\n"
 			"\rPR1: %.2f, PR2: %.2f, PR3: %.2f, PR4: %.2f, Y1: %.2f, Y2: %.2f \r\n"
 			"\rAltitude: %d, Adjusted Altitude: %0.2f \r\n"
-    		"\rlongitude: %.2f, latitude: %.2f, altitude: %.2f \r\n"
+    		"\rGPS - Lat: %.6f, Lon: %.6f, Alt: %.2f, Fix: %d \r\n"
+    		"\rGPS - Speed: %.2f m/s, Heading: %.1f°, Valid: %d, Age: %lums \r\n"
     		"\rEngine PID Output: %.2f, Engine Throttle %%: %d \r\n"
 			"\r\n",
 //			imu_roll[0], imu_pitch[0], imu_yaw[0],
@@ -311,7 +317,8 @@ void debugOutput(UART_HandleTypeDef *huart){ // Debug for code setup
 			integral_pitch,	integral_roll, integral_yaw,
 			PR1_output, PR2_output, PR3_output, PR4_output, Y1_output, Y2_output,
 			(int16_t)latestData.altitude, adjusted_altitude_cm,
-			latestGPSdata.longitude, latestGPSdata.latitude, latestGPSdata.altitude,
+			latestGPSdata.latitude, latestGPSdata.longitude, latestGPSdata.altitude, latestGPSdata.fix_status,
+			latestGPSdata.speed_ms, latestGPSdata.heading_deg, latestGPSdata.data_valid, latestGPSdata.data_age_ms,
 			altPIDOut, throttle_percent
     	);
 
@@ -444,6 +451,13 @@ int main(void)
       printf("\rAltimeter Initialized! \r\n");
   }
   HAL_Delay(200);
+
+  /* GPS HANDLING -------------------------------------------------------------- */
+  printf("\rStarting GPS initialization...\r\n");
+  gpsInit(&huart1);  // Initialize GPS on UART1 (PA9/PA10)
+  gpsConfigureSAM_M8Q();  // Configure SAM-M8Q for optimal performance
+  printf("\rGPS Initialized!\r\n");
+  HAL_Delay(100);
 
 /* End sensor initialization --------------------------------------------------- */
 
@@ -1568,6 +1582,9 @@ void StartTVCTask(void *argument)
 void StartKillSwitchPin(void *argument)
 {
   /* USER CODE BEGIN StartKillSwitchPin */
+	// TODO set killswitch bool. If "engine kill" is sent from ground station, trigger emergency kill
+	// TODO Add physical check for kill switch pin... when pin is pulled, trigger emergency shutoff.
+
 
   /* Infinite loop */
   for(;;)
@@ -1590,10 +1607,10 @@ void StartKillSwitchPin(void *argument)
       > if altimeter fail, attempt to utilize velocity and acceleration reading from IMU. Slowly throttle down until velocity reached 0, look out for spike in acceleration to signal landed state
       > if emergyency_land fails, kill switch engage!
     */
-  
-  /* USER CODE END StartKillSwitchPin */
   }
 }
+  /* USER CODE END StartKillSwitchPin */
+
 /* USER CODE BEGIN Header_StartEngineTask */
 /**
 * @brief Function implementing the engineTask thread.
@@ -1604,6 +1621,10 @@ void StartKillSwitchPin(void *argument)
 void StartEngineTask(void *argument)
 {
   /* USER CODE BEGIN StartEngineTask */
+	// TODO Don't start engine until engine system is set to "enable" or "Automatic"
+	// TODO Don't let engine try to spool up before all other calibration checks are complete (TVC, ACS, GimbalIMU)
+	// TODO Set up  button-state control to manually enter "cooldown" mode on the engine.
+	// TODO enable check for kill switch logic *(kill switch task should set a software bool for when this is called from the ground station)
 
 	// Initialize engine PID, timing, and constants...
 	initEngineControl();
@@ -1616,6 +1637,7 @@ void StartEngineTask(void *argument)
 
     engineState = SystemJet_Automatic;   // Manual engine state set for testing! 
     //TODO Remove hard coded auto state
+
   /* Infinite loop */
   for(;;)
   {

@@ -121,10 +121,10 @@ void Error_Handler(void);
 #define IMU1_Tx_GPIO_Port GPIOC
 #define IMU1_Rx_Pin GPIO_PIN_7
 #define IMU1_Rx_GPIO_Port GPIOC
-#define heatbeat_TX_Pin GPIO_PIN_9
-#define heatbeat_TX_GPIO_Port GPIOA
-#define heatbeat_RX_Pin GPIO_PIN_10
-#define heatbeat_RX_GPIO_Port GPIOA
+#define GPS_TX_Pin GPIO_PIN_9
+#define GPS_TX_GPIO_Port GPIOA
+#define GPS_RX_Pin GPIO_PIN_10
+#define GPS_RX_GPIO_Port GPIOA
 #define IMU2_Tx_Pin GPIO_PIN_10
 #define IMU2_Tx_GPIO_Port GPIOC
 #define IMU2_Rx_Pin GPIO_PIN_11

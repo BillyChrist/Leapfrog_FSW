@@ -9,7 +9,8 @@
  *  ******************************************************************************
  */
 
-// TODO Add calculation to compensate for vehicle mass... tune only with PID control, or add variable?
+	// TODO Add calculation to compensate for vehicle mass... tune only with PID control, or add variable?
+	// TODO set up "cooldown" sequence or logic...
 
 #include <engine_PID.h>
 #include <string.h>
